@@ -13,7 +13,9 @@ for i in firsts:                                   # 15 correct
     add("checker", item_id=i.item_id, answer=i.accepted[0], expect="correct")
 for i in seconds[::3][:5] if False else [seconds[k] for k in (0, 4, 8, 12, 13)][:4]:   # 4 wrong (error left unchanged)
     add("checker", item_id=i.item_id, answer=i.planted_error, expect="wrong")
-add("checker", item_id=firsts[0].item_id, answer="క్యా నువ్వు వస్తున్నావు", expect="wrong")  # wrong via pattern, not exact bank sentence
+add("checker", item_id=firsts[0].item_id, answer="క్యా నువ్వు వస్తున్నావు", expect="wrong")
+add("checker", item_id="HI-TE-005-b", answer="వాడు రాడు", expect="correct")  # variant from Krishnamurti & Gwynn
+add("checker", item_id="HI-TE-008-b", answer="వాడు వస్తుంది", expect="wrong")  # wrong via pattern, not exact bank sentence
 for i in (firsts[1], firsts[4], firsts[8], firsts[12]):  # 4 unsure
     add("checker", item_id=i.item_id, answer="నాకు తెలియదు", expect="unsure")
 

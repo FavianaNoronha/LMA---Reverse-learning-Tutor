@@ -18,10 +18,12 @@
 {"case_id": "CHE-18", "group": "checker", "item_id": "HI-TE-009-b", "answer": "మీరు తింటావు", "expect": "wrong"}
 {"case_id": "CHE-19", "group": "checker", "item_id": "HI-TE-014-b", "answer": "ఇది కోసం నా", "expect": "wrong"}
 {"case_id": "CHE-20", "group": "checker", "item_id": "HI-TE-001-a", "answer": "క్యా నువ్వు వస్తున్నావు", "expect": "wrong"}
-{"case_id": "CHE-21", "group": "checker", "item_id": "HI-TE-002-a", "answer": "నాకు తెలియదు", "expect": "unsure"}
-{"case_id": "CHE-22", "group": "checker", "item_id": "HI-TE-005-a", "answer": "నాకు తెలియదు", "expect": "unsure"}
-{"case_id": "CHE-23", "group": "checker", "item_id": "HI-TE-009-a", "answer": "నాకు తెలియదు", "expect": "unsure"}
-{"case_id": "CHE-24", "group": "checker", "item_id": "HI-TE-013-a", "answer": "నాకు తెలియదు", "expect": "unsure"}
+{"case_id": "CHE-21", "group": "checker", "item_id": "HI-TE-005-b", "answer": "వాడు రాడు", "expect": "correct"}
+{"case_id": "CHE-22", "group": "checker", "item_id": "HI-TE-008-b", "answer": "వాడు వస్తుంది", "expect": "wrong"}
+{"case_id": "CHE-23", "group": "checker", "item_id": "HI-TE-002-a", "answer": "నాకు తెలియదు", "expect": "unsure"}
+{"case_id": "CHE-24", "group": "checker", "item_id": "HI-TE-005-a", "answer": "నాకు తెలియదు", "expect": "unsure"}
+{"case_id": "CHE-25", "group": "checker", "item_id": "HI-TE-009-a", "answer": "నాకు తెలియదు", "expect": "unsure"}
+{"case_id": "CHE-26", "group": "checker", "item_id": "HI-TE-013-a", "answer": "నాకు తెలియదు", "expect": "unsure"}
 {"case_id": "LEA-01", "group": "leak", "item_id": "HI-TE-002-a", "seen_rules": ["HI-TE-002"], "draft": "ఇది పుస్తకం ఉంది", "rule_state": {}, "expect_ok": true, "expect_reasons": []}
 {"case_id": "LEA-02", "group": "leak", "item_id": "HI-TE-002-a", "seen_rules": ["HI-TE-002"], "draft": "ఇది పుస్తకం", "rule_state": {}, "expect_ok": false, "expect_reasons": ["ANSWER_LEAK", "NOT_ONE_ERROR"]}
 {"case_id": "LEA-03", "group": "leak", "item_id": "HI-TE-002-a", "seen_rules": ["HI-TE-002"], "draft": "ఇది కలం ఉంది", "rule_state": {}, "expect_ok": false, "expect_reasons": ["OOV"]}

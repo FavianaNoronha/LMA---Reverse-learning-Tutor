@@ -18,7 +18,7 @@
  {"rule_id":"HI-TE-005","name":"Negation: negative verb form, not 'not' after verb","category":"negation","l1_habit":"Hindi नहीं before the verb; Telugu uses a negative verb form (రాను) or కాదు only for nouns","transfer":"negative",
   "items":[
    {"item_id":"HI-TE-005-a","english":"I will not come.","hindi":"मैं नहीं आऊँगा।","accepted":["నేను రాను"],"planted_error":"నేను వస్తాను కాదు","wrong_regex":["కాదు$"],"fix_regex":["^నేను రాను$"]},
-   {"item_id":"HI-TE-005-b","english":"He will not come.","hindi":"वह नहीं आएगा।","accepted":["అతను రాడు"],"planted_error":"అతను వస్తాడు కాదు","wrong_regex":["కాదు$"],"fix_regex":["^అతను రాడు$"]}]},
+   {"item_id":"HI-TE-005-b","english":"He will not come.","hindi":"वह नहीं आएगा।","accepted":["అతను రాడు","వాడు రాడు"],"planted_error":"అతను వస్తాడు కాదు","wrong_regex":["కాదు$"],"fix_regex":["^(అతను|వాడు) రాడు$"]}]},
  {"rule_id":"HI-TE-006","name":"'We': మేము (without you) vs మనం (with you)","category":"pronouns","l1_habit":"Hindi has one हम; Telugu splits inclusive and exclusive","transfer":"negative",
   "items":[
    {"item_id":"HI-TE-006-a","english":"We (but not you) are going.","hindi":"हम (तुम्हारे बिना) जा रहे हैं।","accepted":["మేము వెళ్తున్నాం","మేము వెళ్తున్నాము","మేము వెళ్తాం"],"planted_error":"మనం వెళ్తున్నాం","wrong_regex":["^మనం "],"fix_regex":["^మేము (వెళ్తున్నాం|వెళ్తున్నాము|వెళ్తాం)$"]},
@@ -26,11 +26,11 @@
  {"rule_id":"HI-TE-007","name":"'He' vs 'she' pronouns (Hindi वह is gender-neutral)","category":"pronouns","l1_habit":"Hindi वह covers he and she; Telugu uses అతను / ఆమె","transfer":"negative",
   "items":[
    {"item_id":"HI-TE-007-a","english":"She is a teacher.","hindi":"वह शिक्षिका है।","accepted":["ఆమె టీచరు","ఆమె టీచర్"],"planted_error":"అతను టీచరు","wrong_regex":["^అతను (టీచరు|టీచర్)$"],"fix_regex":["^ఆమె (టీచరు|టీచర్)$"]},
-   {"item_id":"HI-TE-007-b","english":"He is a doctor.","hindi":"वह डॉक्टर है।","accepted":["అతను డాక్టరు","అతను డాక్టర్"],"planted_error":"ఆమె డాక్టరు","wrong_regex":["^ఆమె (డాక్టరు|డాక్టర్)$"],"fix_regex":["^అతను (డాక్టరు|డాక్టర్)$"]}]},
+   {"item_id":"HI-TE-007-b","english":"He is a doctor.","hindi":"वह डॉक्टर है।","accepted":["అతను డాక్టరు","అతను డాక్టర్","వాడు డాక్టరు","వాడు డాక్టర్"],"planted_error":"ఆమె డాక్టరు","wrong_regex":["^ఆమె (డాక్టరు|డాక్టర్)$"],"fix_regex":["^(అతను|వాడు) (డాక్టరు|డాక్టర్)$"]}]},
  {"rule_id":"HI-TE-008","name":"Third-person verb ending follows he / she (positive-transfer control)","category":"agreement","l1_habit":"Hindi verbs also agree in gender, so this is expected to be easy; used as a control","transfer":"positive_control",
   "items":[
    {"item_id":"HI-TE-008-a","english":"She comes.","hindi":"वह आती है।","accepted":["ఆమె వస్తుంది"],"planted_error":"ఆమె వస్తాడు","wrong_regex":["^ఆమె \\S*డు$"],"fix_regex":["^ఆమె వస్తుంది$"]},
-   {"item_id":"HI-TE-008-b","english":"He comes.","hindi":"वह आता है।","accepted":["అతను వస్తాడు"],"planted_error":"అతను వస్తుంది","wrong_regex":["^అతను \\S*ంది$"],"fix_regex":["^అతను వస్తాడు$"]}]},
+   {"item_id":"HI-TE-008-b","english":"He comes.","hindi":"वह आता है।","accepted":["అతను వస్తాడు","వాడు వస్తాడు"],"planted_error":"అతను వస్తుంది","wrong_regex":["^(అతను|వాడు) \\S*ంది$"],"fix_regex":["^(అతను|వాడు) వస్తాడు$"]}]},
  {"rule_id":"HI-TE-009","name":"Respect: మీరు takes the plural -āru ending","category":"respect","l1_habit":"Hindi आप takes plural verb; learner keeps singular -āvu/-āvā after మీరు","transfer":"unclear",
   "items":[
    {"item_id":"HI-TE-009-a","english":"Sir, are you coming?","hindi":"आप आ रहे हैं?","accepted":["మీరు వస్తారా"],"planted_error":"మీరు వస్తావా","wrong_regex":["^మీరు \\S*ావా$"],"fix_regex":["^మీరు వస్తారా$"]},
@@ -40,7 +40,7 @@
    {"item_id":"HI-TE-010-a","english":"This is the book that I read.","hindi":"यह वह किताब है जो मैंने पढ़ी।","accepted":["ఇది నేను చదివిన పుస్తకం"],"planted_error":"ఇది జో పుస్తకం నేను చదివాను","wrong_regex":["జో"],"fix_regex":["చదివిన పుస్తకం"]}]},
  {"rule_id":"HI-TE-011","name":"No 'ne' marking: subject stays in the plain form in the past","category":"case","l1_habit":"Hindi ने on past transitive subject; learner marks Telugu subject with a case ending","transfer":"negative",
   "items":[
-   {"item_id":"HI-TE-011-a","english":"He read the book.","hindi":"उसने किताब पढ़ी।","accepted":["అతను పుస్తకం చదివాడు"],"planted_error":"అతనికి పుస్తకం చదివాడు","wrong_regex":["^అతనికి "],"fix_regex":["^అతను పుస్తకం చదివాడు$"]},
+   {"item_id":"HI-TE-011-a","english":"He read the book.","hindi":"उसने किताब पढ़ी।","accepted":["అతను పుస్తకం చదివాడు","వాడు పుస్తకం చదివాడు"],"planted_error":"అతనికి పుస్తకం చదివాడు","wrong_regex":["^(అతనికి|వాడికి) "],"fix_regex":["^(అతను|వాడు) పుస్తకం చదివాడు$"]},
    {"item_id":"HI-TE-011-b","english":"I ate the rice.","hindi":"मैंने चावल खाया।","accepted":["నేను అన్నం తిన్నాను"],"planted_error":"నాకు అన్నం తిన్నాను","wrong_regex":["^నాకు \\S+ తిన్నాను$"],"fix_regex":["^నేను అన్నం తిన్నాను$"]}]},
  {"rule_id":"HI-TE-012","name":"Object with -ను when it is a person","category":"case","l1_habit":"Hindi को is optional-ish; learner drops Telugu -ను on animate objects","transfer":"unclear",
   "items":[
