@@ -1,0 +1,50 @@
+{"case_id": "CHE-01", "group": "checker", "item_id": "HI-TE-001-a", "answer": "నువ్వు వస్తావా", "expect": "correct"}
+{"case_id": "CHE-02", "group": "checker", "item_id": "HI-TE-002-a", "answer": "ఇది పుస్తకం", "expect": "correct"}
+{"case_id": "CHE-03", "group": "checker", "item_id": "HI-TE-003-a", "answer": "నాకు ఒక పుస్తకం ఉంది", "expect": "correct"}
+{"case_id": "CHE-04", "group": "checker", "item_id": "HI-TE-004-a", "answer": "నేను ఇంట్లో ఉన్నాను", "expect": "correct"}
+{"case_id": "CHE-05", "group": "checker", "item_id": "HI-TE-005-a", "answer": "నేను రాను", "expect": "correct"}
+{"case_id": "CHE-06", "group": "checker", "item_id": "HI-TE-006-a", "answer": "మేము వెళ్తున్నాం", "expect": "correct"}
+{"case_id": "CHE-07", "group": "checker", "item_id": "HI-TE-007-a", "answer": "ఆమె టీచరు", "expect": "correct"}
+{"case_id": "CHE-08", "group": "checker", "item_id": "HI-TE-008-a", "answer": "ఆమె వస్తుంది", "expect": "correct"}
+{"case_id": "CHE-09", "group": "checker", "item_id": "HI-TE-009-a", "answer": "మీరు వస్తారా", "expect": "correct"}
+{"case_id": "CHE-10", "group": "checker", "item_id": "HI-TE-010-a", "answer": "ఇది నేను చదివిన పుస్తకం", "expect": "correct"}
+{"case_id": "CHE-11", "group": "checker", "item_id": "HI-TE-011-a", "answer": "అతను పుస్తకం చదివాడు", "expect": "correct"}
+{"case_id": "CHE-12", "group": "checker", "item_id": "HI-TE-012-a", "answer": "నేను అమ్మను పిలిచాను", "expect": "correct"}
+{"case_id": "CHE-13", "group": "checker", "item_id": "HI-TE-013-a", "answer": "నేను తింటున్నాను", "expect": "correct"}
+{"case_id": "CHE-14", "group": "checker", "item_id": "HI-TE-014-a", "answer": "ఇది నీ కోసం", "expect": "correct"}
+{"case_id": "CHE-15", "group": "checker", "item_id": "HI-TE-015-a", "answer": "నేను ఇంటికి వెళ్తున్నాను", "expect": "correct"}
+{"case_id": "CHE-16", "group": "checker", "item_id": "HI-TE-001-b", "answer": "క్యా ఇది పుస్తకం", "expect": "wrong"}
+{"case_id": "CHE-17", "group": "checker", "item_id": "HI-TE-005-b", "answer": "అతను వస్తాడు కాదు", "expect": "wrong"}
+{"case_id": "CHE-18", "group": "checker", "item_id": "HI-TE-009-b", "answer": "మీరు తింటావు", "expect": "wrong"}
+{"case_id": "CHE-19", "group": "checker", "item_id": "HI-TE-014-b", "answer": "ఇది కోసం నా", "expect": "wrong"}
+{"case_id": "CHE-20", "group": "checker", "item_id": "HI-TE-001-a", "answer": "క్యా నువ్వు వస్తున్నావు", "expect": "wrong"}
+{"case_id": "CHE-21", "group": "checker", "item_id": "HI-TE-002-a", "answer": "నాకు తెలియదు", "expect": "unsure"}
+{"case_id": "CHE-22", "group": "checker", "item_id": "HI-TE-005-a", "answer": "నాకు తెలియదు", "expect": "unsure"}
+{"case_id": "CHE-23", "group": "checker", "item_id": "HI-TE-009-a", "answer": "నాకు తెలియదు", "expect": "unsure"}
+{"case_id": "CHE-24", "group": "checker", "item_id": "HI-TE-013-a", "answer": "నాకు తెలియదు", "expect": "unsure"}
+{"case_id": "LEA-01", "group": "leak", "item_id": "HI-TE-002-a", "seen_rules": ["HI-TE-002"], "draft": "ఇది పుస్తకం ఉంది", "rule_state": {}, "expect_ok": true, "expect_reasons": []}
+{"case_id": "LEA-02", "group": "leak", "item_id": "HI-TE-002-a", "seen_rules": ["HI-TE-002"], "draft": "ఇది పుస్తకం", "rule_state": {}, "expect_ok": false, "expect_reasons": ["ANSWER_LEAK", "NOT_ONE_ERROR"]}
+{"case_id": "LEA-03", "group": "leak", "item_id": "HI-TE-002-a", "seen_rules": ["HI-TE-002"], "draft": "ఇది కలం ఉంది", "rule_state": {}, "expect_ok": false, "expect_reasons": ["OOV"]}
+{"case_id": "LEA-04", "group": "leak", "item_id": "HI-TE-002-a", "seen_rules": ["HI-TE-002"], "draft": "ఇది పుస్తకం ఉంది ఎందుకంటే నియమం", "rule_state": {}, "expect_ok": false, "expect_reasons": ["OOV", "EXPLANATION"]}
+{"case_id": "LEA-05", "group": "leak", "item_id": "HI-TE-003-a", "seen_rules": ["HI-TE-003"], "draft": "నేను ఒక పుస్తకం ఉంది", "rule_state": {}, "expect_ok": true, "expect_reasons": []}
+{"case_id": "LEA-06", "group": "leak", "item_id": "HI-TE-003-a", "seen_rules": ["HI-TE-003"], "draft": "నాకు ఒక పుస్తకం ఉంది", "rule_state": {}, "expect_ok": false, "expect_reasons": ["ANSWER_LEAK"]}
+{"case_id": "LEA-07", "group": "leak", "item_id": "HI-TE-002-a", "seen_rules": ["HI-TE-002", "HI-TE-003"], "draft": "నాకు ఒక పుస్తకం ఉంది", "rule_state": {}, "expect_ok": false, "expect_reasons": ["UNKNOWN_RULE_CORRECT", "NOT_ONE_ERROR"]}
+{"case_id": "LEA-08", "group": "leak", "item_id": "HI-TE-005-a", "seen_rules": ["HI-TE-005"], "draft": "నేను వస్తాను కాదు", "rule_state": {}, "expect_ok": true, "expect_reasons": []}
+{"case_id": "LEA-09", "group": "leak", "item_id": "HI-TE-005-a", "seen_rules": ["HI-TE-005"], "draft": "నేను రాను", "rule_state": {}, "expect_ok": false, "expect_reasons": ["ANSWER_LEAK"]}
+{"case_id": "LEA-10", "group": "leak", "item_id": "HI-TE-008-a", "seen_rules": ["HI-TE-008"], "draft": "ఆమె వస్తాడు", "rule_state": {}, "expect_ok": true, "expect_reasons": []}
+{"case_id": "LEA-11", "group": "leak", "item_id": "HI-TE-008-a", "seen_rules": ["HI-TE-008"], "draft": "ఆమె వస్తుంది", "rule_state": {}, "expect_ok": false, "expect_reasons": ["ANSWER_LEAK"]}
+{"case_id": "LEA-12", "group": "leak", "item_id": "HI-TE-002-a", "seen_rules": ["HI-TE-002"], "drafts": ["ఇది పుస్తకం", "ఇది కలం ఉంది", "ఇది పుస్తకం ఉంది"], "expect_source": "llm", "expect_index": 2}
+{"case_id": "LEA-13", "group": "leak", "item_id": "HI-TE-002-a", "seen_rules": ["HI-TE-002"], "drafts": ["ఇది పుస్తకం", "ఇది కలం ఉంది", "ఇది పుస్తకం, నియమం"], "expect_source": "bank", "expect_index": null}
+{"case_id": "LEA-14", "group": "leak", "item_id": "HI-TE-002-a", "seen_rules": ["HI-TE-002"], "drafts": ["ఇది పుస్తకం ఉంది"], "expect_source": "llm", "expect_index": 0}
+{"case_id": "LEA-15", "group": "leak", "item_id": "HI-TE-002-a", "seen_rules": ["HI-TE-002"], "drafts": [], "expect_source": "bank", "expect_index": null}
+{"case_id": "LEA-16", "group": "leak", "item_id": "HI-TE-002-a", "seen_rules": ["HI-TE-002"], "drafts": ["ఇది పుస్తకం", "ఇది కలం ఉంది", "అది పెన్ను", "ఇది పుస్తకం ఉంది"], "expect_source": "bank", "expect_index": null}
+{"case_id": "PLA-01", "group": "planting", "item_id": "HI-TE-002-a", "expect_rules": ["HI-TE-002"]}
+{"case_id": "PLA-02", "group": "planting", "item_id": "HI-TE-005-b", "expect_rules": ["HI-TE-005"]}
+{"case_id": "PLA-03", "group": "planting", "item_id": "HI-TE-008-a", "expect_rules": ["HI-TE-008"]}
+{"case_id": "PLA-04", "group": "planting", "item_id": "HI-TE-011-b", "expect_rules": ["HI-TE-011"]}
+{"case_id": "PLA-05", "group": "planting", "item_id": "HI-TE-015-a", "expect_rules": ["HI-TE-015"]}
+{"case_id": "FOR-01", "group": "forgetting", "steps": [["correct", "HI-TE-002", true]], "expect": {"HI-TE-002": "taught"}}
+{"case_id": "FOR-02", "group": "forgetting", "steps": [["correct", "HI-TE-002", true], ["forget", {"HI-TE-002": 0.3}]], "expect": {"HI-TE-002": "forgotten"}}
+{"case_id": "FOR-03", "group": "forgetting", "steps": [["correct", "HI-TE-002", true], ["forget", {"HI-TE-002": 0.8}]], "expect": {"HI-TE-002": "taught"}}
+{"case_id": "FOR-04", "group": "forgetting", "steps": [["correct", "HI-TE-002", true], ["forget", {"HI-TE-002": 0.3}], ["correct", "HI-TE-002", true]], "expect": {"HI-TE-002": "taught"}}
+{"case_id": "FOR-05", "group": "forgetting", "steps": [["correct", "HI-TE-002", false]], "expect": {"HI-TE-002": "unknown"}}
