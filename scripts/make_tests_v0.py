@@ -55,6 +55,23 @@ add("forgetting", steps=[["correct", "HI-TE-002", True], ["forget", {"HI-TE-002"
 add("forgetting", steps=[["correct", "HI-TE-002", True], ["forget", {"HI-TE-002": 0.3}], ["correct", "HI-TE-002", True]], expect={"HI-TE-002": "taught"})
 add("forgetting", steps=[["correct", "HI-TE-002", False]], expect={"HI-TE-002": "unknown"})
 
+# no-error turns (classmate sentence is correct)
+add("no_error", item_id="HI-TE-002-a", seen_rules=["HI-TE-002"], draft="ఇది పుస్తకం", rule_state={"HI-TE-002": "taught"}, expect_ok=True, expect_reasons=[])
+add("no_error", item_id="HI-TE-002-a", seen_rules=["HI-TE-002"], draft="ఇది పుస్తకం ఉంది", rule_state={"HI-TE-002": "taught"}, expect_ok=False, expect_reasons=["NOT_CORRECT"])
+add("no_error", item_id="HI-TE-002-a", seen_rules=["HI-TE-002"], draft="ఇది పుస్తకం", rule_state={}, expect_ok=False, expect_reasons=["UNKNOWN_RULE_CORRECT"])
+add("no_error", item_id="HI-TE-002-a", answer="<NO_ERROR>", expect="correct")
+add("no_error", item_id="HI-TE-002-a", answer="ఇది పుస్తకం ఉంది", expect="wrong")
+
+# ledger: only checked correct fixes change the classmate; unsure never counts
+add("ledger", item_id="HI-TE-002-a", verdict="correct", turn_type="planted", expect_counts=True, expect_changed=True)
+add("ledger", item_id="HI-TE-002-a", verdict="wrong", turn_type="planted", expect_counts=True, expect_changed=False)
+add("ledger", item_id="HI-TE-002-a", verdict="unsure", turn_type="planted", expect_counts=False, expect_changed=False)
+add("ledger", item_id="HI-TE-002-a", verdict="correct", turn_type="no_error", expect_counts=True, expect_changed=False)
+
+# copy rate
+add("copy", productions=["ఇది పుస్తకం ఉంది", "నేను రాను"], planted=["HI-TE-002"], expect=0.5)
+add("copy", productions=[], planted=["HI-TE-002"], expect=0.0)
+
 out = Path(__file__).resolve().parent.parent / "data/hi_te/tests_v0.jsonl"
 out.write_text("\n".join(json.dumps(c, ensure_ascii=False) for c in cases) + "\n", encoding="utf-8")
 from collections import Counter

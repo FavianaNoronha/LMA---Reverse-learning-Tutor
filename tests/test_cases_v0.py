@@ -1,6 +1,11 @@
 import json, pathlib, pytest
 from setu.bank import load_rules, index_items, vocab_for
-from setu.checker import check
+from setu.checker import check, check_no_error_turn
+from setu.schemas import CheckResult
+from setu.ledger import apply_check
+from setu.metrics import copy_rate
+from setu.planner import choose_turn
+import random
 from setu.leakfilter import check_draft, select_classmate_sentence, errors_in
 from setu.state import RajuState
 
@@ -32,6 +37,23 @@ def test_case(c):
     elif g == "planting":
         _, item = IDX[c["item_id"]]
         assert errors_in(item.planted_error, RULES) == c["expect_rules"]
+    elif g == "no_error" and "draft" in c:
+        rule, item = IDX[c["item_id"]]
+        state = {r.rule_id: "unknown" for r in RULES}; state.update(c["rule_state"])
+        d = check_draft(c["draft"], rule, item, RULES, vocab_for(RULES, c["seen_rules"]), state, no_error=True)
+        assert d.ok == c["expect_ok"]
+        assert set(c["expect_reasons"]) <= set(d.reasons)
+    elif g == "no_error":
+        rule, item = IDX[c["item_id"]]
+        assert check_no_error_turn(rule, item, c["answer"]).verdict == c["expect"]
+    elif g == "ledger":
+        rule, item = IDX[c["item_id"]]
+        s = RajuState([r.rule_id for r in RULES])
+        ev = apply_check(s, "L1", rule, item, CheckResult(item_id=item.item_id, answer="x", verdict=c["verdict"], reason="test"), c["turn_type"])
+        assert ev.counts_toward_mastery == c["expect_counts"]
+        assert ev.classmate_state_changed == c["expect_changed"]
+    elif g == "copy":
+        assert copy_rate(c["productions"], set(c["planted"]), RULES) == c["expect"]
     elif g == "forgetting":
         s = RajuState([r.rule_id for r in RULES])
         for step in c["steps"]:
@@ -45,3 +67,14 @@ def test_bank_consistency():
     for rid, (r, i) in IDX.items():
         assert errors_in(i.planted_error, RULES) == [r.rule_id], rid          # exactly one error, of this rule
         assert all(not any(__import__("re").search(p, a) for p in i.wrong_regex) for a in i.accepted), rid
+
+
+def test_planner_no_error_only_from_taught_rules():
+    s = RajuState([r.rule_id for r in RULES])
+    rng = random.Random(0)
+    assert all(choose_turn(s, rng)[0] == "planted" for _ in range(50))   # nothing taught yet
+    s.learner_corrected("HI-TE-002", True)
+    turns = [choose_turn(s, rng, p_no_error=0.2) for _ in range(1000)]
+    ne = [t for t in turns if t[0] == "no_error"]
+    assert all(r == "HI-TE-002" for _, r in ne)
+    assert 0.12 < len(ne) / len(turns) < 0.28
