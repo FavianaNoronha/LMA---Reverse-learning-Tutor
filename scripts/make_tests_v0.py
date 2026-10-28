@@ -1,4 +1,4 @@
-"""Generate data/hi_te/tests_v0.jsonl (50 cases). Re-run after editing rules. Hand-edit leak cases here."""
+"""Generate data/l1-hi_l2-te/tests_v0.jsonl (50 cases). Re-run after editing rules. Hand-edit leak cases here."""
 import json, sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -72,7 +72,7 @@ add("ledger", item_id="HI-TE-002-a", verdict="correct", turn_type="no_error", ex
 add("copy", productions=["ఇది పుస్తకం ఉంది", "నేను రాను"], planted=["HI-TE-002"], expect=0.5)
 add("copy", productions=[], planted=["HI-TE-002"], expect=0.0)
 
-out = Path(__file__).resolve().parent.parent / "data/hi_te/tests_v0.jsonl"
+out = Path(__file__).resolve().parent.parent / "data/l1-hi_l2-te/tests_v0.jsonl"
 out.write_text("\n".join(json.dumps(c, ensure_ascii=False) for c in cases) + "\n", encoding="utf-8")
 from collections import Counter
 print(len(cases), dict(Counter(c["group"] for c in cases)))

@@ -6,7 +6,7 @@ from .text import normalize, tokens
 DATA = Path(__file__).resolve().parent.parent / "data"
 
 
-def load_rules(pair: str = "hi_te") -> list[Rule]:
+def load_rules(pair: str = "l1-hi_l2-te") -> list[Rule]:
     raw = json.loads((DATA / pair / "rules.json").read_text(encoding="utf-8"))
     return [Rule(**r) for r in raw]
 

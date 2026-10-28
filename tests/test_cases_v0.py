@@ -10,7 +10,7 @@ from setu.leakfilter import check_draft, select_classmate_sentence, errors_in
 from setu.state import RajuState
 
 RULES = load_rules(); IDX = index_items(RULES)
-CASES = [json.loads(l) for l in (pathlib.Path(__file__).parent.parent / "data/hi_te/tests_v0.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()]
+CASES = [json.loads(l) for l in (pathlib.Path(__file__).parent.parent / "data/l1-hi_l2-te/tests_v0.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()]
 
 
 @pytest.mark.parametrize("c", CASES, ids=[c["case_id"] for c in CASES])
