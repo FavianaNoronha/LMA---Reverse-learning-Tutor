@@ -1,5 +1,9 @@
 # Reverse Learning Tutor (SETU) — starter
 
+**Try it:** https://favianaNoronha.github.io/LMA---Reverse-learning-Tutor/ (no install, no sign-in; works on phones)
+· Paper: `docs/paper/` · Video: `docs/video/` · Study pack (consent form, session script): `docs/study/` · Reviewer pack: `docs/reviewer_pack/`
+
+
 Two learner groups, same system: **Hindi speakers learning Telugu** (`data/l1-hi_l2-te/`, built first) and **Telugu speakers learning Hindi** (`data/l1-te_l2-hi/`, rules still to be written). Each group uses its own language as the bridge and has its own rule book, because the mistakes differ.
 
 The classmate ("Raju") is **knowledge-controlled**: what he knows lives in data, not in a prompt,

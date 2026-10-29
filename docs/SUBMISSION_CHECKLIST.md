@@ -67,6 +67,7 @@ Limit: filtering can't guarantee a model never *says* something odd in free conv
 | Agent | **Done (one agent)**: Raju's revise-or-submit loop, bounded, re-validated by the harness. Sravya / coach agents: not built |
 | Prompt injection | Done for Raju and the checker (`tests/test_injection.py`, `tests/test_agent.py::test_hijacked_model_cannot_change_state`); coach/Sravya pending |
 | Repo with tests passing | Done: 112 tests |
+| Public website | Live on GitHub Pages: https://favianaNoronha.github.io/LMA---Reverse-learning-Tutor/ (simple one-step lesson flow, letters tour, feedback form with SUS; research tools on a separate page) |
 | Demo application | Done: FastAPI app (`SETU_LLM=demo SETU_DEMO=1 uvicorn app.server:app`) and a hosted browser-only version (`app/hosted/setu_app.html`, published as a claude.ai link) with Learn, Study mode, Teacher and How it works |
 | Paper v8+ | Done; real-model numbers missing |
 | Plain-language explainer + video | Done: `docs/video/SETU_How_It_Works_v8_full.mp4` (5:50, voice-over, 18 scenes incl. Step 0 letters) |
@@ -78,5 +79,5 @@ Limit: filtering can't guarantee a model never *says* something odd in free conv
 | Teacher-label sheet | Made: `data/l1-hi_l2-te/teacher_labels_v0.csv` (145 answers) — needs a native teacher |
 | Native review of 15 HI→TE rules | **Missing** |
 | Telugu→Hindi rules (10) | **Missing** |
-| Consent forms, interview notes, 5-learner study | **Missing** |
+| Consent forms, interview notes, 5-learner study | Consent form, background questionnaire and facilitator script ready (`docs/study/`); needs ethics approval, then learners |
 | Speech, teacher console, Sravya, morphological analyser | Not built |

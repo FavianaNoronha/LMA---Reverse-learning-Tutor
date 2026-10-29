@@ -114,6 +114,7 @@ details>summary{cursor:pointer;color:var(--you);font-size:.9rem;font-weight:600}
 @media (max-width:620px){.diffs{grid-template-columns:1fr}}
 .diffs div{background:var(--surface-2);border-radius:12px;padding:12px}
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+[data-sus][aria-pressed="true"],[data-again][aria-pressed="true"]{background:var(--you);border-color:var(--you);color:#fff}
 .tabs button[aria-pressed="true"]{background:var(--you-soft);border-color:var(--you);color:var(--you)}
 /* research page (reuses the study / teacher markup) */
 .panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;min-width:0}
@@ -152,6 +153,7 @@ textarea.csv{width:100%;min-height:120px;font:12px/1.4 ui-monospace,Menlo,monosp
     <a href="#letters" data-view="letters">Letters</a>
     <a href="#learn" data-view="learn">Lessons</a>
     <a href="#about" data-view="about">How it works</a>
+    <a href="#feedback" data-view="feedback">Feedback</a>
     <a href="#research" data-view="research" class="research">Research team</a>
   </nav>
 </div></div>
@@ -175,7 +177,7 @@ textarea.csv{width:100%;min-height:120px;font:12px/1.4 ui-monospace,Menlo,monosp
         <button id="homeLetters">New to Telugu letters? 5-minute tour</button>
         <button class="btn-raju" id="homeDemo">▶ Watch a 1-minute demo</button>
       </div>
-      <p class="sm muted" style="margin:14px 0 0">No sign-up. You can type in Telugu or in Hindi letters (हिंदी अक्षर). Your progress stays in this browser.</p>
+      <p class="sm muted" style="margin:14px 0 0">No sign-up. You can type in Telugu or in Hindi letters (हिंदी अक्षर). Your progress stays in this browser. Tried it? <a href="#feedback">Give feedback</a>.</p>
     </div>
   </div>
 </section>
@@ -210,6 +212,25 @@ textarea.csv{width:100%;min-height:120px;font:12px/1.4 ui-monospace,Menlo,monosp
     <div class="card" id="stage" aria-live="polite"></div>
     <div class="status" id="status"></div>
     <details class="card inside" id="insideBox"><summary>See what the AI and the rules did (for the curious)</summary><div id="trace" style="margin-top:6px"></div></details>
+  </div>
+</section>
+
+<!-- ================= FEEDBACK ================= -->
+<section data-v="feedback" hidden>
+  <div class="col">
+    <div class="card">
+      <span class="kicker k-rule">Feedback · 3 minutes</span>
+      <h2>How was it?</h2>
+      <p class="why">Ten quick statements (the standard System Usability Scale) and three short questions. There are no right answers.</p>
+      <div class="row" style="margin-bottom:10px"><label class="sm" for="fbCode">Your code or first name (optional)</label><input id="fbCode" style="padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg)" size="14"></div>
+      <div id="susItems"></div>
+      <label class="q" for="fbHelp" style="display:block">What helped you most?</label><textarea id="fbHelp" class="ans" style="font-family:var(--body);font-size:1rem;min-height:56px"></textarea>
+      <label class="q" for="fbConf" style="display:block">What was confusing or hard?</label><textarea id="fbConf" class="ans" style="font-family:var(--body);font-size:1rem;min-height:56px"></textarea>
+      <div class="q">Would you use it again to learn Telugu?</div>
+      <div class="row" id="fbAgain"><button data-again="yes">Yes</button><button data-again="maybe">Maybe</button><button data-again="no">No</button></div>
+      <div class="row" style="margin-top:18px"><button class="btn-main" id="fbSubmit">Finish</button></div>
+      <div id="fbOut"></div>
+    </div>
   </div>
 </section>
 
@@ -302,6 +323,12 @@ textarea.csv{width:100%;min-height:120px;font:12px/1.4 ui-monospace,Menlo,monosp
         <span class="label">Time travel (to show forgetting)</span>
         <p class="sm muted">Pretend days have passed. When a learner's recall of a rule drops below 50%, Raju forgets it.</p>
         <div class="row"><span id="dayLabel" class="pill">Day 0</span><button id="plus1">+1 day</button><button id="plus3">+3 days</button><button id="plus7">+7 days</button></div>
+      </div>
+      <div class="panel">
+        <span class="label">Feedback collected on this device</span>
+        <p class="sm muted">Answers to the feedback form given in this browser (for study sessions run on one laptop).</p>
+        <div class="row"><button id="fbExport">Copy all feedback as CSV</button><span id="fbCount" class="sm muted"></span></div>
+        <textarea class="csv" id="fbCsv" readonly hidden></textarea>
       </div>
       <div class="panel">
         <span class="label">Reset</span>
@@ -620,7 +647,7 @@ function renderStage() {
   } else if (m === "done") {
     el.innerHTML = `<span class="kicker k-rule">All caught up</span><h2>Raju knows everything you've taught him</h2>
       <p class="why">${RULES.every(r => mem(r.rule_id).introduced) ? "You've met every rule." : "Learn a new rule, or come back tomorrow."} When you start to forget a rule, Raju forgets it too and you'll get to teach him again.</p>
-      <div class="row">${RULES.some(r => !mem(r.rule_id).introduced) ? `<button class="btn-main" id="bMore">Learn a new rule</button>` : ""}<button id="bHome">Back to home</button></div>`;
+      <div class="row">${RULES.some(r => !mem(r.rule_id).introduced) ? `<button class="btn-main" id="bMore">Learn a new rule</button>` : ""}<button id="bHome">Back to home</button><a href="#feedback" style="margin-left:6px">Give feedback (3 min)</a></div>`;
     if ($("bMore")) $("bMore").onclick = () => { intro(studyMode() ? "A" : null); view = {mode: "intro"}; renderStage(); };
     $("bHome").onclick = () => location.hash = "home";
   } else { go(); return; }
@@ -743,11 +770,12 @@ $("goA").onclick = () => { if (!studyMode()) assign(); location.hash = "learn"; 
 $("nextB").onclick = () => { if (!studyMode()) assign(); const metB = RULES.filter(r => S.conditions[r.rule_id] === "B" && mem(r.rule_id).introduced).length;
   if (metB && Object.entries(S.exposures).filter(([k]) => S.conditions[k] === "B").every(([, v]) => v >= 3)) { intro("B", true); const p = S.pending; if (p) { mem(p.rule).last = day(); S.pending = null; } }
   let e = example(); if (!e) { intro("B", true); const p = S.pending; if (p) { mem(p.rule).last = day(); S.pending = null; } e = example(); }
-  $("bBox").innerHTML = e ? `<div class="sm"><b>${esc(e.r.name)}</b></div><div><span class="verdict v-wrong">✗</span><span class="te" style="font-size:1.1rem">${esc(e.i.planted_error)}</span></div><div><span class="verdict v-correct">✓</span><span class="te" style="font-size:1.1rem">${esc(e.i.accepted[0])}</span> ${listenBtn(e.i.accepted[0])}${aid(e.i.accepted[0])}</div><div class="sm muted">${esc(e.r.l1_habit)} · ${esc(e.i.english)}</div>` : "All B rules done."; render(); };
+  $("bBox").innerHTML = e ? `<div class="sm"><b>${esc(e.r.title || e.r.name)}</b></div><div><span class="verdict v-wrong">✗</span><span class="te" style="font-size:1.1rem">${esc(e.i.planted_error)}</span></div><div><span class="verdict v-correct">✓</span><span class="te" style="font-size:1.1rem">${esc(e.i.accepted[0])}</span> ${listenBtn(e.i.accepted[0])}${aid(e.i.accepted[0])}</div><div class="sm muted">${esc(e.r.l1_habit)} · ${esc(e.i.english)}</div>` : "All B rules done."; render(); };
 $("nextC").onclick = () => { if (!studyMode()) assign(); const metC = RULES.filter(r => S.conditions[r.rule_id] === "C" && mem(r.rule_id).introduced).length;
   if (metC && Object.entries(S.exposures).filter(([k]) => S.conditions[k] === "C").every(([, v]) => v >= 3)) { intro("C", true); const p = S.pending; if (p) { mem(p.rule).last = day(); S.pending = null; } }
   let q = prompt(); if (!q) { intro("C", true); const p = S.pending; if (p) { mem(p.rule).last = day(); S.pending = null; } q = prompt(); }
-  $("cBox").innerHTML = q ? `<div class="sm"><b>${esc(q.r.name)}</b></div><div>Say in Telugu: <b>${esc(q.i.english)}</b> <span class="hi muted">(${esc(q.i.hindi)})</span></div>` : "No C rules."; $("cAns").value = ""; };
+  const first = q && (S.exposures[q.r.rule_id] || 0) === 1;   // first time: show the same rule introduction as in A and B
+  $("cBox").innerHTML = q ? (first ? `<div class="sm">${ruleBlock(q.r)}</div>` : `<div class="sm"><b>${esc(q.r.title || q.r.name)}</b></div>`) + `<div>Say in Telugu: <b>${esc(q.i.english)}</b> <span class="hi muted">(${esc(q.i.hindi)})</span></div>` : "No C rules."; $("cAns").value = ""; };
 $("sendC").onclick = () => { const p = S.pending; if (!p || p.kind !== "tutor") { toast("Press Next sentence first."); return; }
   const [rule, item] = ITEMS[p.item]; p.attempt++; const r = studyAnswer(p, rule, item, $("cAns").value.trim());
   $("cBox").insertAdjacentHTML("beforeend", `<div><span class="verdict v-${r.verdict}">${r.verdict}</span>${esc(r.msg)}</div>`); render(); renderStudy(); };
@@ -794,6 +822,10 @@ function showR(n) { ["rt1", "rt2", "rt3"].forEach((id, k) => $(id).setAttribute(
   if (n === 1) renderStudy(); if (n === 2) renderTeacher(); $("dayLabel").textContent = "Day " + day().toFixed(1).replace(/\.0$/, ""); }
 $("rt1").onclick = () => showR(1); $("rt2").onclick = () => showR(2); $("rt3").onclick = () => showR(3);
 function skip(d) { S.offset += d; log("skip", {days: d}); save(); $("dayLabel").textContent = "Day " + day().toFixed(1).replace(/\.0$/, ""); toast(`${d} day${d > 1 ? "s" : ""} later.`); }
+$("fbExport").onclick = async () => { let all = []; try { all = JSON.parse(localStorage.getItem(KEY + "-feedback") || "[]"); } catch (e) {}
+  const rows = [["code", "when", "sus", ...SUS.map((_, k) => "q" + (k + 1)), "helped", "confusing", "again", "rules_met"], ...all.map(r => [r.code, r.when, r.sus, ...r.items, r.helped, r.confusing, r.again, r.rulesMet])];
+  const csv = rows.map(r => r.map(x => `"${String(x ?? "").replace(/"/g, '""')}"`).join(",")).join("\n"); $("fbCsv").hidden = false; $("fbCsv").value = csv; $("fbCount").textContent = `${all.length} response(s)`;
+  try { await navigator.clipboard.writeText(csv); toast("Copied."); } catch (e) { $("fbCsv").select(); } };
 $("plus1").onclick = () => skip(1); $("plus3").onclick = () => skip(3); $("plus7").onclick = () => skip(7);
 $("resetAll").onclick = () => { $("resetConfirm").hidden = false; };
 $("resetNo").onclick = () => { $("resetConfirm").hidden = true; };
@@ -804,7 +836,32 @@ try { if (localStorage.getItem(KEY + "-noaid") === "1") { document.body.classLis
 $("aidToggle").onchange = () => { const off = !$("aidToggle").checked; document.body.classList.toggle("noaid", off); try { localStorage.setItem(KEY + "-noaid", off ? "1" : "0"); } catch (e) {} };
 
 // ---- routing ----
-const VIEWS = ["home", "letters", "learn", "about", "research"];
+// ---- feedback (System Usability Scale, Brooke 1996) ----
+const SUS = ["I think that I would like to use this system frequently.", "I found the system unnecessarily complex.", "I thought the system was easy to use.",
+  "I think that I would need the support of a technical person to be able to use this system.", "I found the various functions in this system were well integrated.",
+  "I thought there was too much inconsistency in this system.", "I would imagine that most people would learn to use this system very quickly.",
+  "I found the system very cumbersome to use.", "I felt very confident using the system.", "I needed to learn a lot of things before I could get going with this system."];
+const susAns = {}; let again = "";
+function renderFeedback() {
+  $("susItems").innerHTML = SUS.map((q, k) => `<div style="border-top:1px solid var(--line);padding:10px 0"><div>${k + 1}. ${esc(q)}</div>
+    <div class="row sm" style="margin-top:6px;gap:6px"><span class="muted">Strongly disagree</span>${[1, 2, 3, 4, 5].map(v => `<button class="small" data-sus="${k}" data-score="${v}" aria-pressed="${susAns[k] === v}">${v}</button>`).join("")}<span class="muted">Strongly agree</span></div></div>`).join("");
+}
+document.addEventListener("click", e => { const b = e.target.closest("[data-sus]"); if (b) { susAns[+b.dataset.sus] = +b.dataset.score; renderFeedback(); }
+  const a = e.target.closest("[data-again]"); if (a) { again = a.dataset.again; document.querySelectorAll("[data-again]").forEach(x => x.setAttribute("aria-pressed", String(x === a))); } });
+$("fbSubmit").onclick = async () => {
+  const n = Object.keys(susAns).length; if (n < 10) { toast(`Please answer all 10 statements (${10 - n} left).`); return; }
+  const score = SUS.reduce((t, _, k) => t + (k % 2 === 0 ? susAns[k] - 1 : 5 - susAns[k]), 0) * 2.5;
+  const rec = {code: $("fbCode").value.trim(), when: new Date().toISOString().slice(0, 16), sus: score, items: SUS.map((_, k) => susAns[k]), helped: $("fbHelp").value.trim(), confusing: $("fbConf").value.trim(), again,
+    rulesMet: RULES.filter(r => S.rules[r.rule_id]?.introduced).length};
+  try { const all = JSON.parse(localStorage.getItem(KEY + "-feedback") || "[]"); all.push(rec); localStorage.setItem(KEY + "-feedback", JSON.stringify(all)); } catch (e) {}
+  const text = [rec.code || "anonymous", rec.when, "SUS " + score, rec.items.join(" "), "helped: " + rec.helped, "confusing: " + rec.confusing, "again: " + (again || "-"), "rules met: " + rec.rulesMet].join(" | ");
+  $("fbOut").innerHTML = `<div class="fb correct"><h3>Thank you!</h3><p>Your usability score is <b>${score}</b> out of 100 (68 is about average for websites).</p>
+    <p>Please send these answers to the team: press <b>Copy my answers</b> and paste them into WhatsApp or email.</p><textarea class="csv" id="fbText" readonly>${esc(text)}</textarea>
+    <div class="row" style="margin-top:8px"><button id="fbCopy">Copy my answers</button></div></div>`;
+  $("fbCopy").onclick = async () => { try { await navigator.clipboard.writeText(text); toast("Copied. Paste it into a message to the team."); } catch (e) { $("fbText").select(); toast("Selected. Copy it with Ctrl+C or ⌘C."); } };
+};
+
+const VIEWS = ["home", "letters", "learn", "about", "feedback", "research"];
 function route() {
   const v = VIEWS.includes(location.hash.slice(1)) ? location.hash.slice(1) : "home";
   document.querySelectorAll("[data-v]").forEach(s => s.hidden = s.dataset.v !== v);
@@ -813,6 +870,7 @@ function route() {
   if (v === "letters") renderLetters();
   if (v === "learn") { if (!demoRunning && view.mode === "next") go(); else renderStage(); renderTrace(); }
   if (v === "research") showR(1);
+  if (v === "feedback") renderFeedback();
   scrollTo(0, 0);
 }
 addEventListener("hashchange", route);
