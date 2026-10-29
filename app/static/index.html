@@ -73,7 +73,7 @@ details summary{cursor:pointer;color:var(--muted);font-size:.85rem}
       <button id="skip" title="Pretend 3 days passed">+3 days</button>
     </div>
     <div class="row">
-      <input id="ans" type="text" placeholder="Type the corrected Telugu sentence (or your explanation)" aria-label="Your answer">
+      <input id="ans" type="text" placeholder="Type in Telugu, or in Hindi letters (हिंदी अक्षरों में भी लिख सकते हैं)" aria-label="Your answer">
       <button id="send" class="primary">Send</button>
       <button id="none">No mistake</button>
     </div>
@@ -148,14 +148,14 @@ async function doIntro() {
   const r = await api("intro");
   if (r.done) { add("sys", "You have met every rule."); return r; }
   last.answer = r.demo_answer;
-  add("sys", `<b>New rule: ${esc(r.title)}</b><small>${esc(r.why)}</small>✗ <span class="te">${esc(r.example_wrong)}</span><br>✓ <span class="te">${esc(r.example_right)}</span><br><br>${esc(r.task)} <small>${esc(r.hindi)}</small>`);
+  add("sys", `<b>New rule: ${esc(r.title)}</b><small>${esc(r.why)}</small>✗ <span class="te">${esc(r.example_wrong)}</span> <small style="display:inline">${esc(r.reading_wrong)}</small><br>✓ <span class="te">${esc(r.example_right)}</span> <small style="display:inline">${esc(r.reading_right)}</small><br><br>${esc(r.task)} <small>${esc(r.hindi)}</small>`);
   await refresh(); return r;
 }
 async function doTurn() {
   const r = await api("turn");
   if (r.kind === "need_intro") { add("sys", "Learn a new rule first."); await refresh(); return r; }
   last.answer = r.demo_answer;
-  add("raju", `<span class="te">${esc(r.sentence)}</span><small>${esc(r.ask)} · meaning: ${esc(r.meaning)}</small>`);
+  add("raju", `<span class="te">${esc(r.sentence)}</span><small>${esc(r.reading)} (in Hindi letters)</small><small>${esc(r.ask)} · meaning: ${esc(r.meaning)}</small>`);
   await refresh(); return r;
 }
 async function doSend(text, noError) {

@@ -20,7 +20,8 @@ from .memory import Learner, RuleMemory, Store
 from .planner import choose_turn
 from .schemas import Rule
 from .state import RajuState
-from .text import tokens
+from .text import tokens, normalize
+from .script import has_devanagari, has_telugu, deva_to_telugu, telugu_to_deva, fold_vowel_length, final_m_variant
 
 FORGET_THRESHOLD = 0.5
 WHY_EVERY = 3        # Raju asks 'why?' after every 3rd checked fix (mode-shifting idea from AlgoBo, arXiv 2309.14534)
@@ -41,6 +42,26 @@ class Tutor:
         self.demo = demo          # demo only: also return the accepted answer so a scripted walk-through can play itself
 
     # ---------- helpers ----------
+    def _prepare(self, l: Learner, text: str) -> tuple[str, bool]:
+        """Devanagari typing (the script bridge): convert to Telugu before the checker sees it. Same aid in every condition."""
+        if text != NO_ERROR and has_devanagari(text) and not has_telugu(text):
+            l.script_inputs += 1
+            return deva_to_telugu(text), True
+        return text, False
+
+    def _check(self, rule, item, text: str, typed_deva: bool, no_error: bool = False):
+        res = check_no_error_turn(rule, item, text) if no_error else check(rule, item, text)
+        if typed_deva and res.verdict != "correct":
+            alt = final_m_variant(text)                     # पुस्तकम typed for పుస్తకం
+            if alt != text:
+                r2 = check_no_error_turn(rule, item, alt) if no_error else check(rule, item, alt)
+                if r2.verdict == "correct":
+                    return r2.model_copy(update={"reason": "correct; note: Telugu writes the final m as ం"})
+            f = fold_vowel_length(normalize(alt))          # forgive ए/ओ typed for short ఎ/ఒ (Hindi has no short e/o)
+            if any(fold_vowel_length(normalize(a)) == f for a in item.accepted):
+                res = res.model_copy(update={"verdict": "correct", "reason": "correct; note: Telugu uses a short e/o here (ఎ/ఒ)"})
+        return res
+
     def _log(self, l: Learner, kind: str, **data) -> None:
         l.trace.append({"kind": kind, "day": round(l.clock_offset_days, 1), **data}); del l.trace[:-14]
 
@@ -80,6 +101,7 @@ class Tutor:
         self.store.save(l)
         out = {"rule_id": nxt.rule_id, "title": nxt.name, "why": nxt.l1_habit,
                 "example_wrong": ex.planted_error, "example_right": ex.accepted[0],
+                "reading_wrong": telugu_to_deva(ex.planted_error), "reading_right": telugu_to_deva(ex.accepted[0]),
                 "task": f"Say in Telugu: {check_item.english}", "hindi": check_item.hindi}
         if self.demo:
             out["demo_answer"] = check_item.accepted[0]
@@ -118,7 +140,7 @@ class Tutor:
                   state=dict(raju.rules).get(rid), calls=calls,
                   tools=[{"sentence": c["args"].get("sentence"), "result": c["result"]} for c in t.tool_log])
         self._save_raju(l, raju); self.store.save(l)
-        out = {"kind": "raju", "sentence": t.draft, "ask": self.rng.choice(RAJU_ASK), "meaning": item.english,
+        out = {"kind": "raju", "sentence": t.draft, "reading": telugu_to_deva(t.draft), "ask": self.rng.choice(RAJU_ASK), "meaning": item.english,
                "source": t.source, "rejected_drafts": len(t.rejected), "turn_type": turn_type}
         if self.demo:
             out["demo_answer"] = NO_ERROR if turn_type == "no_error" else item.accepted[0]
@@ -133,15 +155,17 @@ class Tutor:
         rule, item = self.items[p["item_id"]]
         now = self.now(l)
         if p["kind"] in ("tutor", "test"):
-            return self._study_answer(l, p, rule, item, text, now)
+            text, typed_deva = self._prepare(l, text)
+            return self._study_answer(l, p, rule, item, text, now, typed_deva)
         if p["kind"] == "why":                                  # an explanation, not an answer: teacher reads it, nothing changes
             self.store.queue_for_teacher({"learner": lid, "item": item.item_id, "kind": "explanation", "text": text})
             l.pending = None; self.store.save(l)
             return {"verdict": "explanation", "message": RAJU_THANKS, "raju_state": l.raju.get(rule.rule_id)}
+        text, typed_deva = self._prepare(l, text)
         p["attempt"] += 1
 
         if p["kind"] == "intro_check":
-            res = check(rule, item, text)
+            res = self._check(rule, item, text, typed_deva)
             m = self._mem(l, rule.rule_id)
             m.update(res.verdict, now)
             if res.verdict == "correct":
@@ -163,10 +187,7 @@ class Tutor:
 
         # Raju turn
         raju = self._raju(l)
-        if p["turn_type"] == "no_error":
-            res = check_no_error_turn(rule, item, text)
-        else:
-            res = check(rule, item, text)
+        res = self._check(rule, item, text, typed_deva, no_error=p["turn_type"] == "no_error")
         ev = apply_check(raju, lid, rule, item, res, p["turn_type"])
         self._log(l, "checked", rule=rule.rule_id, verdict=res.verdict, turn_type=p["turn_type"],
                   raju_changed=ev.classmate_state_changed, counts=ev.counts_toward_mastery)
@@ -251,16 +272,16 @@ class Tutor:
         self.store.save(l)
         return {"phase": phase, "task": f"Say in Telugu: {item.english}", "hindi": item.hindi}
 
-    def _study_answer(self, l, p, rule, item, text, now) -> dict:
+    def _study_answer(self, l, p, rule, item, text, now, typed_deva: bool = False) -> dict:
         if p["kind"] == "test":
-            res = check(rule, item, text)
+            res = self._check(rule, item, text, typed_deva)
             l.tests.append({"phase": p["phase"], "rule": rule.rule_id, "item": item.item_id, "condition": l.conditions.get(rule.rule_id),
                             "verdict": res.verdict, "answer": text, "day": round(l.clock_offset_days, 2)})
             if res.verdict == "unsure":
                 self.store.queue_for_teacher({"learner": l.learner_id, "item": item.item_id, "answer": text, "kind": "test", "phase": p["phase"]})
             l.pending = None; self.store.save(l)
             return {"verdict": "recorded", "message": "Saved. (No feedback during tests.)"}
-        res = check(rule, item, text)                       # condition C
+        res = self._check(rule, item, text, typed_deva)      # condition C
         p["attempt"] += 1
         m = self._mem(l, rule.rule_id); m.update(res.verdict, now)
         self._log(l, "checked", rule=rule.rule_id, verdict=res.verdict, turn_type="tutor", raju_changed=False, counts=res.verdict != "unsure")

@@ -46,6 +46,7 @@ class Learner(BaseModel):
     events: list[MasteryEvent] = Field(default_factory=list)
     model_calls: int = 0                                      # total LLM calls for this learner (intake Q2)
     turns: int = 0
+    script_inputs: int = 0                                    # answers typed in Devanagari and converted (script-bridge use)
     fixes: int = 0                                            # checked-correct fixes on planted turns (drives the 'why?' question)
     conditions: dict[str, str] = Field(default_factory=dict)    # study: rule_id -> A (teach Raju) / B (matched examples) / C (normal tutor)
     tests: list[dict] = Field(default_factory=list)            # study: pre / post / delayed / transfer test answers (no feedback)
