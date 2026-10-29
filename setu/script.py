@@ -69,10 +69,10 @@ def fold_vowel_length(text: str) -> str:
 
 # The letter bridge (Step 0): what is new for a Hindi reader. Everything else is a new shape for a known sound.
 DIFFERENCES = [
-    {"telugu": "ఎ ె / ఏ ే", "deva": "ऎ / ए", "note": "Telugu has a short e and a long e. Hindi has only the long one.", "example": ["ఎవరు", "ఏమిటి"]},
-    {"telugu": "ఒ ొ / ఓ ో", "deva": "ऒ / ओ", "note": "Telugu has a short o and a long o.", "example": ["ఒకటి", "ఓడ"]},
+    {"telugu": "ఎ కె / ఏ కే", "deva": "ऎ कॆ / ए के", "note": "Telugu has a short e and a long e. Hindi has only the long one.", "example": ["ఎవరు", "ఏమిటి"]},
+    {"telugu": "ఒ కొ / ఓ కో", "deva": "ऒ कॊ / ओ को", "note": "Telugu has a short o and a long o.", "example": ["ఒకటి", "ఓడ"]},
     {"telugu": "ళ", "deva": "ळ", "note": "Retroflex l: the tongue curls back, as in Marathi.", "example": ["పళ్ళు"]},
     {"telugu": "ఱ", "deva": "ऱ", "note": "An older strong r; in modern Telugu usually said like ర.", "example": []},
-    {"telugu": "ం", "deva": "ं", "note": "Very common at the end of words (పుస్తకం). Type it as ं, or a final म.", "example": ["పుస్తకం"]},
-    {"telugu": "final -a", "deva": "-अ", "note": "Telugu says the last vowel. Hindi readers drop it (कमल = kamal), Telugu does not.", "example": ["అది", "ఇది"]},
+    {"telugu": "కం", "deva": "कं", "note": "Very common at the end of words (పుస్తకం). Type it as ं, or a final म.", "example": ["పుస్తకం"]},
+    {"telugu": "అది", "deva": "अदि", "note": "Telugu says the last vowel. Hindi readers drop it (कमल = kamal), Telugu does not.", "example": ["అది", "ఇది"]},
 ]
