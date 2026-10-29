@@ -1,2 +1,5 @@
 pydantic>=2
 pytest
+fastapi
+uvicorn
+httpx

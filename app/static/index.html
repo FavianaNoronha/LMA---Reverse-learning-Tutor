@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SETU · Teach Raju</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600&family=Noto+Sans+Telugu:wght@400;600&family=Noto+Sans+Devanagari:wght@400;600&display=swap">
+<style>
+:root{--bg:#f6f7fb;--paper:#fff;--ink:#1d2340;--muted:#5b6283;--line:#dde1ee;--raju:#e08a1e;--raju-soft:#fdf0dd;--you:#5146c9;--you-soft:#e9e7fb;--rule:#1f7a8c;--rule-soft:#dff0f3;--good:#2f8a4c;--bad:#c2413b}
+@media (prefers-color-scheme:dark){:root{--bg:#12152a;--paper:#1a1e36;--ink:#e8eaf6;--muted:#a3a9c9;--line:#2e3456;--raju:#f2a33e;--raju-soft:#3a2c17;--you:#9b93ff;--you-soft:#272452;--rule:#4cb5c9;--rule-soft:#14343c;--good:#5cc27c;--bad:#ef7a73;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Noto Sans","Noto Sans Telugu","Noto Sans Devanagari",system-ui,sans-serif}
+main{max-width:720px;margin:0 auto;padding:20px 16px 140px}
+header{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+h1{font-size:1.3rem;margin:0 auto 0 0}
+input,button{font:inherit}
+input[type=text]{padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink)}
+button{padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer}
+button.primary{background:var(--you);color:#fff;border-color:var(--you)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--you);outline-offset:2px}
+#log{display:flex;flex-direction:column;gap:10px}
+.m{padding:10px 14px;border-radius:12px;max-width:90%;border:1px solid var(--line);background:var(--paper)}
+.m.raju{border-color:var(--raju);background:var(--raju-soft)}
+.m.you{align-self:flex-end;background:var(--you-soft);border-color:transparent}
+.m.sys{background:var(--rule-soft);border-color:transparent}
+.m .te{font-size:1.25rem;font-family:"Noto Sans Telugu",sans-serif}
+.m small{display:block;color:var(--muted)}
+.v-correct{color:var(--good);font-weight:600}.v-wrong{color:var(--bad);font-weight:600}.v-unsure{color:var(--muted);font-weight:600}
+footer{position:fixed;left:0;right:0;bottom:0;background:var(--paper);border-top:1px solid var(--line);padding:12px 16px}
+footer .row{max-width:720px;margin:0 auto;display:flex;gap:8px;flex-wrap:wrap}
+footer input{flex:1 1 220px;min-width:0}
+#status{font-size:.85rem;color:var(--muted);margin:10px 0}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Teach Raju Telugu</h1>
+    <label>Learner <input id="lid" type="text" value="demo" size="10"></label>
+  </header>
+  <div id="status"></div>
+  <div id="log" aria-live="polite"></div>
+</main>
+<footer><div class="row">
+  <button id="new">Learn a new rule</button>
+  <button id="turn">Raju's turn</button>
+  <input id="ans" type="text" placeholder="Type the corrected Telugu sentence" aria-label="Your answer">
+  <button id="send" class="primary">Send</button>
+  <button id="none">No mistake</button>
+  <button id="skip" title="Pretend 3 days passed">+3 days</button>
+</div></footer>
+<script>
+const $ = id => document.getElementById(id), log = $("log");
+const lid = () => $("lid").value.trim() || "demo";
+async function api(path, body = {}) {
+  const r = await fetch("/api/" + path, {method: "POST", headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({learner_id: lid(), ...body})});
+  return r.json();
+}
+function add(cls, html) { const d = document.createElement("div"); d.className = "m " + cls; d.innerHTML = html; log.append(d); d.scrollIntoView({block: "end"}); }
+const esc = s => String(s ?? "").replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+async function refresh() {
+  const s = await api("status");
+  $("status").textContent = `Day ${s.day} · ${Object.keys(s.rules).length} rules met · ` +
+    Object.entries(s.rules).map(([k, v]) => `${k.slice(-3)}: Raju ${v.raju}, recall ${v.recall}`).join(" · ");
+}
+$("new").onclick = async () => {
+  const r = await api("intro");
+  if (r.done) return add("sys", "You have met every rule.");
+  add("sys", `<b>New rule: ${esc(r.title)}</b><small>${esc(r.why)}</small>✗ <span class="te">${esc(r.example_wrong)}</span><br>✓ <span class="te">${esc(r.example_right)}</span><br><br>${esc(r.task)} <small>${esc(r.hindi)}</small>`);
+  refresh();
+};
+$("turn").onclick = async () => {
+  const r = await api("turn");
+  if (r.kind === "need_intro") return add("sys", "Learn a new rule first.");
+  add("raju", `<span class="te">${esc(r.sentence)}</span><small>${esc(r.ask)} · meaning: ${esc(r.meaning)}</small>`);
+};
+async function send(noError) {
+  const text = $("ans").value.trim();
+  if (!noError && !text) return;
+  add("you", noError ? "There's no mistake." : `<span class="te">${esc(text)}</span>`);
+  $("ans").value = "";
+  const r = await api("answer", {text, no_error: noError});
+  if (r.error) return add("sys", esc(r.error));
+  add("sys", `<span class="v-${r.verdict}">${r.verdict}</span> · ${esc(r.message)}`);
+  refresh();
+}
+$("send").onclick = () => send(false);
+$("ans").addEventListener("keydown", e => { if (e.key === "Enter") send(false); });
+$("none").onclick = () => send(true);
+$("skip").onclick = async () => { await api("skip", {days: 3}); add("sys", "3 days later…"); refresh(); };
+refresh();
+</script>
+</body>
+</html>
