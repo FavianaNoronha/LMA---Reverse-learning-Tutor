@@ -83,6 +83,7 @@ async function send(noError) {
   const r = await api("answer", {text, no_error: noError});
   if (r.error) return add("sys", esc(r.error));
   add("sys", `<span class="v-${r.verdict}">${r.verdict}</span> · ${esc(r.message)}`);
+  if (r.why_question) add("raju", `${esc(r.why_question)}<small>Explain in your own words, then press Send</small>`);
   refresh();
 }
 $("send").onclick = () => send(false);

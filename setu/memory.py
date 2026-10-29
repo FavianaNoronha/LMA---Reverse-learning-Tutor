@@ -42,6 +42,7 @@ class Learner(BaseModel):
     events: list[MasteryEvent] = Field(default_factory=list)
     model_calls: int = 0                                      # total LLM calls for this learner (intake Q2)
     turns: int = 0
+    fixes: int = 0                                            # checked-correct fixes on planted turns (drives the 'why?' question)
     clock_offset_days: float = 0.0                            # demo/testing: "skip days"
 
 

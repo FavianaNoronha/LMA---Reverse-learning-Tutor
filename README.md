@@ -46,3 +46,7 @@ Every rule has `version`, `reviewer`, `reviewed_at`, `source`. Never edit a revi
 2. Run the plain-prompt baseline on Gemma 3 12B (the "before" number).
 3. Grow the test suite to ~150 (30% held out).
 4. Write the Telugu→Hindi rules in `data/l1-te_l2-hi/` (same format).
+
+
+## Prior work we borrow from
+See `docs/prior_art.md`. Run `python scripts/simulated_eval.py` for the simulated-learner metrics (flip score, controllability, responsiveness).

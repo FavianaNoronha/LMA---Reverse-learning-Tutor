@@ -12,6 +12,7 @@ SYSTEM = ("You write ONE short Telugu sentence for a language-learning game. Use
 # What Raju says around the sentence. Fixed text, in the learner's L1 (Hindi for l1-hi_l2-te), never generated.
 RAJU_ASK = ["मैंने ये लिखा, क्या ये सही है?", "ये ठीक है न?", "मुझे लगता है ये सही है… आप बताइए?"]
 RAJU_THANKS = "अच्छा! समझ गया, धन्यवाद।"
+RAJU_WHY = ["अच्छा! पर ये बदलना क्यों पड़ा?", "मुझे समझ नहीं आया, ये ऐसा क्यों होता है?"]   # fixed phrases: no model call
 
 
 def build_messages(item: Item, seen_words: set[str], no_error: bool) -> list[dict]:

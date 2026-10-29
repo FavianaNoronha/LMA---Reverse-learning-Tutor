@@ -1,0 +1,22 @@
+{
+ "model": "mock",
+ "learners": 30,
+ "turns": 720,
+ "selective_flip_score": 1.0,
+ "flip_counts": {
+  "targeted": 102,
+  "misaligned": 0,
+  "generic": 0
+ },
+ "feedback_trials": {
+  "targeted": 102,
+  "misaligned": 99,
+  "generic": 96
+ },
+ "rmse_mean": 0.0,
+ "controllability_mean": 1.0,
+ "guidance_responsiveness": 1.0,
+ "bank_fallback_rate": 0.0,
+ "rejected_drafts_per_turn": 0.0,
+ "model_calls_per_turn": 1.14
+}

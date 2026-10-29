@@ -11,7 +11,7 @@ from __future__ import annotations
 import random, time
 from .bank import load_rules, index_items
 from .checker import check, check_no_error_turn, NO_ERROR
-from .classmate import raju_turn, RAJU_ASK, RAJU_THANKS
+from .classmate import raju_turn, RAJU_ASK, RAJU_THANKS, RAJU_WHY
 from .coach import hint
 from .ledger import apply_check
 from .llm import LLM
@@ -22,6 +22,7 @@ from .state import RajuState
 from .text import tokens
 
 FORGET_THRESHOLD = 0.5
+WHY_EVERY = 3        # Raju asks 'why?' after every 3rd checked fix (mode-shifting idea from AlgoBo, arXiv 2309.14534)
 
 
 class Tutor:
@@ -74,7 +75,8 @@ class Tutor:
         raju = self._raju(l)
         now = self.now(l)
         raju.apply_forgetting({rid: self._mem(l, rid).p_recall(now) for rid in raju.rules}, FORGET_THRESHOLD)
-        choice = choose_turn(raju, self.rng, self.p_no_error)
+        weights = {rid: 1 + self._mem(l, rid).wrong for rid in raju.eligible_to_plant()}   # steer towards the learner's weak rules
+        choice = choose_turn(raju, self.rng, self.p_no_error, weights)
         if choice is None:
             self._save_raju(l, raju); self.store.save(l)
             return {"kind": "need_intro", "message": "Learn a new rule first."}
@@ -98,6 +100,10 @@ class Tutor:
             return {"error": "Nothing to answer. Ask for a turn or a new rule."}
         rule, item = self.items[p["item_id"]]
         now = self.now(l)
+        if p["kind"] == "why":                                  # an explanation, not an answer: teacher reads it, nothing changes
+            self.store.queue_for_teacher({"learner": lid, "item": item.item_id, "kind": "explanation", "text": text})
+            l.pending = None; self.store.save(l)
+            return {"verdict": "explanation", "message": RAJU_THANKS, "raju_state": l.raju.get(rule.rule_id)}
         p["attempt"] += 1
 
         if p["kind"] == "intro_check":
@@ -140,6 +146,14 @@ class Tutor:
         elif res.verdict == "correct":
             l.pending = None
             msg = ("Yes, there was no mistake." if p["turn_type"] == "no_error" else RAJU_THANKS)
+            if p["turn_type"] == "planted":
+                l.fixes += 1
+                if l.fixes % WHY_EVERY == 0:
+                    why = self.rng.choice(RAJU_WHY)
+                    l.pending = {"kind": "why", "rule_id": rule.rule_id, "item_id": item.item_id, "attempt": 0}
+                    self.store.save(l)
+                    return {"verdict": res.verdict, "message": msg, "raju_state": l.raju.get(rule.rule_id),
+                            "turn_type": p["turn_type"], "why_question": why}
         else:
             if p["turn_type"] == "no_error":
                 msg = "Raju's sentence was already correct."
