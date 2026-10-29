@@ -82,6 +82,8 @@ class Tutor:
         rule = self.by_id[rid]
         item = self.rng.choice(rule.items)
         t = raju_turn(self.llm, rule, item, self.rules, l.seen_words, raju.rules, lid, no_error=(turn_type == "no_error"))
+        calls = (len(t.rejected) + (1 if t.source == "llm" else 0)) if self.llm is not None else 0
+        l.model_calls += calls; l.turns += 1
         l.pending = {"kind": "raju", "rule_id": rid, "item_id": item.item_id, "turn_type": turn_type,
                      "sentence": t.draft, "attempt": 0, "source": t.source}
         self._save_raju(l, raju); self.store.save(l)
@@ -158,7 +160,9 @@ class Tutor:
         return {"rules": {rid: {"ready": m.ready_for_raju, "recall": round(m.p_recall(now), 2),
                                 "raju": l.raju.get(rid, "-"), "correct": m.correct, "wrong": m.wrong}
                           for rid, m in l.rules.items() if m.introduced},
-                "seen_words": len(l.seen_words), "day": round(l.clock_offset_days, 1)}
+                "seen_words": len(l.seen_words), "day": round(l.clock_offset_days, 1),
+                "turns": l.turns, "model_calls": l.model_calls,
+                "calls_per_turn": round(l.model_calls / l.turns, 2) if l.turns else 0}
 
 
 __all__ = ["Tutor", "NO_ERROR"]

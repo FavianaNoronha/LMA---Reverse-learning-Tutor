@@ -40,6 +40,8 @@ class Learner(BaseModel):
     raju: dict[str, str] = Field(default_factory=dict)       # rule_id -> unknown / taught / forgotten
     pending: dict | None = None                               # the open question, if any
     events: list[MasteryEvent] = Field(default_factory=list)
+    model_calls: int = 0                                      # total LLM calls for this learner (intake Q2)
+    turns: int = 0
     clock_offset_days: float = 0.0                            # demo/testing: "skip days"
 
 

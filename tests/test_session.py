@@ -67,6 +67,7 @@ def test_leaky_model_falls_back_to_bank(tmp_path):
     assert turn["source"] == "bank" and turn["rejected_drafts"] == 3
     assert turn["sentence"] == item.planted_error
     assert leaky.calls == 3
+    assert t.status("a")["model_calls"] == 3 and t.status("a")["calls_per_turn"] == 3
 
 
 def test_no_error_turns_after_teaching(tmp_path):
