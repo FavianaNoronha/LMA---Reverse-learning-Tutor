@@ -50,12 +50,13 @@ if __name__ == "__main__":
     ap.add_argument("--n", type=int, default=20); ap.add_argument("--seed", type=int, default=11)
     ap.add_argument("--base-url"); ap.add_argument("--model", default="gemma3:12b")
     ap.add_argument("--out", default="docs/results_sim_learners.json")
+    ap.add_argument("--default-only", action="store_true", help="run only the default assumption set (much faster with a real model)")
     a = ap.parse_args()
     from setu.llm import AgentMockLLM
     f = (lambda: OpenAICompatLLM(a.base_url, a.model)) if a.base_url else (lambda: AgentMockLLM(leaky_every=3))
     out = {"model": a.model if a.base_url else "agent-mock", "learners_per_setting": a.n,
            "note": "Follows from the assumptions in setu/simlearner.py; tests the machinery, not people.",
-           "settings": {k: run(p, a.n, f, a.seed, tutor_kw=kw) for k, (p, kw) in GRID.items()}}
+           "settings": {k: run(p, a.n, f, a.seed, tutor_kw=kw) for k, (p, kw) in GRID.items() if not a.default_only or k.startswith("default")}}
     Path(a.out).write_text(json.dumps(out, indent=1, ensure_ascii=False))
     for k, v in out["settings"].items():
         d = v["by_phase"]["delayed"]
