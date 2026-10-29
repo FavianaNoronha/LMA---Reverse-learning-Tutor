@@ -78,3 +78,12 @@ def test_planner_no_error_only_from_taught_rules():
     ne = [t for t in turns if t[0] == "no_error"]
     assert all(r == "HI-TE-002" for _, r in ne)
     assert 0.12 < len(ne) / len(turns) < 0.28
+
+
+def test_checker_v01_near_miss_and_other_sentence_are_wrong_not_unsure():
+    rule, item = IDX["HI-TE-002-a"]
+    acc = item.accepted[0]
+    assert check(rule, item, acc[:-1]).verdict == "wrong"                        # one letter dropped
+    other = next(i for r in RULES for i in r.items if i.english != item.english)
+    assert check(rule, item, other.accepted[0]).verdict == "wrong"               # a different sentence
+    assert check(rule, item, acc + " కదా").verdict == "unsure"                   # extra word: teacher decides
