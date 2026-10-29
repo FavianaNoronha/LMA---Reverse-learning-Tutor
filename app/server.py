@@ -72,3 +72,44 @@ def inside(b: L):
 def reset(b: L):
     from setu.memory import Learner
     tutor.store.save(Learner(learner_id=b.learner_id)); return {"ok": True}
+
+
+# ---- study mode (conditions A/B/C and tests) ----
+class P(L):
+    phase: str = "pre"
+    rule_id: str
+    item_id: str | None = None
+
+
+class C(L):
+    condition: str | None = None
+
+
+@app.post("/api/study/assign")
+def study_assign(b: L):
+    return tutor.assign_conditions(b.learner_id)
+
+
+@app.post("/api/study/intro")
+def study_intro(b: C):
+    return tutor.intro(b.learner_id, b.condition) or {"done": True}
+
+
+@app.post("/api/study/example")
+def study_example(b: L):
+    return tutor.example(b.learner_id) or {"done": True}
+
+
+@app.post("/api/study/prompt")
+def study_prompt(b: L):
+    return tutor.prompt(b.learner_id) or {"done": True}
+
+
+@app.post("/api/study/test")
+def study_test(b: P):
+    return tutor.test_item(b.learner_id, b.phase, b.rule_id, b.item_id)
+
+
+@app.post("/api/study/results")
+def study_results(b: L):
+    return {"conditions": tutor.store.load(b.learner_id).conditions, "results": tutor.results(b.learner_id)}

@@ -28,12 +28,15 @@ WHY_EVERY = 3        # Raju asks 'why?' after every 3rd checked fix (mode-shifti
 
 class Tutor:
     def __init__(self, store: Store, llm: LLM | None = None, pair: str = "l1-hi_l2-te",
-                 seed: int | None = None, p_no_error: float = 0.2, demo: bool = False, agent: bool = False):
+                 seed: int | None = None, p_no_error: float = 0.2, demo: bool = False, agent: bool = False,
+                 forget_threshold: float = FORGET_THRESHOLD, teach_needed: int = 1):
         self.rules: list[Rule] = load_rules(pair)
         self.by_id = {r.rule_id: r for r in self.rules}
         self.items = index_items(self.rules)
         self.store, self.llm, self.pair, self.p_no_error = store, llm, pair, p_no_error
         self.rng = random.Random(seed)
+        self.teach_needed = teach_needed            # Raju must be taught a rule on this many sentences before he knows it
+        self.forget_threshold = forget_threshold   # Raju forgets a rule when the learner's recall drops below this
         self.agent = agent        # True: Raju runs as a tool-using agent (setu/agent.py)
         self.demo = demo          # demo only: also return the accepted answer so a scripted walk-through can play itself
 
@@ -49,18 +52,20 @@ class Tutor:
 
     def _raju(self, l: Learner) -> RajuState:
         ready = [rid for rid, m in l.rules.items() if m.ready_for_raju]
-        s = RajuState(ready)
+        s = RajuState(ready, self.teach_needed, l.raju_progress)
         for rid in ready:
             s.rules[rid] = l.raju.get(rid, "unknown")
         return s
 
     def _save_raju(self, l: Learner, s: RajuState) -> None:
-        l.raju.update(s.rules)
+        l.raju.update(s.rules); l.raju_progress.update(s.progress)
 
     # ---------- 1. learn a new rule ----------
-    def intro(self, lid: str) -> dict | None:
+    def intro(self, lid: str, condition: str | None = None) -> dict | None:
+        """Learn the next rule. In a study, `condition` picks the next rule assigned to that condition."""
         l = self.store.load(lid)
-        nxt = next((r for r in self.rules if not self._mem(l, r.rule_id).introduced), None)
+        pool = [r for r in self.rules if condition is None or l.conditions.get(r.rule_id) == condition]
+        nxt = next((r for r in pool if not self._mem(l, r.rule_id).introduced), None)
         if nxt is None:
             return None
         m = self._mem(l, nxt.rule_id); m.introduced = True
@@ -86,7 +91,7 @@ class Tutor:
         raju = self._raju(l)
         now = self.now(l)
         before_states = dict(raju.rules)
-        raju.apply_forgetting({rid: self._mem(l, rid).p_recall(now) for rid in raju.rules}, FORGET_THRESHOLD)
+        raju.apply_forgetting({rid: self._mem(l, rid).p_recall(now) for rid in raju.rules}, self.forget_threshold)
         for rid, st in raju.rules.items():
             if st == "forgotten" and before_states[rid] == "taught":
                 self._log(l, "forgot", rule=rid, recall=round(self._mem(l, rid).p_recall(now), 2))
@@ -127,6 +132,8 @@ class Tutor:
             return {"error": "Nothing to answer. Ask for a turn or a new rule."}
         rule, item = self.items[p["item_id"]]
         now = self.now(l)
+        if p["kind"] in ("tutor", "test"):
+            return self._study_answer(l, p, rule, item, text, now)
         if p["kind"] == "why":                                  # an explanation, not an answer: teacher reads it, nothing changes
             self.store.queue_for_teacher({"learner": lid, "item": item.item_id, "kind": "explanation", "text": text})
             l.pending = None; self.store.save(l)
@@ -138,8 +145,9 @@ class Tutor:
             m = self._mem(l, rule.rule_id)
             m.update(res.verdict, now)
             if res.verdict == "correct":
-                m.ready_for_raju = True
-                l.raju.setdefault(rule.rule_id, "unknown")
+                if l.conditions.get(rule.rule_id, "A") == "A":     # only teach-Raju rules go to Raju
+                    m.ready_for_raju = True
+                    l.raju.setdefault(rule.rule_id, "unknown")
                 l.pending = None
                 out = {"verdict": "correct", "message": "Right! Now Raju will try this rule, and you'll check him."}
             elif res.verdict == "unsure":
@@ -164,7 +172,7 @@ class Tutor:
                   raju_changed=ev.classmate_state_changed, counts=ev.counts_toward_mastery)
         l.events.append(ev)
         if ev.counts_toward_mastery:
-            self._mem(l, rule.rule_id).update(res.verdict, now)
+            self._mem(l, rule.rule_id).update(res.verdict, now, recognition=p["turn_type"] == "no_error")
         self._save_raju(l, raju)
 
         if res.verdict == "unsure":
@@ -189,11 +197,93 @@ class Tutor:
                 l.pending = None
             else:
                 msg = hint(rule, item, p["attempt"])
-                if p["attempt"] >= 2:
+                if p["attempt"] >= 2:                          # same feedback as the normal tutor: show the correct form
+                    msg += f" Correct form: {item.accepted[0]}"
                     l.pending = None
         self.store.save(l)
         return {"verdict": res.verdict, "message": msg, "raju_state": l.raju.get(rule.rule_id),
                 "turn_type": p["turn_type"]}
+
+    # ---------- study conditions (Section 8.3): B matched error examples, C normal tutor, and tests ----------
+    def assign_conditions(self, lid: str, rule_ids: list[str] | None = None) -> dict[str, str]:
+        """Within-learner Latin square: rules are split into A/B/C, rotated by learner so every rule meets every condition."""
+        l = self.store.load(lid)
+        ids = rule_ids or [r.rule_id for r in self.rules]
+        shift = sum(map(ord, lid)) % 3
+        l.conditions = {rid: "ABC"[(k + shift) % 3] for k, rid in enumerate(ids)}
+        self.store.save(l); return l.conditions
+
+    def example(self, lid: str) -> dict | None:
+        """Condition B: study one matched error example (wrong sentence, correction, L1 explanation). No teaching."""
+        l = self.store.load(lid)
+        rules = [r for r in self.rules if l.conditions.get(r.rule_id) == "B" and self._mem(l, r.rule_id).introduced]
+        if not rules:
+            return None
+        rule = min(rules, key=lambda r: l.exposures.get(r.rule_id, 0))
+        item = self.rng.choice(rule.items)
+        l.exposures[rule.rule_id] = l.exposures.get(rule.rule_id, 0) + 1
+        self._log(l, "example", rule=rule.rule_id); self.store.save(l)
+        return {"rule_id": rule.rule_id, "wrong": item.planted_error, "right": item.accepted[0], "why": rule.l1_habit,
+                "meaning": item.english}
+
+    def prompt(self, lid: str) -> dict | None:
+        """Condition C: normal tutor. The learner writes the sentence; the same checker and hints correct the learner."""
+        l = self.store.load(lid)
+        rules = [r for r in self.rules if l.conditions.get(r.rule_id) == "C" and self._mem(l, r.rule_id).introduced]
+        if not rules:
+            return None
+        rule = min(rules, key=lambda r: l.exposures.get(r.rule_id, 0))
+        item = self.rng.choice(rule.items)
+        l.exposures[rule.rule_id] = l.exposures.get(rule.rule_id, 0) + 1
+        l.pending = {"kind": "tutor", "rule_id": rule.rule_id, "item_id": item.item_id, "attempt": 0}
+        self.store.save(l)
+        out = {"rule_id": rule.rule_id, "task": f"Say in Telugu: {item.english}", "hindi": item.hindi}
+        if self.demo:
+            out["demo_answer"] = item.accepted[0]
+        return out
+
+    def test_item(self, lid: str, phase: str, rule_id: str, item_id: str | None = None) -> dict:
+        """Cue-free production test: English (and Hindi) meaning -> Telugu sentence. No feedback, no mastery change."""
+        l = self.store.load(lid)
+        rule = self.by_id[rule_id]
+        item = self.items[item_id][1] if item_id else rule.items[0]
+        l.pending = {"kind": "test", "phase": phase, "rule_id": rule_id, "item_id": item.item_id, "attempt": 0}
+        self.store.save(l)
+        return {"phase": phase, "task": f"Say in Telugu: {item.english}", "hindi": item.hindi}
+
+    def _study_answer(self, l, p, rule, item, text, now) -> dict:
+        if p["kind"] == "test":
+            res = check(rule, item, text)
+            l.tests.append({"phase": p["phase"], "rule": rule.rule_id, "item": item.item_id, "condition": l.conditions.get(rule.rule_id),
+                            "verdict": res.verdict, "answer": text, "day": round(l.clock_offset_days, 2)})
+            if res.verdict == "unsure":
+                self.store.queue_for_teacher({"learner": l.learner_id, "item": item.item_id, "answer": text, "kind": "test", "phase": p["phase"]})
+            l.pending = None; self.store.save(l)
+            return {"verdict": "recorded", "message": "Saved. (No feedback during tests.)"}
+        res = check(rule, item, text)                       # condition C
+        p["attempt"] += 1
+        m = self._mem(l, rule.rule_id); m.update(res.verdict, now)
+        self._log(l, "checked", rule=rule.rule_id, verdict=res.verdict, turn_type="tutor", raju_changed=False, counts=res.verdict != "unsure")
+        if res.verdict == "correct":
+            l.pending = None; msg = "Correct!"
+        elif res.verdict == "wrong":
+            msg = hint(rule, item, p["attempt"])                 # matched with condition A: hint first, then the correct form
+            if p["attempt"] >= 2:
+                msg += f" Correct form: {item.accepted[0]}"
+                l.pending = None
+        else:
+            l.pending = None; msg = "I'm not sure; a teacher will check it."
+            self.store.queue_for_teacher({"learner": l.learner_id, "item": item.item_id, "answer": text, "kind": "tutor"})
+        self.store.save(l)
+        return {"verdict": res.verdict, "message": msg}
+
+    def results(self, lid: str) -> dict:
+        """Test scores by phase and condition (share correct; unsure counted separately)."""
+        l = self.store.load(lid); out: dict = {}
+        for t in l.tests:
+            d = out.setdefault(t["phase"], {}).setdefault(t["condition"] or "-", {"correct": 0, "n": 0, "unsure": 0})
+            d["n"] += 1; d["correct"] += t["verdict"] == "correct"; d["unsure"] += t["verdict"] == "unsure"
+        return out
 
     def skip_days(self, lid: str, days: float) -> None:
         l = self.store.load(lid); l.clock_offset_days += days

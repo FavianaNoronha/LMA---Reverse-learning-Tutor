@@ -22,11 +22,14 @@ class RuleMemory(BaseModel):
         days = (now - self.last_practised) / 86400
         return 2 ** (-days / self.half_life_days)
 
-    def update(self, verdict: str, now: float) -> None:
+    def update(self, verdict: str, now: float, recognition: bool = False) -> None:
+        """recognition=True: the learner only judged a correct sentence ("no mistake"). That is weaker evidence than
+        producing the fix, so it grows the half-life by 1.2x instead of 2x (found with the simulated learners: with
+        2x, no-mistake turns kept recall high, Raju almost never forgot, and 83% of teach-Raju turns had no error)."""
         if verdict == "unsure":          # never counts
             return
         if verdict == "correct":
-            self.correct += 1; self.half_life_days *= 2
+            self.correct += 1; self.half_life_days *= 1.2 if recognition else 2
         else:
             self.wrong += 1; self.half_life_days = max(0.5, self.half_life_days / 2)
         self.last_practised = now
@@ -38,11 +41,15 @@ class Learner(BaseModel):
     seen_words: set[str] = Field(default_factory=set)
     rules: dict[str, RuleMemory] = Field(default_factory=dict)
     raju: dict[str, str] = Field(default_factory=dict)       # rule_id -> unknown / taught / forgotten
+    raju_progress: dict[str, int] = Field(default_factory=dict)  # correct fixes so far towards 'taught'
     pending: dict | None = None                               # the open question, if any
     events: list[MasteryEvent] = Field(default_factory=list)
     model_calls: int = 0                                      # total LLM calls for this learner (intake Q2)
     turns: int = 0
     fixes: int = 0                                            # checked-correct fixes on planted turns (drives the 'why?' question)
+    conditions: dict[str, str] = Field(default_factory=dict)    # study: rule_id -> A (teach Raju) / B (matched examples) / C (normal tutor)
+    tests: list[dict] = Field(default_factory=list)            # study: pre / post / delayed / transfer test answers (no feedback)
+    exposures: dict[str, int] = Field(default_factory=dict)    # study: practice exposures per rule (for matching conditions)
     trace: list[dict] = Field(default_factory=list)           # last internal steps, for the demo's 'inside' view
     clock_offset_days: float = 0.0                            # demo/testing: "skip days"
 

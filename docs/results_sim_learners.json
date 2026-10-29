@@ -1,0 +1,342 @@
+{
+ "model": "agent-mock",
+ "learners_per_setting": 20,
+ "note": "Follows from the assumptions in setu/simlearner.py; tests the machinery, not people.",
+ "settings": {
+  "default (testing + spacing effects)": {
+   "by_phase": {
+    "pre": {
+     "A": {
+      "mean": 0.0,
+      "ci95": 0.0
+     },
+     "B": {
+      "mean": 0.0,
+      "ci95": 0.0
+     },
+     "C": {
+      "mean": 0.0,
+      "ci95": 0.0
+     }
+    },
+    "post": {
+     "A": {
+      "mean": 0.95,
+      "ci95": 0.054
+     },
+     "B": {
+      "mean": 1.0,
+      "ci95": 0.0
+     },
+     "C": {
+      "mean": 1.0,
+      "ci95": 0.0
+     }
+    },
+    "delayed": {
+     "A": {
+      "mean": 0.5,
+      "ci95": 0.138
+     },
+     "B": {
+      "mean": 0.25,
+      "ci95": 0.105
+     },
+     "C": {
+      "mean": 0.667,
+      "ci95": 0.125
+     }
+    },
+    "transfer": {
+     "A": {
+      "mean": 0.65,
+      "ci95": 0.121
+     },
+     "B": {
+      "mean": 0.4,
+      "ci95": 0.139
+     },
+     "C": {
+      "mean": 0.583,
+      "ci95": 0.133
+     }
+    }
+   },
+   "raju_learned_from_unchecked_answers": 0,
+   "copied_planted_errors_in_delayed_and_transfer": 18,
+   "model_calls_per_raju_turn": 1.5,
+   "raju_turn_types": {
+    "planted": 60,
+    "no_error": 300
+   }
+  },
+  "no testing effect (restudy = retrieval)": {
+   "by_phase": {
+    "pre": {
+     "A": {
+      "mean": 0.0,
+      "ci95": 0.0
+     },
+     "B": {
+      "mean": 0.0,
+      "ci95": 0.0
+     },
+     "C": {
+      "mean": 0.0,
+      "ci95": 0.0
+     }
+    },
+    "post": {
+     "A": {
+      "mean": 0.95,
+      "ci95": 0.054
+     },
+     "B": {
+      "mean": 1.0,
+      "ci95": 0.0
+     },
+     "C": {
+      "mean": 1.0,
+      "ci95": 0.0
+     }
+    },
+    "delayed": {
+     "A": {
+      "mean": 0.633,
+      "ci95": 0.115
+     },
+     "B": {
+      "mean": 0.6,
+      "ci95": 0.139
+     },
+     "C": {
+      "mean": 0.6,
+      "ci95": 0.09
+     }
+    },
+    "transfer": {
+     "A": {
+      "mean": 0.55,
+      "ci95": 0.119
+     },
+     "B": {
+      "mean": 0.717,
+      "ci95": 0.109
+     },
+     "C": {
+      "mean": 0.583,
+      "ci95": 0.124
+     }
+    }
+   },
+   "raju_learned_from_unchecked_answers": 0,
+   "copied_planted_errors_in_delayed_and_transfer": 12,
+   "model_calls_per_raju_turn": 1.5,
+   "raju_turn_types": {
+    "planted": 60,
+    "no_error": 300
+   }
+  },
+  "self-explanation helps (why? x1.3)": {
+   "by_phase": {
+    "pre": {
+     "A": {
+      "mean": 0.0,
+      "ci95": 0.0
+     },
+     "B": {
+      "mean": 0.0,
+      "ci95": 0.0
+     },
+     "C": {
+      "mean": 0.0,
+      "ci95": 0.0
+     }
+    },
+    "post": {
+     "A": {
+      "mean": 0.95,
+      "ci95": 0.054
+     },
+     "B": {
+      "mean": 1.0,
+      "ci95": 0.0
+     },
+     "C": {
+      "mean": 1.0,
+      "ci95": 0.0
+     }
+    },
+    "delayed": {
+     "A": {
+      "mean": 0.45,
+      "ci95": 0.144
+     },
+     "B": {
+      "mean": 0.3,
+      "ci95": 0.115
+     },
+     "C": {
+      "mean": 0.667,
+      "ci95": 0.106
+     }
+    },
+    "transfer": {
+     "A": {
+      "mean": 0.667,
+      "ci95": 0.134
+     },
+     "B": {
+      "mean": 0.4,
+      "ci95": 0.139
+     },
+     "C": {
+      "mean": 0.583,
+      "ci95": 0.141
+     }
+    }
+   },
+   "raju_learned_from_unchecked_answers": 0,
+   "copied_planted_errors_in_delayed_and_transfer": 18,
+   "model_calls_per_raju_turn": 1.5,
+   "raju_turn_types": {
+    "planted": 60,
+    "no_error": 300
+   }
+  },
+  "weak learners (half-life 0.5 day)": {
+   "by_phase": {
+    "pre": {
+     "A": {
+      "mean": 0.0,
+      "ci95": 0.0
+     },
+     "B": {
+      "mean": 0.0,
+      "ci95": 0.0
+     },
+     "C": {
+      "mean": 0.0,
+      "ci95": 0.0
+     }
+    },
+    "post": {
+     "A": {
+      "mean": 0.817,
+      "ci95": 0.1
+     },
+     "B": {
+      "mean": 1.0,
+      "ci95": 0.0
+     },
+     "C": {
+      "mean": 1.0,
+      "ci95": 0.0
+     }
+    },
+    "delayed": {
+     "A": {
+      "mean": 0.4,
+      "ci95": 0.102
+     },
+     "B": {
+      "mean": 0.133,
+      "ci95": 0.087
+     },
+     "C": {
+      "mean": 0.5,
+      "ci95": 0.13
+     }
+    },
+    "transfer": {
+     "A": {
+      "mean": 0.333,
+      "ci95": 0.082
+     },
+     "B": {
+      "mean": 0.333,
+      "ci95": 0.125
+     },
+     "C": {
+      "mean": 0.4,
+      "ci95": 0.112
+     }
+    }
+   },
+   "raju_learned_from_unchecked_answers": 0,
+   "copied_planted_errors_in_delayed_and_transfer": 22,
+   "model_calls_per_raju_turn": 1.5,
+   "raju_turn_types": {
+    "planted": 60,
+    "no_error": 300
+   }
+  },
+  "Raju needs 2 lessons per rule": {
+   "by_phase": {
+    "pre": {
+     "A": {
+      "mean": 0.0,
+      "ci95": 0.0
+     },
+     "B": {
+      "mean": 0.0,
+      "ci95": 0.0
+     },
+     "C": {
+      "mean": 0.0,
+      "ci95": 0.0
+     }
+    },
+    "post": {
+     "A": {
+      "mean": 0.917,
+      "ci95": 0.065
+     },
+     "B": {
+      "mean": 1.0,
+      "ci95": 0.0
+     },
+     "C": {
+      "mean": 1.0,
+      "ci95": 0.0
+     }
+    },
+    "delayed": {
+     "A": {
+      "mean": 0.45,
+      "ci95": 0.119
+     },
+     "B": {
+      "mean": 0.317,
+      "ci95": 0.138
+     },
+     "C": {
+      "mean": 0.7,
+      "ci95": 0.081
+     }
+    },
+    "transfer": {
+     "A": {
+      "mean": 0.517,
+      "ci95": 0.1
+     },
+     "B": {
+      "mean": 0.433,
+      "ci95": 0.151
+     },
+     "C": {
+      "mean": 0.567,
+      "ci95": 0.135
+     }
+    }
+   },
+   "raju_learned_from_unchecked_answers": 0,
+   "copied_planted_errors_in_delayed_and_transfer": 16,
+   "model_calls_per_raju_turn": 1.44,
+   "raju_turn_types": {
+    "planted": 121,
+    "no_error": 240
+   }
+  }
+ }
+}
