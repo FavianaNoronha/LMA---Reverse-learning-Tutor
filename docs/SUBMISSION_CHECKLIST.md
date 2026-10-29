@@ -66,12 +66,15 @@ Limit: filtering can't guarantee a model never *says* something odd in free conv
 | Tool calling | **Done**: `check_classmate_sentence` schema + exact error strings; called by the model inside Raju's loop (`setu/agent.py`); JSON-reply protocol, works with any chat model (Gemma via Ollama/vLLM) |
 | Agent | **Done (one agent)**: Raju's revise-or-submit loop, bounded, re-validated by the harness. Sravya / coach agents: not built |
 | Prompt injection | Done for Raju and the checker (`tests/test_injection.py`, `tests/test_agent.py::test_hijacked_model_cannot_change_state`); coach/Sravya pending |
-| Repo with tests passing | Done: 101 tests |
-| Demo application | Done: `SETU_LLM=demo SETU_DEMO=1 uvicorn app.server:app` → learner view + live inside view + guided demo |
+| Repo with tests passing | Done: 107 tests |
+| Demo application | Done: FastAPI app (`SETU_LLM=demo SETU_DEMO=1 uvicorn app.server:app`) and a hosted browser-only version (`app/hosted/setu_app.html`, published as a claude.ai link) with Learn, Study mode, Teacher and How it works |
 | Paper v8+ | Done; real-model numbers missing |
-| Plain-language explainer + video | Done |
+| Plain-language explainer + video | Done: `docs/video/SETU_How_It_Works_v8_full.mp4` (5:17, voice-over, 17 scenes) |
 | Gemma leak baseline | **Missing** (needs Faviana's Mac run) |
-| Table 9 metrics filled in | Partly: simulated metrics with mock model only |
+| Table 10 metrics filled in | Partly: `scripts/evaluate.py` → `docs/EVAL_REPORT.md` (scorecard on held-out split); mock-model and simulated values only |
+| Study conditions A/B/C + tests | Done (`setu/session.py`, `tests/test_study.py`, study mode in both apps) |
+| Simulated learners | Done (v0 parametric): `scripts/simulate_learners.py` → `docs/results_sim_learners.json`; A beat B, not C |
+| Teacher-label sheet | Made: `data/l1-hi_l2-te/teacher_labels_v0.csv` (145 answers) — needs a native teacher |
 | Native review of 15 HI→TE rules | **Missing** |
 | Telugu→Hindi rules (10) | **Missing** |
 | Consent forms, interview notes, 5-learner study | **Missing** |
