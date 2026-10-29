@@ -33,3 +33,12 @@ Tool: `check_classmate_sentence` — implemented in `setu/tools.py`, tested in `
   - `ERROR invalid_argument sentence: more than one sentence or line; pass exactly one sentence.`
   - `ERROR invalid_argument sentence: empty; pass one Telugu sentence.` / `... longer than 120 characters; pass one short sentence.`
 - **Success return:** `{"ok": true|false, "reasons": [OOV | NOT_ONE_ERROR | UNKNOWN_RULE_CORRECT | ANSWER_LEAK | EXPLANATION]}`
+
+## Course "key messages" → where they show up in SETU
+
+| Key message | In our system | Status |
+|---|---|---|
+| Agents combine **reasoning, tools and dynamic learning** for goal-oriented tasks | Raju's goal: one valid planted-error sentence. He drafts (reasoning), calls `check_classmate_sentence` (tool), revises from the reasons. **Dynamic learning:** Raju's knowledge changes per learner (taught → forgotten) and Sravya adapts to the learner's seen words | Tool built; Raju loop + Sravya to build |
+| Tools = **Extensions, Functions, Data Stores** | **Functions:** `check_classmate_sentence`, `check_level`, `check_hint_has_no_answer`. **Data stores:** rule bank (`rules.json`), learner record (seen words, rule memory). **Extensions** (external APIs): speech (IndicConformer ASR / Indic Parler-TTS), Telugu analyser | Functions/data stores partly built; extensions planned |
+| Needs **robust orchestration and iterative refinement** | `setu/session.py` orchestrates; bounded loops (≤ 3 drafts, then bank fallback); only the checker writes memory; every turn logs model + prompt + rule version, calls per turn | Built (v0) |
+| A **rapidly evolving** field | Related work cites 2025–26 papers on simulated/weak students (Yuan; Do, Sonkar & Sachan; Apartsin; StudentSim; Song unlearning) | In paper v8 |
