@@ -43,6 +43,7 @@ class Learner(BaseModel):
     model_calls: int = 0                                      # total LLM calls for this learner (intake Q2)
     turns: int = 0
     fixes: int = 0                                            # checked-correct fixes on planted turns (drives the 'why?' question)
+    trace: list[dict] = Field(default_factory=list)           # last internal steps, for the demo's 'inside' view
     clock_offset_days: float = 0.0                            # demo/testing: "skip days"
 
 
@@ -60,6 +61,13 @@ class Store:
 
     def save(self, l: Learner) -> None:
         self._p(l.learner_id).write_text(l.model_dump_json(indent=1), encoding="utf-8")
+
+    def teacher_queue(self, lid: str, n: int = 8) -> list[dict]:
+        p = self.root / "teacher_queue.jsonl"
+        if not p.exists():
+            return []
+        rows = [json.loads(x) for x in p.read_text(encoding="utf-8").splitlines() if x.strip()]
+        return [r for r in rows if r.get("learner") == lid][-n:]
 
     def queue_for_teacher(self, entry: dict) -> None:
         with open(self.root / "teacher_queue.jsonl", "a", encoding="utf-8") as f:

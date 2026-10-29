@@ -50,3 +50,13 @@ Every rule has `version`, `reviewer`, `reviewed_at`, `source`. Never edit a revi
 
 ## Prior work we borrow from
 See `docs/prior_art.md`. Run `python scripts/simulated_eval.py` for the simulated-learner metrics (flip score, controllability, responsiveness).
+
+## Demo website
+```
+pip install -r requirements.txt
+SETU_LLM=demo SETU_DEMO=1 uvicorn app.server:app --port 8000     # mock model, guided demo button works
+SETU_LLM=http://localhost:11434/v1 SETU_MODEL=gemma3:12b uvicorn app.server:app   # real Gemma via Ollama
+```
+Open http://127.0.0.1:8000. Left: learner view. Right: live inside view (Raju's state, the learner's recall,
+each tool call Raju makes and its result, the referee's verdict, teacher queue, model calls per turn).
+Raju runs as a tool-using agent by default (`SETU_AGENT=0` switches to the plain generate-and-filter path).

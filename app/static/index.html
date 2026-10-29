@@ -4,92 +4,203 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SETU · Teach Raju</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600&family=Noto+Sans+Telugu:wght@400;600&family=Noto+Sans+Devanagari:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Noto+Sans:wght@400;600;700&family=Noto+Sans+Telugu:wght@400;600&family=Noto+Sans+Devanagari:wght@400;600&display=swap">
 <style>
-:root{--bg:#f6f7fb;--paper:#fff;--ink:#1d2340;--muted:#5b6283;--line:#dde1ee;--raju:#e08a1e;--raju-soft:#fdf0dd;--you:#5146c9;--you-soft:#e9e7fb;--rule:#1f7a8c;--rule-soft:#dff0f3;--good:#2f8a4c;--bad:#c2413b}
-@media (prefers-color-scheme:dark){:root{--bg:#12152a;--paper:#1a1e36;--ink:#e8eaf6;--muted:#a3a9c9;--line:#2e3456;--raju:#f2a33e;--raju-soft:#3a2c17;--you:#9b93ff;--you-soft:#272452;--rule:#4cb5c9;--rule-soft:#14343c;--good:#5cc27c;--bad:#ef7a73;color-scheme:dark}}
+/* Two panes: what the learner sees (left), what happens inside the tutor (right). Palette: Raju marigold, learner indigo, referee teal. */
+:root{--bg:#f4f5fb;--paper:#fff;--ink:#1d2340;--muted:#5b6283;--line:#dde1ee;--raju:#e08a1e;--raju-soft:#fdf0dd;--you:#5146c9;--you-soft:#e9e7fb;--rule:#1f7a8c;--rule-soft:#dff0f3;--good:#2f8a4c;--bad:#c2413b;--warn:#a87a00;--display:"Baloo 2","Noto Sans",system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1229;--paper:#181c3a;--ink:#eef0fb;--muted:#a6acd0;--line:#2f3563;--raju:#f2a33e;--raju-soft:#3b2c14;--you:#a49cff;--you-soft:#2a2658;--rule:#4cc0d4;--rule-soft:#123a42;--good:#5fd38a;--bad:#ff7f78;--warn:#f0c24b;color-scheme:dark}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Noto Sans","Noto Sans Telugu","Noto Sans Devanagari",system-ui,sans-serif}
-main{max-width:720px;margin:0 auto;padding:20px 16px 140px}
-header{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
-h1{font-size:1.3rem;margin:0 auto 0 0}
-input,button{font:inherit}
-input[type=text]{padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink)}
-button{padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer}
+header{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:14px 16px;border-bottom:1px solid var(--line);background:var(--paper)}
+h1{font:800 1.5rem/1 var(--display);margin:0 auto 0 0} h1 span{color:var(--raju)}
+input,button{font:inherit;color:inherit}
+input[type=text]{padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+button{padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--paper);cursor:pointer}
 button.primary{background:var(--you);color:#fff;border-color:var(--you)}
+button.demo{background:var(--raju);color:#1a1200;border-color:var(--raju);font-weight:700}
 button:focus-visible,input:focus-visible{outline:2px solid var(--you);outline-offset:2px}
-#log{display:flex;flex-direction:column;gap:10px}
-.m{padding:10px 14px;border-radius:12px;max-width:90%;border:1px solid var(--line);background:var(--paper)}
+button:disabled{opacity:.5;cursor:default}
+.cap{display:none;padding:10px 16px;background:var(--rule-soft);border-bottom:1px solid var(--line);font-weight:600}
+.cap.on{display:block}
+main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:16px;padding:16px;max-width:1280px;margin:0 auto}
+@media (max-width:900px){main{grid-template-columns:1fr}}
+.pane{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px;min-width:0}
+.pane h2{font:700 .8rem/1 "Noto Sans",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.pane.inside h2{color:var(--rule)}
+#log{display:flex;flex-direction:column;gap:10px;min-height:340px;max-height:56vh;overflow:auto;padding-right:4px}
+.m{padding:10px 14px;border-radius:12px;max-width:92%;border:1px solid var(--line);background:var(--bg)}
 .m.raju{border-color:var(--raju);background:var(--raju-soft)}
 .m.you{align-self:flex-end;background:var(--you-soft);border-color:transparent}
 .m.sys{background:var(--rule-soft);border-color:transparent}
-.m .te{font-size:1.25rem;font-family:"Noto Sans Telugu",sans-serif}
+.m .te{font-size:1.3rem;font-family:"Noto Sans Telugu",sans-serif}
 .m small{display:block;color:var(--muted)}
-.v-correct{color:var(--good);font-weight:600}.v-wrong{color:var(--bad);font-weight:600}.v-unsure{color:var(--muted);font-weight:600}
-footer{position:fixed;left:0;right:0;bottom:0;background:var(--paper);border-top:1px solid var(--line);padding:12px 16px}
-footer .row{max-width:720px;margin:0 auto;display:flex;gap:8px;flex-wrap:wrap}
-footer input{flex:1 1 220px;min-width:0}
-#status{font-size:.85rem;color:var(--muted);margin:10px 0}
+.v-correct{color:var(--good);font-weight:700}.v-wrong{color:var(--bad);font-weight:700}.v-unsure,.v-explanation{color:var(--warn);font-weight:700}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.row input{flex:1 1 200px;min-width:0}
+.chip{display:inline-block;font:700 .72rem/1 "Noto Sans",sans-serif;padding:4px 8px;border-radius:7px;letter-spacing:.04em;margin-right:4px}
+.c-unknown{background:var(--raju-soft);color:var(--raju)}.c-taught{background:rgba(95,211,138,.18);color:var(--good)}.c-forgotten{background:rgba(255,127,120,.18);color:var(--bad)}.c-ok{background:rgba(95,211,138,.18);color:var(--good)}.c-no{background:rgba(255,127,120,.18);color:var(--bad)}.c-un{background:rgba(240,194,75,.2);color:var(--warn)}
+.rule{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:8px 0;border-top:1px solid var(--line)}
+.rule:first-of-type{border-top:0}
+.bar{grid-column:1/-1;height:10px;border-radius:6px;background:var(--line);position:relative}
+.bar i{position:absolute;left:0;top:0;bottom:0;border-radius:6px;background:var(--you);transition:width .6s}
+.bar b{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--warn);left:50%}
+.sub{color:var(--muted);font-size:.85rem}
+.step{border-left:3px solid var(--line);padding:2px 0 2px 10px;margin:8px 0;font-size:.92rem}
+.step.t-raju_turn{border-color:var(--raju)}.step.t-checked{border-color:var(--rule)}.step.t-forgot{border-color:var(--bad)}.step.t-intro{border-color:var(--you)}
+.step .te{font-family:"Noto Sans Telugu",sans-serif;font-size:1.05rem}
+.grid2{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px}
+.stat{background:var(--bg);border-radius:10px;padding:8px 10px}.stat b{display:block;font:800 1.3rem/1.1 var(--display)}
+.q{font-size:.88rem;border-top:1px solid var(--line);padding:6px 0}
+.sec{margin-bottom:16px}
+details summary{cursor:pointer;color:var(--muted);font-size:.85rem}
 </style>
 </head>
 <body>
+<header>
+  <h1>SETU · Teach <span>Raju</span></h1>
+  <label class="sub">Learner <input id="lid" type="text" value="demo" size="8"></label>
+  <button id="reset" title="Wipe this learner and start again">Reset</button>
+  <button id="demo" class="demo">▶ Guided demo</button>
+</header>
+<div id="cap" class="cap" role="status" aria-live="polite"></div>
 <main>
-  <header>
-    <h1>Teach Raju Telugu</h1>
-    <label>Learner <input id="lid" type="text" value="demo" size="10"></label>
-  </header>
-  <div id="status"></div>
-  <div id="log" aria-live="polite"></div>
+  <section class="pane" aria-label="What the learner sees">
+    <h2>Learner view · Hindi speaker learning Telugu</h2>
+    <div id="log" aria-live="polite"></div>
+    <div class="row">
+      <button id="new">Learn a new rule</button>
+      <button id="turn">Raju's turn</button>
+      <button id="skip" title="Pretend 3 days passed">+3 days</button>
+    </div>
+    <div class="row">
+      <input id="ans" type="text" placeholder="Type the corrected Telugu sentence (or your explanation)" aria-label="Your answer">
+      <button id="send" class="primary">Send</button>
+      <button id="none">No mistake</button>
+    </div>
+  </section>
+
+  <section class="pane inside" aria-label="What happens inside the tutor">
+    <h2>Inside the tutor · live</h2>
+    <div class="sec">
+      <div class="sub" style="margin-bottom:4px">Raju's notebook and the learner's memory (yellow line = 0.5, below it Raju forgets)</div>
+      <div id="rules"><span class="sub">No rules met yet. Press “Learn a new rule”.</span></div>
+    </div>
+    <div class="sec">
+      <div class="sub">What just happened, newest first</div>
+      <div id="trace"><span class="sub">Nothing yet.</span></div>
+    </div>
+    <div class="grid2 sec" id="stats"></div>
+    <div class="sec">
+      <div class="sub">Teacher queue (answers the checker was unsure about, and explanations)</div>
+      <div id="queue"><span class="sub">Empty.</span></div>
+    </div>
+    <details><summary>Words the learner has met</summary><div id="words" class="sub"></div></details>
+  </section>
 </main>
-<footer><div class="row">
-  <button id="new">Learn a new rule</button>
-  <button id="turn">Raju's turn</button>
-  <input id="ans" type="text" placeholder="Type the corrected Telugu sentence" aria-label="Your answer">
-  <button id="send" class="primary">Send</button>
-  <button id="none">No mistake</button>
-  <button id="skip" title="Pretend 3 days passed">+3 days</button>
-</div></footer>
 <script>
 const $ = id => document.getElementById(id), log = $("log");
 const lid = () => $("lid").value.trim() || "demo";
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+let last = {};                       // last demo_answer seen
 async function api(path, body = {}) {
-  const r = await fetch("/api/" + path, {method: "POST", headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({learner_id: lid(), ...body})});
+  const r = await fetch("/api/" + path, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({learner_id: lid(), ...body})});
   return r.json();
 }
-function add(cls, html) { const d = document.createElement("div"); d.className = "m " + cls; d.innerHTML = html; log.append(d); d.scrollIntoView({block: "end"}); }
-const esc = s => String(s ?? "").replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+function add(cls, html) { const d = document.createElement("div"); d.className = "m " + cls; d.innerHTML = html; log.append(d); log.scrollTop = log.scrollHeight; }
+
+const REASON = {OOV: "word the learner hasn't met", NOT_ONE_ERROR: "not exactly one mistake", UNKNOWN_RULE_CORRECT: "uses a rule Raju doesn't know",
+  ANSWER_LEAK: "gives the answer away", EXPLANATION: "explains like a teacher", NOT_CORRECT: "not a correct sentence"};
+const TITLE = {intro: "Learner meets a rule", raju_turn: "Raju's turn", checked: "Referee (rules) checks the fix", forgot: "Raju forgets", skip: "Time passes"};
+
 async function refresh() {
-  const s = await api("status");
-  $("status").textContent = `Day ${s.day} · ${Object.keys(s.rules).length} rules met · ` +
-    Object.entries(s.rules).map(([k, v]) => `${k.slice(-3)}: Raju ${v.raju}, recall ${v.recall}`).join(" · ");
+  const d = await api("inside");
+  const rl = Object.entries(d.rules);
+  $("rules").innerHTML = rl.length ? rl.map(([id, r]) => `<div class="rule"><div><b>${esc(r.name)}</b> <span class="sub">${esc(id)}</span></div>
+      <div><span class="chip c-${r.raju === "-" ? "unknown" : esc(r.raju)}">Raju: ${r.raju === "-" ? "not yet" : esc(r.raju)}</span></div>
+      <div class="sub">learner recall ${Math.round(r.recall * 100)}% · right ${r.correct} · wrong ${r.wrong}</div><div></div>
+      <div class="bar"><i style="width:${Math.round(r.recall * 100)}%"></i><b></b></div></div>`).join("") : `<span class="sub">No rules met yet. Press “Learn a new rule”.</span>`;
+  const t = [...d.trace].reverse();
+  $("trace").innerHTML = t.length ? t.map(s => {
+    let body = "";
+    if (s.kind === "intro") body = `${esc(s.title)}`;
+    if (s.kind === "raju_turn") {
+      const tools = (s.tools || []).map(c => { const r = c.result; const ok = r && r.ok;
+        const why = typeof r === "string" ? esc(r) : (r.reasons || []).map(x => `<span class="chip c-no">${esc(x)}</span> ${esc(REASON[x] || x)}`).join(" · ");
+        return `<div class="sub">🔧 Raju calls <b>check_classmate_sentence</b>(<span class="te">${esc(c.sentence)}</span>) → ${ok ? '<span class="chip c-ok">ok</span>' : why}</div>`; }).join("");
+      const rej = s.tools && s.tools.length ? tools + (s.calls ? `<div class="sub">${s.calls} model call${s.calls > 1 ? "s" : ""}</div>` : "") : (s.rejected || []).map(r => `<div class="sub">✗ rejected draft <span class="te">${esc(r.draft)}</span> ${(r.reasons || []).map(x => `<span class="chip c-no">${esc(x)}</span>`).join("")}<br>${(r.reasons || []).map(x => esc(REASON[x] || x)).join(" · ")}</div>`).join("");
+      body = `${s.turn_type === "no_error" ? "no-mistake turn" : "planted a mistake"} for ${esc(s.rule)}${rej}
+        <div>✓ shown: <span class="te">${esc(s.shown)}</span> <span class="chip ${s.source === "bank" ? "c-un" : "c-ok"}">${s.source === "bank" ? "from the rule bank" : "written by the model, passed the tool and filter"}</span></div>`;
+    }
+    if (s.kind === "checked") body = `<span class="chip c-${s.verdict === "correct" ? "ok" : s.verdict === "wrong" ? "no" : "un"}">${esc(s.verdict)}</span> ${s.raju_changed ? "Raju just learned this rule" : "Raju's knowledge unchanged"} · ${s.counts ? "counts toward the learner's mastery" : "counts for nothing"}`;
+    if (s.kind === "forgot") body = `${esc(s.rule)}: learner recall fell to ${Math.round(s.recall * 100)}%, so Raju forgets it too`;
+    if (s.kind === "skip") body = `${s.days} days pass`;
+    return `<div class="step t-${esc(s.kind)}"><b>${esc(TITLE[s.kind] || s.kind)}</b> <span class="sub">· day ${s.day}</span><div>${body}</div></div>`;
+  }).join("") : `<span class="sub">Nothing yet.</span>`;
+  const st = d.status;
+  $("stats").innerHTML = `<div class="stat"><b>${st.day}</b><span class="sub">day</span></div><div class="stat"><b>${st.turns}</b><span class="sub">Raju turns</span></div>
+    <div class="stat"><b>${st.calls_per_turn}</b><span class="sub">model calls / turn</span></div>`;
+  $("queue").innerHTML = d.teacher_queue.length ? d.teacher_queue.slice().reverse().map(q => `<div class="q">${q.kind === "explanation" ? "💬 explanation: " + esc(q.text) : "❓ unsure: <span class='te'>" + esc(q.answer) + "</span>"}</div>`).join("") : `<span class="sub">Empty.</span>`;
+  $("words").textContent = d.seen_words.join(" · ") || "none yet";
 }
-$("new").onclick = async () => {
+
+async function doIntro() {
   const r = await api("intro");
-  if (r.done) return add("sys", "You have met every rule.");
+  if (r.done) { add("sys", "You have met every rule."); return r; }
+  last.answer = r.demo_answer;
   add("sys", `<b>New rule: ${esc(r.title)}</b><small>${esc(r.why)}</small>✗ <span class="te">${esc(r.example_wrong)}</span><br>✓ <span class="te">${esc(r.example_right)}</span><br><br>${esc(r.task)} <small>${esc(r.hindi)}</small>`);
-  refresh();
-};
-$("turn").onclick = async () => {
+  await refresh(); return r;
+}
+async function doTurn() {
   const r = await api("turn");
-  if (r.kind === "need_intro") return add("sys", "Learn a new rule first.");
+  if (r.kind === "need_intro") { add("sys", "Learn a new rule first."); await refresh(); return r; }
+  last.answer = r.demo_answer;
   add("raju", `<span class="te">${esc(r.sentence)}</span><small>${esc(r.ask)} · meaning: ${esc(r.meaning)}</small>`);
-};
-async function send(noError) {
-  const text = $("ans").value.trim();
+  await refresh(); return r;
+}
+async function doSend(text, noError) {
   if (!noError && !text) return;
   add("you", noError ? "There's no mistake." : `<span class="te">${esc(text)}</span>`);
-  $("ans").value = "";
   const r = await api("answer", {text, no_error: noError});
-  if (r.error) return add("sys", esc(r.error));
-  add("sys", `<span class="v-${r.verdict}">${r.verdict}</span> · ${esc(r.message)}`);
+  if (r.error) { add("sys", esc(r.error)); return r; }
+  add("sys", `<span class="v-${esc(r.verdict)}">${esc(r.verdict)}</span> · ${esc(r.message)}`);
   if (r.why_question) add("raju", `${esc(r.why_question)}<small>Explain in your own words, then press Send</small>`);
-  refresh();
+  await refresh(); return r;
 }
-$("send").onclick = () => send(false);
-$("ans").addEventListener("keydown", e => { if (e.key === "Enter") send(false); });
-$("none").onclick = () => send(true);
+$("new").onclick = doIntro;
+$("turn").onclick = doTurn;
+$("send").onclick = async () => { const t = $("ans").value.trim(); $("ans").value = ""; await doSend(t, false); };
+$("ans").addEventListener("keydown", e => { if (e.key === "Enter") $("send").click(); });
+$("none").onclick = () => doSend("", true);
 $("skip").onclick = async () => { await api("skip", {days: 3}); add("sys", "3 days later…"); refresh(); };
+$("reset").onclick = async () => { await api("reset"); log.innerHTML = ""; await refresh(); };
+
+// ---- guided demo: plays a short story with captions. Needs the server started with SETU_DEMO=1 ----
+const cap = t => { $("cap").textContent = t; $("cap").classList.toggle("on", !!t); };
+$("demo").onclick = async () => {
+  $("demo").disabled = true;
+  try {
+    await api("reset"); log.innerHTML = ""; await refresh();
+    const P = 2600;
+    cap("1. The learner meets a rule and answers it correctly once. Only then may Raju be ignorant of it."); await sleep(P);
+    const i1 = await doIntro(); if (!i1.demo_answer) { cap("Start the server with SETU_DEMO=1 for the guided demo."); return; }
+    await sleep(P); await doSend(i1.demo_answer, false); await sleep(P);
+    cap("2. Raju is a small agent: he drafts a sentence and calls the check_classmate_sentence tool. If the tool rejects it, he revises (right-hand panel)."); await sleep(P);
+    let t = await doTurn(); await sleep(P * 1.4);
+    cap("3. The learner leaves Raju's mistake in. The rule-based referee says wrong and gives a hint; Raju learns nothing."); await sleep(P);
+    await doSend(t.sentence, false); await sleep(P * 1.4);
+    cap("4. Now the learner fixes it. Only a checked correct fix teaches Raju."); await sleep(P);
+    await doSend(t.demo_answer, false); await sleep(P * 1.4);
+    cap("5. About one turn in five Raju is already right, so the learner must really check."); await sleep(P);
+    for (let k = 0; k < 4; k++) { t = await doTurn(); if (t.turn_type === "no_error") break; await sleep(P * .7); await doSend(t.demo_answer, false); await sleep(P * .7); }
+    if (t.turn_type === "no_error") { await sleep(P); await doSend("", true); await sleep(P); }
+    cap("6. Days pass. The learner's memory of the rule fades below 0.5, so Raju forgets it too."); await sleep(P);
+    for (let k = 0; k < 3; k++) { await api("skip", {days: 3}); add("sys", "3 days later…"); await refresh(); await sleep(900); }
+    await sleep(P); cap("7. Raju makes the mistake again: the learner is re-teaching, which is the spaced review."); await sleep(P);
+    t = await doTurn(); await sleep(P * 1.4); await doSend(t.demo_answer, false); await sleep(P);
+    cap("Done. Everything the model wrote passed a filter, and only the rule-based referee changed what Raju knows. Try it yourself.");
+  } finally { $("demo").disabled = false; setTimeout(() => cap(""), 9000); }
+};
 refresh();
 </script>
 </body>

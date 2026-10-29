@@ -1,5 +1,6 @@
 """Minimal web app over the same Tutor. Run:
   pip install fastapi uvicorn
+  SETU_LLM=demo SETU_DEMO=1 uvicorn app.server:app --reload       # guided demo (shows leaky drafts being rejected)
   SETU_LLM=mock uvicorn app.server:app --reload            # or SETU_LLM=http://localhost:11434/v1 SETU_MODEL=gemma3:12b
 then open http://127.0.0.1:8000
 """
@@ -8,13 +9,14 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
-from setu.llm import MockLLM, OpenAICompatLLM
+from setu.llm import AgentMockLLM, DemoLLM, MockLLM, OpenAICompatLLM
 from setu.memory import Store
 from setu.session import Tutor, NO_ERROR
 
 _llm_env = os.environ.get("SETU_LLM", "mock")
-llm = None if _llm_env == "none" else MockLLM() if _llm_env == "mock" else OpenAICompatLLM(_llm_env, os.environ.get("SETU_MODEL", "gemma3:12b"))
-tutor = Tutor(Store(os.environ.get("SETU_STORE", "runs")), llm)
+llm = None if _llm_env == "none" else MockLLM() if _llm_env == "mock" else AgentMockLLM(leaky_every=3) if _llm_env == "demo" else OpenAICompatLLM(_llm_env, os.environ.get("SETU_MODEL", "gemma3:12b"))
+tutor = Tutor(Store(os.environ.get("SETU_STORE", "runs")), llm, demo=os.environ.get("SETU_DEMO", "0") == "1",
+              agent=os.environ.get("SETU_AGENT", "1") == "1")      # Raju as a tool-using agent by default
 app = FastAPI(title="SETU tutor")
 
 
@@ -59,3 +61,14 @@ def skip(b: S):
 @app.post("/api/status")
 def status(b: L):
     return tutor.status(b.learner_id)
+
+
+@app.post("/api/inside")
+def inside(b: L):
+    return tutor.inside(b.learner_id)
+
+
+@app.post("/api/reset")
+def reset(b: L):
+    from setu.memory import Learner
+    tutor.store.save(Learner(learner_id=b.learner_id)); return {"ok": True}

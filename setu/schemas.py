@@ -52,6 +52,8 @@ class ClassmateTurn(BaseModel):
     model: str | None = None           # e.g. google/gemma-3-12b-it
     prompt_version: str | None = None
     rejected: list[dict] = Field(default_factory=list)  # [{"draft":..., "reasons":[...]}]
+    model_calls: int | None = None     # set by the agent loop (else the caller counts)
+    tool_log: list[dict] = Field(default_factory=list)  # [{"args":..., "result":...}] tool calls the model made
 
 
 class CheckResult(BaseModel):

@@ -43,8 +43,10 @@ ERR_SENT_MULTI = 'ERROR invalid_argument sentence: more than one sentence or lin
 ERR_SENT_LONG = 'ERROR invalid_argument sentence: longer than 120 characters; pass one short sentence.'
 
 
-def check_classmate_sentence(args: dict, *, items: dict, rules: list, seen_words: set, rule_state: dict) -> dict | str:
-    """Returns {"ok": bool, "reasons": [...]} or one of the ERR_* strings above (first invalid argument only)."""
+def check_classmate_sentence(args: dict, *, items: dict, rules: list, seen_words: set, rule_state: dict,
+                             no_error: bool = False) -> dict | str:
+    """Returns {"ok": bool, "reasons": [...]} or one of the ERR_* strings above (first invalid argument only).
+    `no_error` is set by the harness for no-mistake turns; the model cannot set it (it is not in the schema)."""
     iid = str(args.get("item_id", "")).strip()
     sent = str(args.get("sentence", ""))
     if _RULE.match(iid):
@@ -65,5 +67,5 @@ def check_classmate_sentence(args: dict, *, items: dict, rules: list, seen_words
     if not _TELUGU.search(s):
         return ERR_SENT_NOT_TELUGU
     rule, item = items[iid]
-    dec = check_draft(s, rule, item, rules, seen_words, rule_state)
+    dec = check_draft(s, rule, item, rules, seen_words, rule_state, no_error=no_error)
     return {"ok": dec.ok, "reasons": dec.reasons}

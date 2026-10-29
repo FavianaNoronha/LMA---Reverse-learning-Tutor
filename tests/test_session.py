@@ -101,3 +101,27 @@ def test_web_api_smoke(tmp_path, monkeypatch):
     rule = srv.tutor.by_id[r["rule_id"]]
     assert c.post("/api/answer", json={"learner_id": "w", "text": rule.items[-1].accepted[0]}).json()["verdict"] == "correct"
     assert c.post("/api/turn", json={"learner_id": "w"}).json()["kind"] == "raju"
+
+
+def test_demo_app_inside_view_and_demo_answers(tmp_path, monkeypatch):
+    monkeypatch.setenv("SETU_STORE", str(tmp_path)); monkeypatch.setenv("SETU_LLM", "demo"); monkeypatch.setenv("SETU_DEMO", "1")
+    import importlib, app.server as srv
+    importlib.reload(srv)
+    from fastapi.testclient import TestClient
+    c = TestClient(srv.app)
+    r = c.post("/api/intro", json={"learner_id": "d"}).json()
+    assert r["demo_answer"]
+    c.post("/api/answer", json={"learner_id": "d", "text": r["demo_answer"]})
+    seen_reject = False
+    for _ in range(4):
+        t = c.post("/api/turn", json={"learner_id": "d"}).json()
+        seen_reject |= t["rejected_drafts"] > 0
+        c.post("/api/answer", json={"learner_id": "d", "text": t["demo_answer"]})
+    ins = c.post("/api/inside", json={"learner_id": "d"}).json()
+    assert seen_reject and ins["rules"] and ins["trace"] and ins["status"]["turns"] == 4
+    assert any(s["kind"] == "raju_turn" and s["rejected"] for s in ins["trace"])
+    c.post("/api/reset", json={"learner_id": "d"})
+    assert c.post("/api/inside", json={"learner_id": "d"}).json()["rules"] == {}
+    monkeypatch.setenv("SETU_DEMO", "0"); importlib.reload(srv)
+    c2 = TestClient(srv.app)
+    assert "demo_answer" not in c2.post("/api/intro", json={"learner_id": "e"}).json()      # never leaks the answer outside demo mode

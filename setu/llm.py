@@ -38,9 +38,57 @@ class MockLLM:
         return self.respond(messages)
 
 
+class DemoLLM(MockLLM):
+    """For the demo app only: every third draft is a 'leaky' one (uses words the learner has not met and explains),
+    so the leak filter's rejections are visible. Otherwise it echoes the reference sentence."""
+    model = "demo-mock"
+
+    def __init__(self):
+        super().__init__()
+        self.respond = lambda m: (json.dumps({"sentence": "ఇది పుస్తకం ఎందుకంటే నియమం ప్రకారం"}, ensure_ascii=False)
+                                  if self.calls % 3 == 1 else json.dumps({"sentence": _ref(m)}, ensure_ascii=False))
+
+
 def _ref(messages: list[dict]) -> str:
-    m = re.search(r"Reference sentence[^:]*:\s*(.+)", messages[-1]["content"])
+    m = re.search(r"Reference sentence[^:]*:\s*(.+)", next((x["content"] for x in messages if "Reference sentence" in x["content"]), ""))
     return m.group(1).strip() if m else ""
+
+
+def parse_json(text: str):
+    """First JSON object in a model reply, or None."""
+    try:
+        return json.loads(text)
+    except Exception:
+        m = re.search(r"\{.*\}", text, re.S)
+        if m:
+            try:
+                return json.loads(m.group(0))
+            except Exception:
+                return None
+    return None
+
+
+class AgentMockLLM(MockLLM):
+    """Mock that speaks the tool-call protocol of setu.agent. With leaky_every=3, every third conversation starts with a
+    leaky draft, so the tool's rejection and the model's revision are visible; otherwise it writes the reference sentence."""
+    model = "agent-mock"
+
+    def __init__(self, leaky_every: int = 0, first_draft=None):
+        super().__init__()
+        self.leaky_every, self.convs, self.first_draft = leaky_every, 0, first_draft
+
+    def chat(self, messages, temperature=0.8, max_tokens=120, schema=None) -> str:
+        self.calls += 1
+        user = messages[1]["content"]
+        iid = re.search(r"Item id: (\S+)", user).group(1)
+        if not any(m["content"].startswith("TOOL RESULT") for m in messages):
+            self.convs += 1
+            leaky = self.first_draft if self.first_draft is not None else (
+                "ఇది పుస్తకం ఎందుకంటే నియమం ప్రకారం" if self.leaky_every and self.convs % self.leaky_every == 0 else None)
+            sentence = leaky or _ref(messages)
+        else:
+            sentence = _ref(messages)
+        return json.dumps({"tool": "check_classmate_sentence", "args": {"item_id": iid, "sentence": sentence}}, ensure_ascii=False)
 
 
 def parse_sentence(text: str) -> str:
