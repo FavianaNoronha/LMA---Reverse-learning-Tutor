@@ -14,5 +14,10 @@ script = {"tel2deva": tel2deva, "differences": DIFFERENCES,
           "vowels": letters(0x0C05, 0x0C14), "consonants": letters(0x0C15, 0x0C39),
           "signs": letters(0x0C3E, 0x0C4C) + ["ం", "ః", "్"]}
 t = t.replace("__SCRIPT__", json.dumps(script, ensure_ascii=False))
-(ROOT / "app/hosted/setu_app.html").write_text(t.replace("__RULES__", json.dumps(rules, ensure_ascii=False)), encoding="utf-8")
+page = t.replace("__RULES__", json.dumps(rules, ensure_ascii=False))
+(ROOT / "app/hosted/setu_app.html").write_text(page, encoding="utf-8")
+# GitHub Pages (Settings -> Pages -> Deploy from branch: main, folder /docs) serves docs/index.html as the site.
+# The page is a fragment (claude.ai wraps it); for Pages it gets its own document skeleton.
+(ROOT / "docs/index.html").write_text("<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1, viewport-fit=cover'>"
+    "<style>[hidden]{display:none!important}img{max-width:100%}</style></head><body>" + page + "</body></html>", encoding="utf-8")
 print("ok", len(rules), "rules")

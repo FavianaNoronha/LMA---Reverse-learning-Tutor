@@ -1,0 +1,737 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1, viewport-fit=cover'><style>[hidden]{display:none!important}img{max-width:100%}</style></head><body><title>SETU Telugu Tutor</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500&display=swap">
+<style>
+/* Layout: sticky top bar with four views (Learn, Study, Teacher, How it works). Learn = lesson column + progress/inside column.
+   Raju is marigold, the learner indigo, the rule-based referee teal; neutrals lean slightly toward indigo. */
+:root{
+  --bg:#f5f5fa; --surface:#ffffff; --surface-2:#eef0f8; --ink:#1b2040; --muted:#5a6185; --line:#dcdfec;
+  --raju:#c97412; --raju-soft:#fcefdc; --you:#4a40c4; --you-soft:#e8e6fb; --ref:#167486; --ref-soft:#dcf0f3;
+  --good:#23824a; --good-soft:#e0f3e7; --bad:#bd3a33; --bad-soft:#fbe5e3; --warn:#946b00; --warn-soft:#fbf1d3;
+  --display:"Baloo 2","Noto Sans",system-ui,sans-serif;
+  --body:"Noto Sans","Noto Sans Telugu","Noto Sans Devanagari",system-ui,sans-serif;
+  --te:"Noto Sans Telugu","Noto Sans",sans-serif; --hi:"Noto Sans Devanagari","Noto Sans",sans-serif;
+  --r:12px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#10132a; --surface:#181c39; --surface-2:#20254a; --ink:#eceefb; --muted:#a4aacd; --line:#2f3562;
+  --raju:#f2a33e; --raju-soft:#3a2b14; --you:#a59dff; --you-soft:#2a2659; --ref:#55c3d6; --ref-soft:#123941;
+  --good:#62d38c; --good-soft:#163a26; --bad:#ff8a82; --bad-soft:#41201f; --warn:#f0c24b; --warn-soft:#3a3115; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10132a; --surface:#181c39; --surface-2:#20254a; --ink:#eceefb; --muted:#a4aacd; --line:#2f3562;
+  --raju:#f2a33e; --raju-soft:#3a2b14; --you:#a59dff; --you-soft:#2a2659; --ref:#55c3d6; --ref-soft:#123941;
+  --good:#62d38c; --good-soft:#163a26; --bad:#ff8a82; --bad-soft:#41201f; --warn:#f0c24b; --warn-soft:#3a3115; color-scheme:dark}
+*{box-sizing:border-box}
+html,body{background:var(--bg);color:var(--ink)}
+body{font:15px/1.55 var(--body);margin:0}
+.te{font-family:var(--te)} .hi{font-family:var(--hi)}
+h1,h2,h3{font-family:var(--display);line-height:1.1;margin:0;text-wrap:balance}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 13px;font-weight:600}
+button:hover{border-color:var(--you)}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--you);outline-offset:2px}
+button:disabled{opacity:.5;cursor:default}
+button.primary{background:var(--you);border-color:var(--you);color:#fff}
+button.raju{background:var(--raju);border-color:var(--raju);color:#1d1300}
+button.ghost{background:transparent}
+button.small{padding:5px 9px;font-size:.85rem;border-radius:8px}
+a{color:var(--you)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar-in{max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.brand{display:flex;align-items:baseline;gap:8px;margin-right:auto}
+.brand b{font:800 1.55rem/1 var(--display)} .brand b span{color:var(--raju)}
+.brand small{color:var(--muted);font-size:.8rem}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav a{padding:7px 12px;border-radius:999px;text-decoration:none;color:var(--muted);font-weight:600;font-size:.92rem}
+nav a[aria-current="page"]{background:var(--you-soft);color:var(--you)}
+.clock{display:flex;gap:6px;align-items:center;color:var(--muted);font-size:.85rem;font-variant-numeric:tabular-nums}
+main{max-width:1240px;margin:0 auto;padding-block:18px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:920px){.grid{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;min-width:0}
+.panel + .panel{margin-top:14px}
+.label{font:700 .72rem/1 var(--body);letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+.label.ref{color:var(--ref)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.stack{display:flex;flex-direction:column;gap:10px}
+.muted{color:var(--muted)} .sm{font-size:.86rem}
+.notice{background:var(--warn-soft);color:var(--ink);border-radius:10px;padding:10px 12px;font-size:.88rem}
+/* lesson */
+#log{display:flex;flex-direction:column;gap:10px;min-height:280px;max-height:52vh;overflow:auto;padding:2px 4px 2px 0}
+.msg{padding:10px 14px;border-radius:14px;max-width:92%;background:var(--surface-2);border:1px solid transparent}
+.msg small{display:block;color:var(--muted);font-size:.82rem;margin-top:2px}
+.msg.raju{background:var(--raju-soft);border-color:var(--raju)}
+.msg.you{align-self:flex-end;background:var(--you-soft)}
+.msg.ref{background:var(--ref-soft)}
+.msg.rule{background:var(--surface);border:1px solid var(--line)}
+.msg .say{font:500 1.35rem/1.35 var(--te)}
+.who{display:flex;gap:8px;align-items:center;font-weight:700;font-size:.85rem;margin-bottom:4px}
+.av{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;font:800 .8rem/1 var(--display);color:#14172e}
+.av.r{background:var(--raju)} .av.y{background:var(--you)} .av.c{background:var(--ref)}
+.verdict{display:inline-block;font:700 .74rem/1 var(--body);padding:4px 8px;border-radius:7px;letter-spacing:.04em;text-transform:uppercase;margin-right:6px}
+.v-correct{background:var(--good-soft);color:var(--good)} .v-wrong{background:var(--bad-soft);color:var(--bad)}
+.v-unsure,.v-explanation,.v-recorded{background:var(--warn-soft);color:var(--warn)}
+.listen{border:0;background:transparent;padding:2px 6px;font-size:.85rem;color:var(--muted)}
+.composer{margin-top:12px;border-top:1px solid var(--line);padding-top:12px;display:flex;flex-direction:column;gap:9px}
+#ans{width:100%;min-height:52px;resize:vertical;border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:10px 12px;font:500 1.25rem/1.4 var(--te)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:3px 10px;font:500 1rem var(--te);cursor:pointer}
+.kb{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:4px}
+.kb button{padding:6px 0;font:500 1.05rem var(--te);border-radius:7px}
+details>summary{cursor:pointer;color:var(--muted);font-size:.86rem;font-weight:600}
+.next{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.next h3{font-size:1.2rem}
+/* progress */
+.rules{display:flex;flex-direction:column}
+.rl{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:3px 10px;padding:10px 0;border-top:1px solid var(--line)}
+.rl:first-child{border-top:0}
+.rl b{font-size:.93rem}
+.state{font:700 .7rem/1 var(--body);padding:4px 8px;border-radius:7px;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+.s-unknown{background:var(--raju-soft);color:var(--raju)} .s-taught{background:var(--good-soft);color:var(--good)} .s-forgotten{background:var(--bad-soft);color:var(--bad)} .s-none{background:var(--surface-2);color:var(--muted)}
+.meter{grid-column:1/-1;height:8px;border-radius:5px;background:var(--surface-2);position:relative}
+.meter i{position:absolute;inset:0 auto 0 0;border-radius:5px;background:var(--you);transition:width .5s}
+.meter b{position:absolute;top:-3px;bottom:-3px;left:50%;width:2px;background:var(--warn)}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+@media (max-width:520px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.stat{background:var(--surface-2);border-radius:10px;padding:9px 10px}
+.stat b{display:block;font:800 1.35rem/1.05 var(--display);font-variant-numeric:tabular-nums}
+.stat span{font-size:.78rem;color:var(--muted)}
+.step{border-left:3px solid var(--line);padding:3px 0 3px 10px;font-size:.88rem}
+.step + .step{margin-top:8px}
+.step.raju_turn{border-color:var(--raju)} .step.checked{border-color:var(--ref)} .step.forgot{border-color:var(--bad)} .step.intro{border-color:var(--you)}
+.tool{font-size:.84rem;color:var(--muted)}
+.reason{display:inline-block;font:700 .66rem/1 var(--body);padding:3px 6px;border-radius:6px;background:var(--bad-soft);color:var(--bad);margin:1px 2px}
+.ok{display:inline-block;font:700 .66rem/1 var(--body);padding:3px 6px;border-radius:6px;background:var(--good-soft);color:var(--good)}
+/* tables */
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.88rem}
+th,td{text-align:left;padding:8px 9px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+td.num{font-variant-numeric:tabular-nums;text-align:right}
+textarea.csv{width:100%;min-height:120px;font:12px/1.4 ui-monospace,Menlo,monospace;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px}
+.cond{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.cond{grid-template-columns:1fr}}
+.cond .panel{margin:0}
+.tag{display:inline-block;font:800 .95rem/1 var(--display);width:28px;height:28px;border-radius:8px;display:inline-grid;place-items:center;color:#14172e;margin-right:6px}
+.tA{background:var(--raju)} .tB{background:var(--ref)} .tC{background:var(--you)}
+.prose{max-width:68ch}
+.prose p{margin:.4em 0 .9em}
+.flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:14px 0}
+@media (max-width:820px){.flow{grid-template-columns:1fr 1fr}}
+.flow div{background:var(--surface-2);border-radius:10px;padding:10px;font-size:.88rem}
+.flow b{display:block;font-family:var(--display);font-size:1.02rem}
+.lt{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:6px;margin:6px 0 12px}
+.lt div{background:var(--surface-2);border-radius:9px;padding:6px 4px;text-align:center}
+.lt b{display:block;font:600 1.5rem/1.2 var(--te)} .lt span{font:500 .9rem var(--hi);color:var(--muted)}
+.lt div.new{outline:2px solid var(--raju)}
+.aid{display:block;font:500 .9rem var(--hi);color:var(--muted)}
+body.noaid .aid,body.noaid .aidbtn{display:none}
+.aidbtn{border:0;background:transparent;color:var(--you);padding:0;font-size:.8rem;font-weight:600}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:9px 14px;border-radius:10px;font-weight:600;z-index:20;max-width:calc(100% - 32px)}
+.cap{background:var(--ref-soft);border-radius:10px;padding:10px 12px;font-weight:600;font-size:.92rem}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="bar"><div class="bar-in">
+  <div class="brand"><b>SETU · Teach <span>Raju</span></b><small>Telugu for Hindi speakers</small></div>
+  <nav aria-label="Views">
+    <a href="#letters" data-view="letters">Letters</a>
+    <a href="#learn" data-view="learn">Learn</a>
+    <a href="#study" data-view="study">Study mode</a>
+    <a href="#teacher" data-view="teacher">Teacher</a>
+    <a href="#about" data-view="about">How it works</a>
+  </nav>
+  <div class="clock"><span id="dayLabel">Day 0</span>
+    <button class="small ghost" id="plus1" title="Pretend one day passed">+1 day</button>
+    <button class="small ghost" id="plus3" title="Pretend three days passed">+3 days</button>
+  </div>
+</div></div>
+
+<main>
+<!-- ============ LEARN ============ -->
+<section id="v-learn" data-v="learn">
+  <div class="grid">
+    <div>
+      <div class="panel next" id="nextPanel">
+        <div class="stack" style="gap:2px;min-width:0">
+          <span class="label">Next step</span>
+          <h3 id="nextTitle">Learn your first rule</h3>
+          <span class="muted sm" id="nextWhy">Every rule starts with a short example. Then Raju tries it.</span>
+        </div>
+        <div class="row">
+          <button class="primary" id="goNext">Continue</button>
+          <button class="raju" id="demoBtn" title="Plays a short scripted lesson">▶ Guided demo</button>
+        </div>
+      </div>
+      <div class="cap" id="cap" hidden></div>
+      <div class="panel">
+        <div class="row" style="justify-content:space-between;margin-bottom:8px">
+          <span class="label">Lesson</span>
+          <div class="row">
+            <label class="sm muted" style="display:flex;gap:5px;align-items:center"><input type="checkbox" id="aidToggle" checked> Hindi letters</label>
+            <button class="small" id="bNew">New rule</button>
+            <button class="small" id="bTurn">Raju's turn</button>
+          </div>
+        </div>
+        <div id="log" aria-live="polite"></div>
+        <div class="composer">
+          <label class="sm muted" for="ans" id="ansLabel">Edit Raju's sentence so it is correct, or type your answer in Telugu or Hindi letters.</label>
+          <textarea id="ans" spellcheck="false" placeholder="తెలుగులో, or in Hindi letters: इदि पुस्तकं"></textarea>
+          <div class="row">
+            <button class="primary" id="send">Send</button>
+            <button id="none">No mistake</button>
+            <button class="ghost small" id="clear">Clear</button>
+          </div>
+          <div class="stack" style="gap:6px">
+            <span class="sm muted">Tap a word you have learned:</span>
+            <div class="chips" id="chips"></div>
+          </div>
+          <details id="kbBox"><summary>Telugu keyboard</summary><div class="kb" id="kb" style="margin-top:8px"></div></details>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel">
+        <div class="stats" id="stats"></div>
+      </div>
+      <div class="panel">
+        <div class="row" style="justify-content:space-between"><span class="label">Your rules and Raju's notebook</span><span class="sm muted">yellow line = 50% recall</span></div>
+        <div class="rules" id="rules" style="margin-top:6px"></div>
+      </div>
+      <div class="panel">
+        <details id="insideBox" open>
+          <summary>Inside the tutor (what the AI and the rules just did)</summary>
+          <div id="trace" style="margin-top:10px"></div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LETTERS ============ -->
+<section id="v-letters" data-v="letters" hidden>
+  <div class="panel">
+    <span class="label">Step 0 · the script bridge</span>
+    <h2 style="font-size:1.7rem;margin:6px 0 6px">You already know most Telugu letters</h2>
+    <p class="muted" style="max-width:75ch;margin:0 0 6px">Telugu and Devanagari are sister scripts with the same letter order: क ख ग is క ఖ గ. Most letters are new shapes for sounds you know. Learn the six differences below, then practise reading. You can always type your answers in Hindi letters; the tutor converts them.</p>
+  </div>
+  <div class="panel"><span class="label">What is new for a Hindi reader</span><div class="cond" id="diffs" style="margin-top:10px"></div></div>
+  <div class="grid">
+    <div class="panel"><span class="label">All letters, with their Hindi twins</span><div id="letterGrid" style="margin-top:8px"></div></div>
+    <div class="panel"><span class="label">Reading practice</span>
+      <p class="sm muted" style="margin:6px 0 10px">Read the Telugu word and type it in Hindi letters.</p>
+      <div id="readWord" style="font:600 2.2rem/1.2 var(--te)"></div>
+      <input id="readAns" autocomplete="off" style="width:100%;margin-top:10px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:var(--bg);font:500 1.2rem var(--hi)" placeholder="हिंदी अक्षरों में लिखिए">
+      <div class="row" style="margin-top:10px"><button class="primary" id="readCheck">Check</button><button id="readSkip">Show answer</button><span class="sm muted" id="readScore"></span></div>
+      <div id="readFb" class="sm" style="margin-top:8px"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STUDY ============ -->
+<section id="v-study" data-v="study" hidden>
+  <div class="panel prose" style="max-width:none">
+    <span class="label">Study mode · for the research pilot</span>
+    <h2 style="font-size:1.7rem;margin:6px 0 8px">Three ways to practise, one learner</h2>
+    <p class="muted" style="max-width:75ch">Each learner practises different rules in each of three conditions, rotated so every rule meets every condition across learners. Practice is matched: the same rules, the same number of exposures and the same feedback (a hint first, then the correct form). Tests give no feedback.</p>
+    <div class="row"><label class="sm" for="lid">Learner code</label><input id="lid" value="P01" size="8" style="padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:var(--bg)">
+      <button id="assign" class="primary">Assign conditions</button><span class="sm muted" id="assignInfo"></span></div>
+  </div>
+  <div class="cond" style="margin-top:14px">
+    <div class="panel"><div class="row"><span class="tag tA">A</span><b>Teach Raju</b></div><p class="sm muted">Raju shows a sentence with a planted mistake; you fix it and he learns. This is the Learn view, limited to A rules.</p><button id="goA">Practise A in Learn</button></div>
+    <div class="panel"><div class="row"><span class="tag tB">B</span><b>Matched examples</b></div><p class="sm muted">Study the same wrong sentence, its correction and the Hindi explanation, without teaching anyone.</p><div id="bBox" class="stack"></div><button id="nextB">Next example</button></div>
+    <div class="panel"><div class="row"><span class="tag tC">C</span><b>Normal tutor</b></div><p class="sm muted">You write the sentence; the same checker and hints correct you.</p><div id="cBox" class="stack"></div>
+      <textarea id="cAns" spellcheck="false" style="width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:8px;font:500 1.1rem var(--te)" placeholder="తెలుగులో"></textarea>
+      <div class="row"><button id="nextC">Next sentence</button><button class="primary" id="sendC">Check</button></div></div>
+  </div>
+  <div class="panel" style="margin-top:14px">
+    <div class="row" style="justify-content:space-between"><span class="label">Tests (no feedback)</span>
+      <div class="row"><select id="phase" style="padding:7px;border-radius:8px;border:1px solid var(--line);background:var(--bg)"><option value="pre">Pre-test</option><option value="post">Post-test</option><option value="delayed">Delayed (one week later)</option><option value="transfer">Transfer (unseen sentences)</option></select>
+      <button id="startTest" class="primary">Start test</button></div></div>
+    <div id="testBox" class="stack" style="margin-top:10px"><span class="muted sm">Pick a phase and start. Each rule is asked once, from its meaning.</span></div>
+  </div>
+  <div class="panel">
+    <div class="row" style="justify-content:space-between"><span class="label">Results by condition</span><button id="copyCsv" class="small">Copy results as CSV</button></div>
+    <div class="tw" id="resTable" style="margin-top:8px"></div>
+    <textarea class="csv" id="csvOut" readonly hidden aria-label="Results as CSV"></textarea>
+  </div>
+</section>
+
+<!-- ============ TEACHER ============ -->
+<section id="v-teacher" data-v="teacher" hidden>
+  <div class="grid">
+    <div>
+      <div class="panel">
+        <span class="label">Answers to check</span>
+        <p class="sm muted" style="margin:6px 0 10px">The checker never guesses. Answers it could not judge, and learners' explanations, wait here. Your decision is saved as a label for measuring the checker.</p>
+        <div class="tw" id="queue"></div>
+      </div>
+    </div>
+    <div>
+      <div class="panel">
+        <span class="label">Class mistakes</span>
+        <p class="sm muted" style="margin:6px 0 10px">Wrong answers per rule, from every practice mode on this device.</p>
+        <div class="tw" id="mistakes"></div>
+      </div>
+      <div class="panel">
+        <span class="label">Rule bank</span>
+        <p class="sm muted" style="margin:6px 0 10px">All rules are drafts until a native speaker checks them.</p>
+        <div class="tw" id="bank"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="v-about" data-v="about" hidden>
+  <div class="panel prose" style="max-width:none">
+    <span class="label">How it works</span>
+    <h2 style="font-size:1.8rem;margin:6px 0 10px">You learn Telugu by teaching Raju</h2>
+    <div class="prose">
+      <p>Raju is an AI classmate who makes the mistakes a Hindi speaker makes in Telugu, such as adding a word for “is” (<span class="te">ఇది పుస్తకం ఉంది</span>) because Hindi says <span class="hi">यह किताब है</span>. You correct him. Fixing his sentence makes you recall the rule, explaining it makes it stick, and when your memory of a rule fades Raju forgets it too, so your review arrives as re-teaching.</p>
+      <p>An AI told to “act like a beginner” knows too much and leaks answers. So Raju is kept a step behind you by rules, not by the AI:</p>
+    </div>
+    <div class="flow">
+      <div><b>Planner</b>Picks a rule Raju does not know yet, favouring ones you get wrong.</div>
+      <div><b>Raju (AI agent)</b>Drafts a sentence and calls a checking tool; revises if it is rejected.</div>
+      <div><b>Leak filter</b>Only words you have met, exactly one mistake, no answer, no explaining.</div>
+      <div><b>Referee (rules)</b>Marks your fix correct, wrong or unsure. Only a correct fix teaches Raju.</div>
+      <div><b>Memory</b>Tracks your recall; below 50%, Raju forgets the rule too.</div>
+    </div>
+    <div class="prose">
+      <p><b>Reading and typing.</b> Most Hindi speakers cannot yet read or type Telugu, so every Telugu sentence also shows its Hindi letters (they fade after you get a rule right three times), there is a listen button, and you can type answers in Hindi letters: the tutor converts them to Telugu before checking, and forgives ए/ओ typed for Telugu's short ఎ/ఒ. The Letters page teaches the six things that are new for a Hindi reader. The same aids are on in every study condition.</p>
+      <p><b>About this version.</b> This page runs entirely in your browser with the project's 15 draft Hindi→Telugu rules. Raju's drafts come from a scripted stand-in for the language model (every third conversation starts with a deliberately leaky draft, so you can see the checking tool reject it). The full system runs Raju on Gemma 3 12B through the same tool and filter. Your progress is kept only in this browser. The Telugu sentences are drafts awaiting native-speaker review. Telugu speakers learning Hindi is the next direction; its rules are being written.</p>
+      <p>Project: SETU, LMA course, IIIT Hyderabad · Team Token Guessers (Madhav Malhotra, Kushal Karan, Faviana Noronha, Shaik Areesh). Code and paper: <a href="https://github.com/FavianaNoronha/LMA---Reverse-learning-Tutor" target="_blank" rel="noopener">github.com/FavianaNoronha/LMA---Reverse-learning-Tutor</a></p>
+    </div>
+    <div class="row"><button id="resetAll" class="ghost">Reset all progress on this device</button><span id="resetConfirm" class="row" hidden><span class="sm">Erase everything?</span><button class="small" id="resetYes">Yes, erase</button><button class="small ghost" id="resetNo">Keep</button></span></div>
+  </div>
+</section>
+</main>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const RULES = [{"rule_id": "HI-TE-001", "name": "Polar question: -aa ending, no kya", "category": "questions", "l1_habit": "Hindi 'क्या' at the start; Telugu marks yes/no questions with -ā on the verb/noun", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft (unreviewed)", "items": [{"item_id": "HI-TE-001-a", "english": "Are you coming?", "hindi": "क्या तुम आ रहे हो?", "accepted": ["నువ్వు వస్తావా", "నువ్వు వస్తున్నావా"], "planted_error": "క్యా నువ్వు వస్తావు", "wrong_regex": ["క్యా"], "fix_regex": ["^నువ్వు (వస్తావా|వస్తున్నావా)$"]}, {"item_id": "HI-TE-001-b", "english": "Is this a book?", "hindi": "क्या यह किताब है?", "accepted": ["ఇది పుస్తకమా"], "planted_error": "క్యా ఇది పుస్తకం", "wrong_regex": ["క్యా"], "fix_regex": ["^ఇది పుస్తకమా$"]}]}, {"rule_id": "HI-TE-002", "name": "Zero copula: no 'is' between two nouns", "category": "copula", "l1_habit": "Hindi है is always present; Telugu leaves it out in 'X is Y'", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)", "items": [{"item_id": "HI-TE-002-a", "english": "This is a book.", "hindi": "यह किताब है।", "accepted": ["ఇది పుస్తకం"], "planted_error": "ఇది పుస్తకం ఉంది", "wrong_regex": ["^(ఇది|అది) \\S+ ఉంది$"], "fix_regex": ["^ఇది పుస్తకం$"]}, {"item_id": "HI-TE-002-b", "english": "That is a pen.", "hindi": "वह कलम है।", "accepted": ["అది పెన్ను"], "planted_error": "అది పెన్ను ఉంది", "wrong_regex": ["^(ఇది|అది) \\S+ ఉంది$"], "fix_regex": ["^అది పెన్ను$"]}]}, {"rule_id": "HI-TE-003", "name": "Possession with dative: 'to me is a book'", "category": "possession", "l1_habit": "Hindi मेरे पास / मुझे; learner uses nominative 'I' + ఉంది", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft (unreviewed)", "items": [{"item_id": "HI-TE-003-a", "english": "I have a book.", "hindi": "मेरे पास एक किताब है।", "accepted": ["నాకు ఒక పుస్తకం ఉంది", "నా దగ్గర ఒక పుస్తకం ఉంది"], "planted_error": "నేను ఒక పుస్తకం ఉంది", "wrong_regex": ["^నేను .* ఉంది$"], "fix_regex": ["^(నాకు|నా దగ్గర) ఒక పుస్తకం ఉంది$"]}, {"item_id": "HI-TE-003-b", "english": "You have a pen.", "hindi": "तुम्हारे पास एक कलम है।", "accepted": ["నీకు ఒక పెన్ను ఉంది", "నీ దగ్గర ఒక పెన్ను ఉంది"], "planted_error": "నువ్వు ఒక పెన్ను ఉంది", "wrong_regex": ["^నువ్వు .* ఉంది$"], "fix_regex": ["^(నీకు|నీ దగ్గర) ఒక పెన్ను ఉంది$"]}]}, {"rule_id": "HI-TE-004", "name": "Case endings attach to the noun (no separate 'in')", "category": "case", "l1_habit": "Hindi में is a separate word; Telugu -lō is a suffix and the noun changes (ఇల్లు→ఇంట్లో)", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft (unreviewed)", "items": [{"item_id": "HI-TE-004-a", "english": "I am in the house.", "hindi": "मैं घर में हूँ।", "accepted": ["నేను ఇంట్లో ఉన్నాను"], "planted_error": "నేను ఇల్లు లో ఉన్నాను", "wrong_regex": [" లో( |$)"], "fix_regex": ["^నేను ఇంట్లో ఉన్నాను$"]}, {"item_id": "HI-TE-004-b", "english": "I am in the room.", "hindi": "मैं कमरे में हूँ।", "accepted": ["నేను గదిలో ఉన్నాను"], "planted_error": "నేను గది లో ఉన్నాను", "wrong_regex": [" లో( |$)"], "fix_regex": ["^నేను గదిలో ఉన్నాను$"]}]}, {"rule_id": "HI-TE-005", "name": "Negation: negative verb form, not 'not' after verb", "category": "negation", "l1_habit": "Hindi नहीं before the verb; Telugu uses a negative verb form (రాను) or కాదు only for nouns", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)", "items": [{"item_id": "HI-TE-005-a", "english": "I will not come.", "hindi": "मैं नहीं आऊँगा।", "accepted": ["నేను రాను"], "planted_error": "నేను వస్తాను కాదు", "wrong_regex": ["కాదు$"], "fix_regex": ["^నేను రాను$"]}, {"item_id": "HI-TE-005-b", "english": "He will not come.", "hindi": "वह नहीं आएगा।", "accepted": ["అతను రాడు", "వాడు రాడు"], "planted_error": "అతను వస్తాడు కాదు", "wrong_regex": ["కాదు$"], "fix_regex": ["^(అతను|వాడు) రాడు$"]}]}, {"rule_id": "HI-TE-006", "name": "'We': మేము (without you) vs మనం (with you)", "category": "pronouns", "l1_habit": "Hindi has one हम; Telugu splits inclusive and exclusive", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)", "items": [{"item_id": "HI-TE-006-a", "english": "We (but not you) are going.", "hindi": "हम (तुम्हारे बिना) जा रहे हैं।", "accepted": ["మేము వెళ్తున్నాం", "మేము వెళ్తున్నాము", "మేము వెళ్తాం"], "planted_error": "మనం వెళ్తున్నాం", "wrong_regex": ["^మనం "], "fix_regex": ["^మేము (వెళ్తున్నాం|వెళ్తున్నాము|వెళ్తాం)$"]}, {"item_id": "HI-TE-006-b", "english": "We (you and I) are going.", "hindi": "हम (तुम और मैं) जा रहे हैं।", "accepted": ["మనం వెళ్తున్నాం", "మనం వెళ్తాం", "మనం వెళ్దాం"], "planted_error": "మేము వెళ్తున్నాం", "wrong_regex": ["^మేము "], "fix_regex": ["^మనం (వెళ్తున్నాం|వెళ్తాం|వెళ్దాం)$"]}]}, {"rule_id": "HI-TE-007", "name": "'He' vs 'she' pronouns (Hindi वह is gender-neutral)", "category": "pronouns", "l1_habit": "Hindi वह covers he and she; Telugu uses అతను / ఆమె", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft (unreviewed)", "items": [{"item_id": "HI-TE-007-a", "english": "She is a teacher.", "hindi": "वह शिक्षिका है।", "accepted": ["ఆమె టీచరు", "ఆమె టీచర్"], "planted_error": "అతను టీచరు", "wrong_regex": ["^అతను (టీచరు|టీచర్)$"], "fix_regex": ["^ఆమె (టీచరు|టీచర్)$"]}, {"item_id": "HI-TE-007-b", "english": "He is a doctor.", "hindi": "वह डॉक्टर है।", "accepted": ["అతను డాక్టరు", "అతను డాక్టర్", "వాడు డాక్టరు", "వాడు డాక్టర్"], "planted_error": "ఆమె డాక్టరు", "wrong_regex": ["^ఆమె (డాక్టరు|డాక్టర్)$"], "fix_regex": ["^(అతను|వాడు) (డాక్టరు|డాక్టర్)$"]}]}, {"rule_id": "HI-TE-008", "name": "Third-person verb ending follows he / she (positive-transfer control)", "category": "agreement", "l1_habit": "Hindi verbs also agree in gender, so this is expected to be easy; used as a control", "transfer": "positive_control", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft (unreviewed)", "items": [{"item_id": "HI-TE-008-a", "english": "She comes.", "hindi": "वह आती है।", "accepted": ["ఆమె వస్తుంది"], "planted_error": "ఆమె వస్తాడు", "wrong_regex": ["^ఆమె \\S*డు$"], "fix_regex": ["^ఆమె వస్తుంది$"]}, {"item_id": "HI-TE-008-b", "english": "He comes.", "hindi": "वह आता है।", "accepted": ["అతను వస్తాడు", "వాడు వస్తాడు"], "planted_error": "అతను వస్తుంది", "wrong_regex": ["^(అతను|వాడు) \\S*ంది$"], "fix_regex": ["^(అతను|వాడు) వస్తాడు$"]}]}, {"rule_id": "HI-TE-009", "name": "Respect: మీరు takes the plural -āru ending", "category": "respect", "l1_habit": "Hindi आप takes plural verb; learner keeps singular -āvu/-āvā after మీరు", "transfer": "unclear", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)", "items": [{"item_id": "HI-TE-009-a", "english": "Sir, are you coming?", "hindi": "आप आ रहे हैं?", "accepted": ["మీరు వస్తారా"], "planted_error": "మీరు వస్తావా", "wrong_regex": ["^మీరు \\S*ావా$"], "fix_regex": ["^మీరు వస్తారా$"]}, {"item_id": "HI-TE-009-b", "english": "Sir, you eat.", "hindi": "आप खाते हैं।", "accepted": ["మీరు తింటారు"], "planted_error": "మీరు తింటావు", "wrong_regex": ["^మీరు \\S*ావు$"], "fix_regex": ["^మీరు తింటారు$"]}]}, {"rule_id": "HI-TE-010", "name": "Relative clause: participle before the noun, no 'jo'", "category": "clauses", "l1_habit": "Hindi जो…वह clause after/before; Telugu uses a -ina participle before the noun", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)", "items": [{"item_id": "HI-TE-010-a", "english": "This is the book that I read.", "hindi": "यह वह किताब है जो मैंने पढ़ी।", "accepted": ["ఇది నేను చదివిన పుస్తకం"], "planted_error": "ఇది జో పుస్తకం నేను చదివాను", "wrong_regex": ["జో"], "fix_regex": ["చదివిన పుస్తకం"]}]}, {"rule_id": "HI-TE-011", "name": "No 'ne' marking: subject stays in the plain form in the past", "category": "case", "l1_habit": "Hindi ने on past transitive subject; learner marks Telugu subject with a case ending", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)", "items": [{"item_id": "HI-TE-011-a", "english": "He read the book.", "hindi": "उसने किताब पढ़ी।", "accepted": ["అతను పుస్తకం చదివాడు", "వాడు పుస్తకం చదివాడు"], "planted_error": "అతనికి పుస్తకం చదివాడు", "wrong_regex": ["^(అతనికి|వాడికి) "], "fix_regex": ["^(అతను|వాడు) పుస్తకం చదివాడు$"]}, {"item_id": "HI-TE-011-b", "english": "I ate the rice.", "hindi": "मैंने चावल खाया।", "accepted": ["నేను అన్నం తిన్నాను"], "planted_error": "నాకు అన్నం తిన్నాను", "wrong_regex": ["^నాకు \\S+ తిన్నాను$"], "fix_regex": ["^నేను అన్నం తిన్నాను$"]}]}, {"rule_id": "HI-TE-012", "name": "Object with -ను when it is a person", "category": "case", "l1_habit": "Hindi को is optional-ish; learner drops Telugu -ను on animate objects", "transfer": "unclear", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft (unreviewed)", "items": [{"item_id": "HI-TE-012-a", "english": "I called mother.", "hindi": "मैंने माँ को बुलाया।", "accepted": ["నేను అమ్మను పిలిచాను"], "planted_error": "నేను అమ్మ పిలిచాను", "wrong_regex": ["^నేను అమ్మ \\S+$"], "fix_regex": ["అమ్మను"]}, {"item_id": "HI-TE-012-b", "english": "I saw father.", "hindi": "मैंने पिताजी को देखा।", "accepted": ["నేను నాన్నను చూశాను"], "planted_error": "నేను నాన్న చూశాను", "wrong_regex": ["^నేను నాన్న \\S+$"], "fix_regex": ["నాన్నను"]}]}, {"rule_id": "HI-TE-013", "name": "Present continuous: -tunnānu, not verb + 'am'", "category": "tense", "l1_habit": "Hindi रहा हूँ is two words; Telugu fuses it, or uses -tū unnānu", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft (unreviewed)", "items": [{"item_id": "HI-TE-013-a", "english": "I am eating.", "hindi": "मैं खा रहा हूँ।", "accepted": ["నేను తింటున్నాను", "నేను తింటూ ఉన్నాను"], "planted_error": "నేను తింటాను ఉన్నాను", "wrong_regex": ["ాను ఉన్నాను$"], "fix_regex": ["^నేను (తింటున్నాను|తింటూ ఉన్నాను)$"]}, {"item_id": "HI-TE-013-b", "english": "I am going.", "hindi": "मैं जा रहा हूँ।", "accepted": ["నేను వెళ్తున్నాను", "నేను వెళ్తూ ఉన్నాను"], "planted_error": "నేను వెళ్తాను ఉన్నాను", "wrong_regex": ["ాను ఉన్నాను$"], "fix_regex": ["^నేను (వెళ్తున్నాను|వెళ్తూ ఉన్నాను)$"]}]}, {"rule_id": "HI-TE-014", "name": "'For': కోసం comes after the noun", "category": "postposition", "l1_habit": "Hindi के लिए follows the noun, but learner puts కోసం first like an English preposition", "transfer": "unclear", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)", "items": [{"item_id": "HI-TE-014-a", "english": "This is for you.", "hindi": "यह तुम्हारे लिए है।", "accepted": ["ఇది నీ కోసం"], "planted_error": "ఇది కోసం నీ", "wrong_regex": ["^ఇది కోసం "], "fix_regex": ["^ఇది నీ కోసం$"]}, {"item_id": "HI-TE-014-b", "english": "This is for me.", "hindi": "यह मेरे लिए है।", "accepted": ["ఇది నా కోసం"], "planted_error": "ఇది కోసం నా", "wrong_regex": ["^ఇది కోసం "], "fix_regex": ["^ఇది నా కోసం$"]}]}, {"rule_id": "HI-TE-015", "name": "Going to a place: -కి, not -లో", "category": "case", "l1_habit": "Hindi में/को confusion; destination takes -కి", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)", "items": [{"item_id": "HI-TE-015-a", "english": "I am going home.", "hindi": "मैं घर जा रहा हूँ।", "accepted": ["నేను ఇంటికి వెళ్తున్నాను"], "planted_error": "నేను ఇంట్లో వెళ్తున్నాను", "wrong_regex": ["ఇంట్లో వెళ్"], "fix_regex": ["ఇంటికి"]}, {"item_id": "HI-TE-015-b", "english": "I go to school.", "hindi": "मैं स्कूल जाता हूँ।", "accepted": ["నేను బడికి వెళ్తాను"], "planted_error": "నేను బడిలో వెళ్తాను", "wrong_regex": ["బడిలో వెళ్"], "fix_regex": ["బడికి"]}]}];
+const SCRIPT = {"tel2deva": {"ఀ": "ऀ", "ఁ": "ँ", "ం": "ं", "ః": "ः", "ఄ": "ऄ", "అ": "अ", "ఆ": "आ", "ఇ": "इ", "ఈ": "ई", "ఉ": "उ", "ఊ": "ऊ", "ఋ": "ऋ", "ఌ": "ऌ", "ఎ": "ऎ", "ఏ": "ए", "ఐ": "ऐ", "ఒ": "ऒ", "ఓ": "ओ", "ఔ": "औ", "క": "क", "ఖ": "ख", "గ": "ग", "ఘ": "घ", "ఙ": "ङ", "చ": "च", "ఛ": "छ", "జ": "ज", "ఝ": "झ", "ఞ": "ञ", "ట": "ट", "ఠ": "ठ", "డ": "ड", "ఢ": "ढ", "ణ": "ण", "త": "त", "థ": "थ", "ద": "द", "ధ": "ध", "న": "न", "ప": "प", "ఫ": "फ", "బ": "ब", "భ": "भ", "మ": "म", "య": "य", "ర": "र", "ఱ": "ऱ", "ల": "ल", "ళ": "ळ", "ఴ": "ऴ", "వ": "व", "శ": "श", "ష": "ष", "స": "स", "హ": "ह", "఼": "़", "ఽ": "ऽ", "ా": "ा", "ి": "ि", "ీ": "ी", "ు": "ु", "ూ": "ू", "ృ": "ृ", "ౄ": "ॄ", "ె": "ॆ", "ే": "े", "ై": "ै", "ొ": "ॊ", "ో": "ो", "ౌ": "ौ", "్": "्", "ౕ": "ॕ", "ౖ": "ॖ", "ౘ": "क़", "ౙ": "ख़", "ౚ": "ग़", "ౝ": "ढ़", "ౠ": "ॠ", "ౡ": "ॡ", "ౢ": "ॢ", "ౣ": "ॣ", "౦": "०", "౧": "१", "౨": "२", "౩": "३", "౪": "४", "౫": "५", "౬": "६", "౭": "७", "౮": "८", "౯": "९", "౷": "ॷ", "౸": "ॸ", "౹": "ॹ", "౺": "ॺ", "౻": "ॻ", "౼": "ॼ", "౽": "ॽ", "౾": "ॾ", "౿": "ॿ"}, "differences": [{"telugu": "ఎ కె / ఏ కే", "deva": "ऎ कॆ / ए के", "note": "Telugu has a short e and a long e. Hindi has only the long one.", "example": ["ఎవరు", "ఏమిటి"]}, {"telugu": "ఒ కొ / ఓ కో", "deva": "ऒ कॊ / ओ को", "note": "Telugu has a short o and a long o.", "example": ["ఒకటి", "ఓడ"]}, {"telugu": "ళ", "deva": "ळ", "note": "Retroflex l: the tongue curls back, as in Marathi.", "example": ["పళ్ళు"]}, {"telugu": "ఱ", "deva": "ऱ", "note": "An older strong r; in modern Telugu usually said like ర.", "example": []}, {"telugu": "కం", "deva": "कं", "note": "Very common at the end of words (పుస్తకం). Type it as ं, or a final म.", "example": ["పుస్తకం"]}, {"telugu": "అది", "deva": "अदि", "note": "Telugu says the last vowel. Hindi readers drop it (कमल = kamal), Telugu does not.", "example": ["అది", "ఇది"]}], "vowels": ["అ", "ఆ", "ఇ", "ఈ", "ఉ", "ఊ", "ఎ", "ఏ", "ఐ", "ఒ", "ఓ", "ఔ"], "consonants": ["క", "ఖ", "గ", "ఘ", "ఙ", "చ", "ఛ", "జ", "ఝ", "ఞ", "ట", "ఠ", "డ", "ఢ", "ణ", "త", "థ", "ద", "ధ", "న", "ప", "ఫ", "బ", "భ", "మ", "య", "ర", "ఱ", "ల", "ళ", "ఴ", "వ", "శ", "ష", "స", "హ"], "signs": ["ా", "ి", "ీ", "ు", "ూ", "ె", "ే", "ై", "ొ", "ో", "ౌ", "ం", "ః", "్"]};
+</script>
+<script>
+(() => {
+"use strict";
+// ---------------- engine (port of the Python package setu/) ----------------
+const ITEMS = {}; RULES.forEach(r => r.items.forEach(i => { ITEMS[i.item_id] = [r, i]; }));
+const BY_ID = Object.fromEntries(RULES.map(r => [r.rule_id, r]));
+const NO_ERROR = "<NO_ERROR>";
+const EXPLAIN = ["ఎందుకంటే", "నియమం", "వ్యాకరణం", "क्योंकि", "नियम", "because", "rule", "grammar", "should be"];
+const ASK = ["मैंने ये लिखा, क्या ये सही है?", "ये ठीक है न?", "मुझे लगता है ये सही है… आप बताइए?"];
+const THANKS = "अच्छा! समझ गया, धन्यवाद।";
+const WHY = ["अच्छा! पर ये बदलना क्यों पड़ा?", "मुझे समझ नहीं आया, ये ऐसा क्यों होता है?"];
+const P_NO_ERROR = 0.2, FORGET = 0.5, WHY_EVERY = 3;
+const LEAKY = "ఇది పుస్తకం ఎందుకంటే నియమం ప్రకారం";
+
+const normalize = t => String(t || "").normalize("NFC").replace(/[​-‍]/g, "").replace(/[?!.,।"'“”‘’:;()]/g, " ").split(/\s+/).filter(Boolean).join(" ");
+const tokens = t => { const n = normalize(t); return n ? n.split(" ") : []; };
+const rx = {}; const re = p => rx[p] || (rx[p] = new RegExp(p, "u"));
+const matches = (pats, text) => { const n = normalize(text); return pats.some(p => re(p).test(n)); };
+const errorsIn = d => RULES.filter(r => r.items.some(i => matches(i.wrong_regex, d))).map(r => r.rule_id);
+const OTHER = {}; { const all = RULES.flatMap(r => r.items); all.forEach(i => { OTHER[i.item_id] = new Set(all.filter(j => j.english !== i.english).flatMap(j => j.accepted.map(normalize))); }); }
+function edits(a, b) { a = [...a]; b = [...b]; if (Math.abs(a.length - b.length) > 1) return 2; let prev = b.map((_, j) => j).concat(b.length);
+  prev = Array.from({length: b.length + 1}, (_, j) => j);
+  for (let i = 1; i <= a.length; i++) { const cur = [i]; for (let j = 1; j <= b.length; j++) cur.push(Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] !== b[j - 1] ? 1 : 0))); prev = cur; }
+  return prev[b.length]; }
+
+function check(rule, item, answer) {
+  const n = normalize(answer);
+  if (!n) return {verdict: "unsure", reason: "empty answer"};
+  if (item.accepted.map(normalize).includes(n)) return {verdict: "correct", reason: "exact accepted form"};
+  if (n === normalize(item.planted_error)) return {verdict: "wrong", reason: "Raju's mistake is still there"};
+  if (matches(item.wrong_regex, n)) return {verdict: "wrong", reason: "matches a known mistake"};
+  if (item.accepted.some(a => edits(n, normalize(a)) === 1)) return {verdict: "wrong", reason: "one letter away from the right form (spelling)"};
+  if (OTHER[item.item_id].has(n)) return {verdict: "wrong", reason: "a correct sentence, but a different one"};
+  return {verdict: "unsure", reason: "not a form the checker knows"};
+}
+function checkNoError(rule, item, answer) {
+  const n = normalize(answer);
+  if (answer.trim() === NO_ERROR || item.accepted.map(normalize).includes(n)) return {verdict: "correct", reason: "recognised a correct sentence"};
+  if (matches(item.wrong_regex, n)) return {verdict: "wrong", reason: "changed a correct sentence into a mistake"};
+  return {verdict: "unsure", reason: "changed a correct sentence; may be a valid paraphrase"};
+}
+function checkDraft(draft, rule, item, seen, state, noError) {
+  const reasons = new Set();
+  const allowed = new Set([...seen, ...(item.allowed_new || []), ...tokens(item.planted_error), ...item.accepted.flatMap(tokens)]);
+  if (tokens(draft).some(t => !allowed.has(t))) reasons.add("OOV");
+  const errs = errorsIn(draft);
+  if (noError) {
+    const ok = item.accepted.map(normalize).includes(normalize(draft)) || matches(item.fix_regex, draft);
+    if (errs.length || !ok) reasons.add("NOT_CORRECT");
+    if ((state[rule.rule_id] || "unknown") !== "taught") reasons.add("UNKNOWN_RULE_CORRECT");
+  } else {
+    if (!(errs.length === 1 && errs[0] === rule.rule_id) || !matches(item.wrong_regex, draft)) reasons.add("NOT_ONE_ERROR");
+    if (matches(item.fix_regex, draft)) reasons.add("ANSWER_LEAK");
+  }
+  for (const r of RULES) { if (r.rule_id === rule.rule_id) continue;
+    if ((state[r.rule_id] || "unknown") !== "taught" && r.items.some(i => matches(i.fix_regex, draft))) { reasons.add("UNKNOWN_RULE_CORRECT"); break; } }
+  const low = draft.toLowerCase(); if (EXPLAIN.some(m => low.includes(m.toLowerCase()))) reasons.add("EXPLANATION");
+  return {ok: reasons.size === 0, reasons: [...reasons].sort()};
+}
+// check_classmate_sentence tool (argument validation + filter), same error strings as setu/tools.py
+function toolCheck(args, seen, state, noError) {
+  const iid = String(args.item_id || "").trim(), s = String(args.sentence || "").trim();
+  if (/^(HI-TE|TE-HI)-[0-9]{3}$/.test(iid)) return `ERROR invalid_argument item_id: "${iid}" is a rule id; pass an item id like "${iid}-a".`;
+  if (!/^(HI-TE|TE-HI)-[0-9]{3}-[a-z]$/.test(iid)) return `ERROR invalid_argument item_id: "${iid}" does not match HI-TE-NNN-x (example: HI-TE-002-a).`;
+  if (!ITEMS[iid]) return `ERROR invalid_argument item_id: "${iid}" is not in the rule bank.`;
+  if (!s) return "ERROR invalid_argument sentence: empty; pass one Telugu sentence.";
+  if (/[A-Za-z]/.test(s)) return "ERROR invalid_argument sentence: contains Latin letters; pass Telugu script only, no romanization or English.";
+  if (!/[ఀ-౿]/.test(s)) return "ERROR invalid_argument sentence: no Telugu characters found; pass the sentence in Telugu script.";
+  const [rule, item] = ITEMS[iid]; return checkDraft(s, rule, item, seen, state, noError);
+}
+// ---- script bridge (port of setu/script.py) ----
+const T2D = SCRIPT.tel2deva, D2T = Object.fromEntries(Object.entries(T2D).map(([t, d]) => [d, t]));
+const hasDeva = t => /[\u0900-\u097F]/.test(t), hasTel = t => /[\u0C00-\u0C7F]/.test(t);
+const devaToTel = t => [...String(t).normalize("NFC").replace(/ँ/g, "ं")].map(c => "।॥".includes(c) ? c : (D2T[c] || c)).join("");
+const telToDeva = t => [...String(t).normalize("NFC")].map(c => T2D[c] || c).join("");
+const finalM = t => t.replace(/(?<!్)మ(?=$|[\s?!.,।])/gu, "ం");
+const foldLen = t => t.replace(/ఎ/g, "ఏ").replace(/ఒ/g, "ఓ").replace(/ె/g, "ే").replace(/ొ/g, "ో");
+function prepare(text) { if (text !== NO_ERROR && hasDeva(text) && !hasTel(text)) { S.scriptInputs = (S.scriptInputs || 0) + 1; return [devaToTel(text), true]; } return [text, false]; }
+function checkTyped(rule, item, text, typed, noErr) {
+  let res = noErr ? checkNoError(rule, item, text) : check(rule, item, text);
+  if (typed && res.verdict !== "correct") {
+    const alt = finalM(text);
+    if (alt !== text) { const r2 = noErr ? checkNoError(rule, item, alt) : check(rule, item, alt); if (r2.verdict === "correct") return {verdict: "correct", reason: "correct; Telugu writes the final m as ం"}; }
+    const f = foldLen(normalize(alt)); if (item.accepted.some(a => foldLen(normalize(a)) === f)) return {verdict: "correct", reason: "correct; Telugu uses a short e/o here (ఎ/ఒ)"};
+  }
+  return res;
+}
+const hint = (rule, item, attempt) => attempt <= 1 ? `Hint: ${rule.name}. ${rule.l1_habit}.` : `Answer: ${item.accepted[0]}`;
+
+// ---------------- state ----------------
+const KEY = "setu-hosted-v1";
+const fresh = () => ({start: Date.now(), offset: 0, seen: [], rules: {}, raju: {}, pending: null, trace: [], chat: [], queue: [], labels: {},
+  turns: 0, calls: 0, fixes: 0, convs: 0, events: [], conditions: {}, exposures: {}, tests: [], reviewed: {}, lid: "P01", studyRules: null});
+let S = fresh();
+try { const raw = localStorage.getItem(KEY); if (raw) S = Object.assign(fresh(), JSON.parse(raw)); } catch (e) {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+const day = () => S.offset + (Date.now() - S.start) / 86400000;
+const mem = rid => S.rules[rid] || (S.rules[rid] = {introduced: false, ready: false, correct: 0, wrong: 0, last: null, hl: 1});
+const recall = rid => { const m = S.rules[rid]; if (!m || m.last == null) return 0; return Math.pow(2, -(day() - m.last) / m.hl); };
+function update(rid, verdict, recognition) { if (verdict === "unsure") return; const m = mem(rid);
+  if (verdict === "correct") { m.correct++; m.hl *= recognition ? 1.2 : 2; } else { m.wrong++; m.hl = Math.max(0.5, m.hl / 2); } m.last = day(); }
+const log = (kind, data) => { S.trace.push({kind, day: +day().toFixed(1), ...data}); S.trace = S.trace.slice(-16); };
+const rng = Math.random;
+const pick = a => a[Math.floor(rng() * a.length)];
+const say = (cls, html) => { S.chat.push({cls, html}); S.chat = S.chat.slice(-60); };
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+const studyMode = () => Object.keys(S.conditions).length > 0;
+const condOf = rid => S.conditions[rid] || "A";
+
+// ---------------- tutor ----------------
+function intro(cond, quiet) {
+  const pool = RULES.filter(r => !studyMode() || !cond || S.conditions[r.rule_id] === cond).filter(r => !studyMode() || S.conditions[r.rule_id]);
+  const r = pool.find(x => !mem(x.rule_id).introduced); if (!r) return null;
+  mem(r.rule_id).introduced = true;
+  r.items.forEach(i => i.accepted.forEach(s => tokens(s).forEach(t => { if (!S.seen.includes(t)) S.seen.push(t); })));
+  const ci = r.items[r.items.length - 1], ex = r.items[0];
+  S.pending = {kind: "intro_check", rule: r.rule_id, item: ci.item_id, attempt: 0};
+  log("intro", {rule: r.rule_id, title: r.name});
+  if (!quiet) say("rule", `<div class="who"><span class="av c">R</span>New rule · ${esc(r.name)}</div><div class="sm muted">${esc(r.l1_habit)}</div>
+    <div style="margin-top:6px"><span class="verdict v-wrong">✗</span><span class="te" style="font-size:1.15rem">${esc(ex.planted_error)}</span>${aid(ex.planted_error)}</div>
+    <div><span class="verdict v-correct">✓</span><span class="te" style="font-size:1.15rem">${esc(ex.accepted[0])}</span> ${listenBtn(ex.accepted[0])}${aid(ex.accepted[0])}</div>
+    <div style="margin-top:8px"><b>Your turn.</b> Say in Telugu: <b>${esc(ci.english)}</b> <span class="hi muted">(${esc(ci.hindi)})</span></div>`);
+  save(); return {rule: r, item: ci};
+}
+function rajuState() { const ready = Object.entries(S.rules).filter(([, m]) => m.ready).map(([k]) => k); const st = {}; ready.forEach(k => st[k] = S.raju[k] || "unknown"); return st; }
+function turn() {
+  const st = rajuState();
+  for (const k of Object.keys(st)) if (st[k] === "taught" && recall(k) < FORGET) { st[k] = "forgotten"; S.raju[k] = "forgotten"; log("forgot", {rule: k, recall: +recall(k).toFixed(2)}); }
+  const taught = Object.keys(st).filter(k => st[k] === "taught"), plant = Object.keys(st).filter(k => st[k] !== "taught");
+  let type, rid;
+  if (taught.length && (!plant.length || rng() < P_NO_ERROR)) { type = "no_error"; rid = pick(taught); }
+  else if (plant.length) { type = "planted"; const w = plant.map(k => 1 + mem(k).wrong); let x = rng() * w.reduce((a, b) => a + b, 0); rid = plant[plant.length - 1]; for (let i = 0; i < plant.length; i++) { x -= w[i]; if (x <= 0) { rid = plant[i]; break; } } }
+  else { save(); return null; }
+  const rule = BY_ID[rid], item = pick(rule.items), noErr = type === "no_error";
+  // Raju agent loop: draft -> tool -> revise (scripted stand-in for the model)
+  S.convs++; const tools = []; let shown = null, calls = 0, source = "bank";
+  const ref = noErr ? item.accepted[0] : item.planted_error;
+  for (let k = 0; k < 3 && !shown; k++) {
+    calls++;
+    const draft = (k === 0 && S.convs % 3 === 0) ? LEAKY : ref;
+    const res = toolCheck({item_id: item.item_id, sentence: draft}, new Set(S.seen), st, noErr);
+    tools.push({sentence: draft, result: res});
+    if (typeof res === "object" && res.ok && checkDraft(draft, rule, item, new Set(S.seen), st, noErr).ok) { shown = draft; source = "llm"; }
+  }
+  if (!shown) shown = ref;
+  S.turns++; S.calls += calls;
+  S.pending = {kind: "raju", rule: rid, item: item.item_id, type, sentence: shown, attempt: 0};
+  log("raju_turn", {rule: rid, type, tools, shown, source, calls});
+  say("raju", `<div class="who"><span class="av r">R</span>Raju</div><div class="say">${esc(shown)} ${listenBtn(shown)}</div>${aid(shown, rid)}<small class="hi">${esc(pick(ASK))}</small><small>Meaning: ${esc(item.english)}</small>`);
+  save(); return {sentence: shown, type, rule, item};
+}
+function answer(text) {
+  const p = S.pending; if (!p) return null;
+  const [rule, item] = ITEMS[p.item];
+  if (p.kind === "why") {
+    S.queue.push({id: Date.now(), kind: "explanation", item: item.item_id, text, day: +day().toFixed(1)});
+    S.pending = null; say("ref", `<span class="verdict v-explanation">saved</span>Raju: ${esc(THANKS)} <small>Your explanation went to the teacher. It does not change any score.</small>`);
+    save(); return {verdict: "explanation"};
+  }
+  const [tx, typed] = prepare(text); text = tx;
+  p.attempt++;
+  if (p.kind === "intro_check") {
+    const res = checkTyped(rule, item, text, typed, false); update(rule.rule_id, res.verdict, false);
+    if (res.verdict === "correct") {
+      if (condOf(rule.rule_id) === "A") { mem(rule.rule_id).ready = true; if (!S.raju[rule.rule_id]) S.raju[rule.rule_id] = "unknown"; }
+      S.pending = null; say("ref", `<span class="verdict v-correct">correct</span>${condOf(rule.rule_id) === "A" ? "Now Raju will try this rule, and you will check him." : "Well done."}`);
+    } else if (res.verdict === "unsure") { S.queue.push({id: Date.now(), kind: "unsure", item: item.item_id, text, day: +day().toFixed(1)}); if (p.attempt >= 2) S.pending = null; say("ref", `<span class="verdict v-unsure">unsure</span>I can't judge that one; a teacher will check it. Try the form from the example.`); }
+    else { say("ref", `<span class="verdict v-wrong">wrong</span>${esc(hint(rule, item, p.attempt))}`); if (p.attempt >= 2) S.pending = null; }
+    S.events.push({rule: rule.rule_id, verdict: res.verdict, mode: "intro"}); save(); return res;
+  }
+  if (p.kind === "tutor" || p.kind === "test") return studyAnswer(p, rule, item, text, typed);
+  const res = checkTyped(rule, item, text, typed, p.type === "no_error");
+  const before = S.raju[rule.rule_id];
+  if (res.verdict === "correct" && p.type === "planted") S.raju[rule.rule_id] = "taught";
+  if (res.verdict !== "unsure") update(rule.rule_id, res.verdict, p.type === "no_error");
+  const changed = S.raju[rule.rule_id] !== before;
+  S.events.push({rule: rule.rule_id, verdict: res.verdict, mode: "A", changed});
+  log("checked", {rule: rule.rule_id, verdict: res.verdict, type: p.type, changed, counts: res.verdict !== "unsure", reason: res.reason});
+  let msg, why = null;
+  if (res.verdict === "unsure") { S.queue.push({id: Date.now(), kind: "unsure", item: item.item_id, text, raju: p.sentence, day: +day().toFixed(1)}); S.pending = null; msg = "I'm not sure about that answer, so it doesn't count either way. A teacher will look at it."; }
+  else if (res.verdict === "correct") { S.pending = null; msg = p.type === "no_error" ? "Yes, Raju's sentence was already correct." : `Raju: ${THANKS}`;
+    if (p.type === "planted") { S.fixes++; if (S.fixes % WHY_EVERY === 0) { why = pick(WHY); S.pending = {kind: "why", rule: rule.rule_id, item: item.item_id, attempt: 0}; } } }
+  else if (p.type === "no_error") { S.pending = null; msg = "Raju's sentence was already correct. Nothing needed changing."; }
+  else { msg = hint(rule, item, p.attempt); if (p.attempt >= 2) { msg += ` · Correct form: ${item.accepted[0]}`; S.pending = null; } }
+  say("ref", `<span class="verdict v-${res.verdict}">${res.verdict}</span>${esc(msg)}${typed ? `<small>You typed Hindi letters; read as <span class="te">${esc(text)}</span>${/note|Telugu (writes|uses)/.test(res.reason) ? " · " + esc(res.reason.replace(/^correct; /, "")) : ""}</small>` : ""}`);
+  if (why) say("raju", `<div class="who"><span class="av r">R</span>Raju</div><div class="hi">${esc(why)}</div><small>Explain in your own words (Hindi or Telugu), then press Send.</small>`);
+  save(); return res;
+}
+// study: B examples, C tutor, tests
+function example() { const rs = RULES.filter(r => S.conditions[r.rule_id] === "B" && mem(r.rule_id).introduced); if (!rs.length) return null;
+  const r = rs.reduce((a, b) => (S.exposures[a.rule_id] || 0) <= (S.exposures[b.rule_id] || 0) ? a : b), i = pick(r.items);
+  S.exposures[r.rule_id] = (S.exposures[r.rule_id] || 0) + 1; log("example", {rule: r.rule_id}); save(); return {r, i}; }
+function prompt() { const rs = RULES.filter(r => S.conditions[r.rule_id] === "C" && mem(r.rule_id).introduced); if (!rs.length) return null;
+  const r = rs.reduce((a, b) => (S.exposures[a.rule_id] || 0) <= (S.exposures[b.rule_id] || 0) ? a : b), i = pick(r.items);
+  S.exposures[r.rule_id] = (S.exposures[r.rule_id] || 0) + 1; S.pending = {kind: "tutor", rule: r.rule_id, item: i.item_id, attempt: 0}; save(); return {r, i}; }
+function studyAnswer(p, rule, item, text, typed) {
+  if (typed === undefined) { const [tx, ty] = prepare(text); text = tx; typed = ty; }
+  const res = checkTyped(rule, item, text, typed, false);
+  if (p.kind === "test") { S.tests.push({lid: S.lid, phase: p.phase, rule: rule.rule_id, item: item.item_id, condition: S.conditions[rule.rule_id] || "-", verdict: res.verdict, answer: text, day: +day().toFixed(2)});
+    if (res.verdict === "unsure") S.queue.push({id: Date.now(), kind: "unsure", item: item.item_id, text, day: +day().toFixed(1), phase: p.phase});
+    S.pending = null; save(); return {verdict: "recorded"}; }
+  update(rule.rule_id, res.verdict, false); S.events.push({rule: rule.rule_id, verdict: res.verdict, mode: "C"});
+  let msg; if (res.verdict === "correct") { msg = "Correct!"; S.pending = null; }
+  else if (res.verdict === "wrong") { msg = hint(rule, item, p.attempt); if (p.attempt >= 2) { msg += ` · Correct form: ${item.accepted[0]}`; S.pending = null; } }
+  else { msg = "Not sure; a teacher will check it."; S.queue.push({id: Date.now(), kind: "unsure", item: item.item_id, text, day: +day().toFixed(1)}); S.pending = null; }
+  save(); return {verdict: res.verdict, msg};
+}
+
+// ---------------- UI ----------------
+const $ = id => document.getElementById(id);
+function aid(text, rid) { const faded = rid && (S.rules[rid]?.correct || 0) >= 3;
+  return faded ? `<button class="aidbtn" data-aid="${esc(telToDeva(text))}">Show Hindi letters</button>` : `<span class="aid">${esc(telToDeva(text))}</span>`; }
+document.addEventListener("click", e => { const b = e.target.closest("[data-aid]"); if (b) { const sp = document.createElement("span"); sp.className = "aid"; sp.textContent = b.dataset.aid; b.replaceWith(sp); } });
+function listenBtn(text) { return `<button class="listen" data-say="${esc(text)}" title="Listen" aria-label="Listen">🔊</button>`; }
+let teVoice = null;
+function loadVoice() { try { const vs = speechSynthesis.getVoices(); teVoice = vs.find(v => /^te/i.test(v.lang)) || null; } catch (e) {} }
+try { loadVoice(); speechSynthesis.onvoiceschanged = loadVoice; } catch (e) {}
+document.addEventListener("click", e => { const b = e.target.closest("[data-say]"); if (!b) return;
+  try { const u = new SpeechSynthesisUtterance(b.dataset.say); u.lang = "te-IN"; if (teVoice) u.voice = teVoice; u.rate = 0.85; speechSynthesis.cancel(); speechSynthesis.speak(u);
+    if (!teVoice) toast("No Telugu voice on this device; it may sound wrong. Native voices come with the speech version."); } catch (err) { toast("Listening is not available in this browser."); } });
+function toast(t) { const el = $("toast"); el.textContent = t; el.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => el.hidden = true, 3200); }
+
+function renderLog() { const log = $("log"); log.innerHTML = S.chat.length ? S.chat.map(m => `<div class="msg ${m.cls}">${m.html}</div>`).join("") :
+  `<div class="msg ref">Welcome. New to the Telugu script? Start with <a href="#letters">Letters</a> (most letters are twins of Hindi ones). Then press <b>Continue</b> to meet your first rule, or <b>Guided demo</b> to watch a short lesson. Raju speaks Hindi to you and writes Telugu; you can answer in Telugu or in Hindi letters.</div>`; log.scrollTop = log.scrollHeight; }
+const STATE_TXT = {unknown: "Raju doesn't know", taught: "Raju knows", forgotten: "Raju forgot"};
+function renderSide() {
+  const intro = RULES.filter(r => S.rules[r.rule_id]?.introduced);
+  $("rules").innerHTML = intro.length ? intro.map(r => { const m = S.rules[r.rule_id], st = m.ready ? (S.raju[r.rule_id] || "unknown") : null, p = Math.round(recall(r.rule_id) * 100);
+    const cond = studyMode() ? ` · condition ${condOf(r.rule_id)}` : "";
+    return `<div class="rl"><div style="min-width:0"><b>${esc(r.name)}</b><div class="sm muted">recall ${p}% · right ${m.correct} · wrong ${m.wrong}${cond}</div></div>
+      <span class="state ${st ? "s-" + st : "s-none"}">${st ? STATE_TXT[st] : (m.ready ? "" : condOf(r.rule_id) === "A" ? "answer once first" : "no Raju (study)")}</span>
+      <div class="meter"><i style="width:${p}%"></i><b></b></div></div>`; }).join("") : `<p class="sm muted">No rules yet. Your first rule is about questions: Telugu adds <span class="te">-ā</span> where Hindi starts with <span class="hi">क्या</span>.</p>`;
+  const taught = Object.values(S.raju).filter(x => x === "taught").length;
+  const due = intro.filter(r => S.rules[r.rule_id].last != null && recall(r.rule_id) < FORGET).length;
+  $("stats").innerHTML = [[intro.length + "/" + RULES.length, "rules met"], [taught, "taught to Raju"], [due, "due for review"], [S.turns ? (S.calls / S.turns).toFixed(1) : "–", "AI calls per turn"]]
+    .map(([b, s]) => `<div class="stat"><b>${b}</b><span>${s}</span></div>`).join("");
+  $("dayLabel").textContent = "Day " + day().toFixed(1).replace(/\.0$/, "");
+  const t = [...S.trace].reverse();
+  const REASON = {OOV: "a word you haven't met", NOT_ONE_ERROR: "not exactly one mistake", UNKNOWN_RULE_CORRECT: "uses a rule Raju doesn't know", ANSWER_LEAK: "gives the answer away", EXPLANATION: "explains like a teacher", NOT_CORRECT: "not a correct sentence"};
+  $("trace").innerHTML = t.length ? t.map(s => { let b = "";
+    if (s.kind === "intro") b = `<b>You met a rule</b> · ${esc(s.title)}`;
+    if (s.kind === "raju_turn") b = `<b>Raju's turn</b> · ${s.type === "no_error" ? "a sentence with no mistake" : "plants one mistake"} (${esc(BY_ID[s.rule].name)})` +
+      s.tools.map(c => `<div class="tool">🔧 calls <b>check_classmate_sentence</b>(<span class="te">${esc(c.sentence)}</span>) → ${typeof c.result === "string" ? esc(c.result) : c.result.ok ? '<span class="ok">ok</span>' : c.result.reasons.map(x => `<span class="reason">${esc(x)}</span>`).join("") + " " + c.result.reasons.map(x => esc(REASON[x] || x)).join(", ")}</div>`).join("") +
+      `<div class="tool">${s.source === "llm" ? "✓ shown after passing the tool and the leak filter" : "✓ pre-written sentence from the rule bank"} · ${s.calls} AI call${s.calls > 1 ? "s" : ""}</div>`;
+    if (s.kind === "checked") b = `<b>Referee (rules, no AI)</b> · <span class="verdict v-${s.verdict}">${s.verdict}</span>${s.changed ? "Raju learned this rule" : "Raju's knowledge unchanged"}${s.counts ? "" : " · counts for nothing"}<div class="tool">${esc(s.reason || "")}</div>`;
+    if (s.kind === "forgot") b = `<b>Raju forgets</b> · your recall of “${esc(BY_ID[s.rule].name)}” fell to ${Math.round(s.recall * 100)}%, so Raju makes the mistake again`;
+    if (s.kind === "example") b = `<b>Study example</b> (condition B) · ${esc(BY_ID[s.rule].name)}`;
+    if (s.kind === "skip") b = `<b>${s.days} day${s.days > 1 ? "s" : ""} pass</b>`;
+    return `<div class="step ${s.kind}"><span class="sm muted">day ${s.day}</span><div>${b}</div></div>`; }).join("") : `<p class="sm muted">Each step the AI and the rules take will appear here, newest first.</p>`;
+}
+function renderComposer() {
+  const p = S.pending;
+  $("ansLabel").textContent = !p ? "Press Continue for the next step." : p.kind === "raju" ? "Edit Raju's sentence so it is correct, or press No mistake." : p.kind === "why" ? "Explain to Raju why it changes (Hindi or Telugu)." : "Type your answer in Telugu or in Hindi letters.";
+  $("none").disabled = !(p && p.kind === "raju");
+  $("send").disabled = !p || p.kind === "tutor" || p.kind === "test";
+  $("chips").innerHTML = S.seen.length ? S.seen.map(w => `<button class="chip" data-w="${esc(w)}">${esc(w)}</button>`).join("") + `<button class="chip" data-w="⌫" title="Delete last word">⌫</button>` : `<span class="sm muted">Words appear here as you learn them.</span>`;
+}
+function nextStep() {
+  const p = S.pending, st = rajuState();
+  if (p && p.kind === "intro_check") return ["Answer the rule check", "Say the sentence in Telugu to unlock this rule for Raju.", null];
+  if (p && p.kind === "raju") return ["Check Raju's sentence", "Fix his mistake, or press No mistake if it is already right.", null];
+  if (p && p.kind === "why") return ["Answer Raju's question", "He wants to know why. Your explanation goes to the teacher.", null];
+  const forgot = Object.keys(st).filter(k => st[k] === "taught" && recall(k) < FORGET);
+  if (forgot.length) return ["Review: Raju forgot a rule", `Your recall of “${BY_ID[forgot[0]].name}” is low. Teach Raju again.`, "turn"];
+  if (Object.values(st).some(x => x !== "taught")) return ["Raju's turn", "He will try a rule you have unlocked. Check his sentence.", "turn"];
+  const left = RULES.filter(r => !mem(r.rule_id).introduced && (!studyMode() || S.conditions[r.rule_id] === "A")).length;
+  if (left) return ["Learn a new rule", `${left} rule${left > 1 ? "s" : ""} left. Raju knows everything you have taught him.`, "intro"];
+  return ["Raju is up to date", "Come back later or press +1 day: when your memory fades, Raju forgets and you review by teaching him.", "turn"];
+}
+function render() { renderLog(); renderSide(); renderComposer(); const [t, w] = nextStep(); $("nextTitle").textContent = t; $("nextWhy").textContent = w; }
+
+function doNext() { const [, , act] = nextStep();
+  if (act === "intro") { const r = intro(studyMode() ? "A" : null); if (!r) toast("All rules met."); }
+  else if (act === "turn") { const t = turn(); if (!t) toast("Learn a rule first."); else $("ans").value = t.sentence; }
+  else $("ans").focus();
+  render(); }
+function doSend(noError) { const p = S.pending; if (!p) return; let text = $("ans").value.trim();
+  if (noError) text = NO_ERROR; else if (!text) { toast("Type your answer first."); return; }
+  say("you", `<div class="who" style="justify-content:flex-end"><span class="av y">Y</span>You</div>${noError ? "There's no mistake." : `<span class="te" style="font-size:1.2rem">${esc(text)}</span>`}`);
+  answer(text); $("ans").value = ""; render(); }
+$("goNext").onclick = doNext;
+$("bNew").onclick = () => { if (!intro(studyMode() ? "A" : null)) toast("All rules met."); render(); };
+$("bTurn").onclick = () => { const t = turn(); if (!t) toast("Learn a rule and answer it first."); else $("ans").value = t.sentence; render(); };
+$("send").onclick = () => doSend(false);
+$("none").onclick = () => doSend(true);
+$("clear").onclick = () => { $("ans").value = ""; $("ans").focus(); };
+$("ans").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); doSend(false); } });
+$("chips").addEventListener("click", e => { const b = e.target.closest("[data-w]"); if (!b) return; const a = $("ans");
+  if (b.dataset.w === "⌫") a.value = a.value.trim().split(/\s+/).slice(0, -1).join(" "); else a.value = (a.value.trim() + " " + b.dataset.w).trim(); a.focus(); });
+const KB = "అ ఆ ఇ ఈ ఉ ఊ ఎ ఏ ఐ ఒ ఓ ఔ క ఖ గ ఘ చ ఛ జ ఝ ట ఠ డ ఢ ణ త థ ద ధ న ప ఫ బ భ మ య ర ల వ శ ష స హ ళ ా ి ీ ు ూ ె ే ై ొ ో ౌ ం ః ్".split(" ");
+$("kb").innerHTML = KB.map(k => `<button type="button" data-k="${k}" aria-label="${k}">${/^[ా-్ంః]$/u.test(k) ? "◌" + k : k}</button>`).join("") + `<button type="button" data-k=" ">␣</button><button type="button" data-k="BS">⌫</button>`;
+$("kb").addEventListener("click", e => { const b = e.target.closest("[data-k]"); if (!b) return; const a = $("ans"); a.value = b.dataset.k === "BS" ? [...a.value].slice(0, -1).join("") : a.value + b.dataset.k; });
+function skip(d) { S.offset += d; log("skip", {days: d}); say("ref", `${d} day${d > 1 ? "s" : ""} later…`); save(); render(); }
+$("plus1").onclick = () => skip(1); $("plus3").onclick = () => skip(3);
+
+// guided demo
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const cap = t => { $("cap").textContent = t; $("cap").hidden = !t; };
+$("demoBtn").onclick = async () => {
+  if (Object.values(S.rules).some(m => m.introduced) && !confirmDemo()) return;
+  $("demoBtn").disabled = true;
+  try {
+    S = fresh(); save(); render(); const P = 2300;
+    cap("1 · You meet a rule and answer it once yourself. Only then is Raju allowed not to know it."); await sleep(P);
+    let r = intro(null); render(); await sleep(P); $("ans").value = r.item.accepted[0]; await sleep(900); doSend(false); await sleep(P);
+    cap("2 · Raju is a small AI agent: he drafts a sentence and calls a checking tool before you see it (right panel)."); await sleep(P);
+    S.convs = 2; let t = turn(); render(); await sleep(P * 1.5);
+    cap("3 · You leave his mistake in. The referee (plain rules) says wrong and gives a hint. Raju learns nothing."); await sleep(P);
+    $("ans").value = t.sentence; doSend(false); await sleep(P * 1.3);
+    cap("4 · Now you fix it. Only a checked correct fix teaches Raju."); await sleep(P);
+    $("ans").value = t.item.accepted[0]; await sleep(700); doSend(false); await sleep(P * 1.3);
+    cap("5 · A second rule. About one turn in five, Raju's sentence has no mistake, so you must really check."); await sleep(P);
+    r = intro(null); render(); await sleep(P); $("ans").value = r.item.accepted[0]; doSend(false); await sleep(P);
+    for (let k = 0; k < 4; k++) { t = turn(); render(); await sleep(P * .9); if (t.type === "no_error") { doSend(true); } else { $("ans").value = t.item.accepted[0]; doSend(false); if (S.pending && S.pending.kind === "why") { await sleep(P * .9); cap("Every third fix, Raju asks why. Your answer goes to the teacher; it changes no score."); $("ans").value = "हिंदी में 'क्या' आता है, तेलुगु में -ā लगता है"; await sleep(P); doSend(false); } } await sleep(P * .9); }
+    cap("6 · Days pass. When your memory of a rule falls below 50%, Raju forgets it too."); await sleep(P);
+    for (let k = 0; k < 3; k++) { skip(3); await sleep(800); }
+    t = turn(); render(); await sleep(P * 1.2);
+    cap("7 · Raju makes the mistake again. Your review arrives as re-teaching."); $("ans").value = t.type === "no_error" ? "" : t.item.accepted[0]; await sleep(P); doSend(t.type === "no_error"); await sleep(P);
+    if (S.pending && S.pending.kind === "why") { $("ans").value = "तेलुगु में यहाँ अलग लिखते हैं"; doSend(false); await sleep(P * .7); }
+    cap("That's the loop. The AI only writes; the rules decide. Press Continue to try it yourself.");
+    setTimeout(() => cap(""), 9000);
+  } finally { $("demoBtn").disabled = false; }
+};
+let demoOk = false;
+function confirmDemo() { if (demoOk) return true; demoOk = true; toast("The demo replaces your progress on this device. Press Guided demo again to start it."); return false; }
+
+// ---------------- study view ----------------
+function assign() { S.lid = $("lid").value.trim() || "P01"; const shift = [...S.lid].reduce((a, c) => a + c.charCodeAt(0), 0) % 3;
+  S.conditions = Object.fromEntries(RULES.map((r, k) => [r.rule_id, "ABC"[(k + shift) % 3]])); save(); renderStudy(); toast(`Conditions assigned for ${S.lid}.`); }
+$("assign").onclick = assign;
+$("goA").onclick = () => { if (!studyMode()) assign(); location.hash = "learn"; };
+$("nextB").onclick = () => { if (!studyMode()) assign(); const metB = RULES.filter(r => S.conditions[r.rule_id] === "B" && mem(r.rule_id).introduced).length;
+  if (metB && Object.entries(S.exposures).filter(([k]) => S.conditions[k] === "B").every(([, v]) => v >= 3)) { intro("B", true); const p = S.pending; if (p) { mem(p.rule).last = day(); S.pending = null; } }
+  let e = example(); if (!e) { intro("B", true); const p = S.pending; if (p) { mem(p.rule).last = day(); S.pending = null; } e = example(); }
+  $("bBox").innerHTML = e ? `<div class="sm"><b>${esc(e.r.name)}</b></div><div><span class="verdict v-wrong">✗</span><span class="te" style="font-size:1.1rem">${esc(e.i.planted_error)}</span></div><div><span class="verdict v-correct">✓</span><span class="te" style="font-size:1.1rem">${esc(e.i.accepted[0])}</span> ${listenBtn(e.i.accepted[0])}${aid(e.i.accepted[0])}</div><div class="sm muted">${esc(e.r.l1_habit)} · ${esc(e.i.english)}</div>` : "All B rules done."; render(); };
+$("nextC").onclick = () => { if (!studyMode()) assign(); const metC = RULES.filter(r => S.conditions[r.rule_id] === "C" && mem(r.rule_id).introduced).length;
+  if (metC && Object.entries(S.exposures).filter(([k]) => S.conditions[k] === "C").every(([, v]) => v >= 3)) { intro("C", true); const p = S.pending; if (p) { mem(p.rule).last = day(); S.pending = null; } }
+  let q = prompt(); if (!q) { intro("C", true); const p = S.pending; if (p) { mem(p.rule).last = day(); S.pending = null; } q = prompt(); }
+  $("cBox").innerHTML = q ? `<div class="sm"><b>${esc(q.r.name)}</b></div><div>Say in Telugu: <b>${esc(q.i.english)}</b> <span class="hi muted">(${esc(q.i.hindi)})</span></div>` : "No C rules."; $("cAns").value = ""; };
+$("sendC").onclick = () => { const p = S.pending; if (!p || p.kind !== "tutor") { toast("Press Next sentence first."); return; }
+  const [rule, item] = ITEMS[p.item]; p.attempt++; const r = studyAnswer(p, rule, item, $("cAns").value.trim());
+  $("cBox").insertAdjacentHTML("beforeend", `<div><span class="verdict v-${r.verdict}">${r.verdict}</span>${esc(r.msg)}</div>`); render(); renderStudy(); };
+let testQ = [];
+$("startTest").onclick = () => { if (!studyMode()) assign(); const ph = $("phase").value;
+  testQ = RULES.map(r => [r, ph === "transfer" && r.items.length > 1 ? r.items[r.items.length - 1] : r.items[0]]); showTest(ph); };
+function showTest(ph) { if (!testQ.length) { $("testBox").innerHTML = `<div class="notice">Test finished. Results are below.</div>`; renderStudy(); return; }
+  const [r, i] = testQ[0]; S.pending = {kind: "test", phase: ph, rule: r.rule_id, item: i.item_id, attempt: 0}; save();
+  $("testBox").innerHTML = `<div class="sm muted">${ph} test · ${RULES.length - testQ.length + 1} of ${RULES.length}</div><div>Say in Telugu: <b>${esc(i.english)}</b> <span class="hi muted">(${esc(i.hindi)})</span></div>
+    <textarea id="tAns" spellcheck="false" style="width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:8px;font:500 1.1rem var(--te)"></textarea>
+    <div class="row"><button class="primary" id="tSend">Save answer</button><button id="tSkip">I don't know</button></div>`;
+  const go = txt => { const p = S.pending; const [rr, ii] = ITEMS[p.item]; studyAnswer(p, rr, ii, txt); testQ.shift(); showTest(ph); };
+  $("tSend").onclick = () => go($("tAns").value.trim()); $("tSkip").onclick = () => go(""); $("tAns").focus(); }
+function renderStudy() {
+  const c = S.conditions, n = {A: 0, B: 0, C: 0}; Object.values(c).forEach(x => n[x]++);
+  $("lid").value = S.lid; $("assignInfo").textContent = studyMode() ? `${S.lid}: A ${n.A} rules · B ${n.B} · C ${n.C}` : "Not assigned yet.";
+  const phases = ["pre", "post", "delayed", "transfer"], res = {};
+  S.tests.forEach(t => { const d = ((res[t.phase] ||= {})[t.condition] ||= {c: 0, n: 0, u: 0}); d.n++; d.c += t.verdict === "correct"; d.u += t.verdict === "unsure"; });
+  const cell = d => d ? `${Math.round(100 * d.c / d.n)}% <span class="muted sm">(${d.c}/${d.n}${d.u ? `, ${d.u} unsure` : ""})</span>` : `<span class="muted">–</span>`;
+  $("resTable").innerHTML = `<table><thead><tr><th>Test</th><th>A · teach Raju</th><th>B · examples</th><th>C · normal tutor</th></tr></thead><tbody>${phases.map(ph => `<tr><td>${ph}</td>${"ABC".split("").map(k => `<td>${cell(res[ph]?.[k])}</td>`).join("")}</tr>`).join("")}</tbody></table>
+    <p class="sm muted">Unsure answers count as not correct until a teacher marks them in the Teacher view.</p>`;
+}
+$("copyCsv").onclick = async () => { const rows = [["learner", "phase", "rule", "item", "condition", "verdict", "answer", "day"], ...S.tests.map(t => [t.lid, t.phase, t.rule, t.item, t.condition, S.labels[t.item + "|" + t.answer] || t.verdict, t.answer, t.day])];
+  const csv = rows.map(r => r.map(x => `"${String(x).replace(/"/g, '""')}"`).join(",")).join("\n"); const ta = $("csvOut"); ta.hidden = false; ta.value = csv;
+  try { await navigator.clipboard.writeText(csv); toast("Copied. Paste into a spreadsheet."); } catch (e) { ta.select(); toast("Selected. Copy it with Ctrl+C or ⌘C."); } };
+
+// ---------------- teacher view ----------------
+function renderTeacher() {
+  const q = [...S.queue].reverse();
+  $("queue").innerHTML = q.length ? `<table><thead><tr><th>Item</th><th>Answer</th><th>Kind</th><th>Decision</th></tr></thead><tbody>${q.map(x => { const [r, i] = ITEMS[x.item]; const lab = S.labels[x.item + "|" + x.text];
+    return `<tr><td><b>${esc(i.english)}</b><div class="sm muted te">${esc(i.accepted[0])}</div></td><td class="${x.kind === "explanation" ? "hi" : "te"}">${esc(x.text) || "<span class='muted'>(empty)</span>"}</td><td>${x.kind === "explanation" ? "explanation" : "checker unsure" + (x.phase ? ` · ${x.phase} test` : "")}</td>
+      <td>${x.kind === "explanation" ? `<span class="sm muted">read only</span>` : lab ? `<span class="verdict v-${lab}">${lab}</span>` : `<div class="row"><button class="small" data-lab="correct" data-k="${esc(x.item + "|" + x.text)}">Correct</button><button class="small" data-lab="wrong" data-k="${esc(x.item + "|" + x.text)}">Wrong</button></div>`}</td></tr>`; }).join("")}</tbody></table>` : `<p class="sm muted">Nothing to check. Unsure answers and Raju's “why?” explanations will appear here.</p>`;
+  const wr = {}; S.events.forEach(e => { if (e.verdict === "wrong") wr[e.rule] = (wr[e.rule] || 0) + 1; });
+  const top = Object.entries(wr).sort((a, b) => b[1] - a[1]);
+  $("mistakes").innerHTML = top.length ? `<table><tbody>${top.map(([k, v]) => `<tr><td>${esc(BY_ID[k].name)}</td><td class="num">${v}</td></tr>`).join("")}</tbody></table>` : `<p class="sm muted">No wrong answers yet.</p>`;
+  $("bank").innerHTML = `<table><thead><tr><th>Rule</th><th>Items</th><th>Status</th></tr></thead><tbody>${RULES.map(r => `<tr><td><b>${esc(r.name)}</b><div class="sm muted">${esc(r.rule_id)} · ${esc(r.category)}</div></td><td class="num">${r.items.length}</td><td>${S.reviewed[r.rule_id] ? `<span class="verdict v-correct">checked here</span>` : `<button class="small" data-rev="${r.rule_id}">Mark checked</button>`}</td></tr>`).join("")}</tbody></table>`;
+}
+document.addEventListener("click", e => { const b = e.target.closest("[data-lab]"); if (b) { S.labels[b.dataset.k] = b.dataset.lab; save(); renderTeacher(); toast("Saved as a teacher label."); }
+  const v = e.target.closest("[data-rev]"); if (v) { S.reviewed[v.dataset.rev] = true; save(); renderTeacher(); } });
+
+// reset
+$("resetAll").onclick = () => { $("resetConfirm").hidden = false; };
+$("resetNo").onclick = () => { $("resetConfirm").hidden = true; };
+$("resetYes").onclick = () => { S = fresh(); save(); $("resetConfirm").hidden = true; render(); renderStudy(); renderTeacher(); toast("All progress erased."); };
+
+// reading aid toggle
+try { if (localStorage.getItem(KEY + "-noaid") === "1") { document.body.classList.add("noaid"); $("aidToggle").checked = false; } } catch (e) {}
+$("aidToggle").onchange = () => { const off = !$("aidToggle").checked; document.body.classList.toggle("noaid", off); try { localStorage.setItem(KEY + "-noaid", off ? "1" : "0"); } catch (e) {} };
+
+// ---------------- letters view (Step 0) ----------------
+const NEW = new Set(["ఎ", "ఒ", "ె", "ొ", "ళ", "ఱ", "ం"]);
+function renderLetters() {
+  $("diffs").innerHTML = SCRIPT.differences.map(d => `<div class="panel" style="margin:0"><div style="font:600 1.6rem/1.2 var(--te)">${esc(d.telugu)}</div><div class="hi muted">${esc(d.deva)}</div><p class="sm" style="margin:6px 0">${esc(d.note)}</p>${d.example.map(w => `<span class="te">${esc(w)}</span> <span class="aid" style="display:inline">${esc(telToDeva(w))}</span> ${listenBtn(w)}`).join("<br>")}</div>`).join("");
+  const grp = (title, ls) => `<div class="sm muted">${title}</div><div class="lt">${ls.map(c => `<div class="${NEW.has(c) ? "new" : ""}"><b>${/^[ా-్ంః]$/u.test(c) ? "◌" + c : c}</b><span>${esc(T2D[c] || "")}</span></div>`).join("")}</div>`;
+  $("letterGrid").innerHTML = grp("Vowels", SCRIPT.vowels) + grp("Consonants", SCRIPT.consonants) + grp("Vowel signs and marks", SCRIPT.signs) + `<p class="sm muted">Outlined letters are the new ones.</p>`;
+  if (!readW) nextRead();
+}
+const WORDS = [...new Set(RULES.flatMap(r => r.items.flatMap(i => i.accepted.flatMap(tokens))))];
+let readW = null, readOk = 0, readN = 0;
+const foldDeva = t => normalize(t).replace(/ऎ/g, "ए").replace(/ऒ/g, "ओ").replace(/ॆ/g, "े").replace(/ॊ/g, "ो");
+function nextRead() { readW = pick(WORDS); $("readWord").innerHTML = `${esc(readW)} ${listenBtn(readW)}`; $("readAns").value = ""; $("readFb").textContent = ""; }
+$("readCheck").onclick = () => { if (!readW) return; const ok = foldDeva($("readAns").value) === foldDeva(telToDeva(readW)); readN++; readOk += ok;
+  $("readFb").innerHTML = ok ? `<span class="verdict v-correct">correct</span>${esc(telToDeva(readW))}` : `<span class="verdict v-wrong">not quite</span>It reads <b class="hi">${esc(telToDeva(readW))}</b>`;
+  $("readScore").textContent = `${readOk}/${readN} right`; setTimeout(nextRead, ok ? 900 : 2600); };
+$("readSkip").onclick = () => { if (readW) { $("readFb").innerHTML = `It reads <b class="hi">${esc(telToDeva(readW))}</b>`; setTimeout(nextRead, 2200); } };
+$("readAns").addEventListener("keydown", e => { if (e.key === "Enter") $("readCheck").click(); });
+
+// routing
+const VIEWS = ["letters", "learn", "study", "teacher", "about"];
+function route() { const v = VIEWS.includes(location.hash.slice(1)) ? location.hash.slice(1) : "learn";
+  document.querySelectorAll("[data-v]").forEach(s => s.hidden = s.dataset.v !== v);
+  document.querySelectorAll("nav a").forEach(a => { if (a.dataset.view === v) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+  if (v === "study") renderStudy(); if (v === "teacher") renderTeacher(); if (v === "learn") render(); if (v === "letters") renderLetters(); }
+addEventListener("hashchange", route);
+document.querySelectorAll("nav a").forEach(a => a.addEventListener("click", () => setTimeout(route)));
+route(); render();
+setInterval(() => { if (!document.hidden && !$("v-learn").hidden) renderSide(); }, 30000);
+window.__setu = {S: () => S, check, checkDraft, turn, intro, answer, devaToTel, telToDeva}; window.__items = id => ITEMS[id];
+})();
+</script>
+</body></html>

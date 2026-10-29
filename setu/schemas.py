@@ -19,7 +19,8 @@ ClassmateRuleState = Literal["unknown", "taught", "forgotten"]
 class Item(BaseModel):
     item_id: str
     english: str
-    hindi: str
+    hindi: str = ""                 # Hindi gloss (L1 for Hindi speakers learning Telugu)
+    telugu: str = ""                # Telugu gloss (L1 for Telugu speakers learning Hindi)
     accepted: list[str]            # full correct sentences (Telugu)
     planted_error: str             # bank sentence with exactly one error of the rule
     wrong_regex: list[str]         # patterns that identify this rule's error

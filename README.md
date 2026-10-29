@@ -66,3 +66,14 @@ Raju runs as a tool-using agent by default (`SETU_AGENT=0` switches to the plain
 It ports the checker, leak filter, tool, planner, Raju state, forgetting, study conditions and tests to JavaScript;
 Raju's drafts come from a scripted stand-in for the model. Parity with Python: `python scripts/evaluate.py` then
 `node scripts/js/parity_hosted.js` (needs Playwright; 185 cases, 0 mismatches on 29 Oct 2026).
+
+## Share the website (free)
+* **Easiest:** open `app/hosted/setu_app.html` (or `docs/index.html`) in any browser. It needs no server; only the fonts load from the internet.
+* **Free public link (GitHub Pages):** repository Settings → Pages → Build and deployment → Source: *Deploy from a branch* → Branch: `main`, folder `/docs` → Save.
+  After a minute the site is at `https://favianaNoronha.github.io/LMA---Reverse-learning-Tutor/` (the paper, video and reviewer pack are under the same address).
+* **Local server for the full app with Gemma:** `SETU_LLM=http://localhost:11434/v1 SETU_MODEL=gemma3:12b uvicorn app.server:app --host 0.0.0.0 --port 8000`; people on the same Wi-Fi open `http://<your-mac-ip>:8000`.
+  To show it to someone outside for a demo, a free tunnel such as `cloudflared tunnel --url http://localhost:8000` gives a temporary public link while your Mac is on.
+
+## Native reviewer pack
+`python scripts/make_reviewer_pack.py` → `docs/reviewer_pack/` (workbook PDF + five CSV sheets: Hindi→Telugu rules, Telugu→Hindi draft rules,
+blind learner-answer marking, Hindi-letter reading aid, new rules and spoken forms).
