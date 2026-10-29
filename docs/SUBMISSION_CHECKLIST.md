@@ -12,3 +12,24 @@ Keep these answers true as the system changes, and back each one with evidence f
 
 Also required by our own plan for submission: paper (v8+), repo with tests passing, plain-language explainer,
 Gemma leak baseline numbers, Table 9 metrics filled in, consent forms, interview notes.
+
+## Activity 3: schema for one of our tools
+
+Tool: `check_classmate_sentence` — implemented in `setu/tools.py`, tested in `tests/test_tools.py`
+(the leak filter exposed as a function the model calls on each draft before it is shown).
+
+- **When to use:** on every draft sentence Raju wants to show the learner.
+- **When not to:** to mark the learner's own answer (that's the checker), or to translate or explain.
+- **item_id** — string, pattern `^(HI-TE|TE-HI)-[0-9]{3}-[a-z]$`, e.g. `HI-TE-002-a`.
+  Likely wrong values: the rule id `HI-TE-002`, or the English meaning "This is a book."
+- **sentence** — string, one sentence in Telugu script, 1–120 chars.
+  Likely wrong values: romanized `idi pustakam undi`, the sentence plus an English gloss, Hindi text, or two sentences.
+- **Exact error strings** (first invalid argument only):
+  - `ERROR invalid_argument item_id: "HI-TE-002" is a rule id; pass an item id like "HI-TE-002-a".`
+  - `ERROR invalid_argument item_id: "<v>" does not match HI-TE-NNN-x (example: HI-TE-002-a).`
+  - `ERROR invalid_argument item_id: "<v>" is not in the rule bank.`
+  - `ERROR invalid_argument sentence: contains Latin letters; pass Telugu script only, no romanization or English.`
+  - `ERROR invalid_argument sentence: no Telugu characters found; pass the sentence in Telugu script.`
+  - `ERROR invalid_argument sentence: more than one sentence or line; pass exactly one sentence.`
+  - `ERROR invalid_argument sentence: empty; pass one Telugu sentence.` / `... longer than 120 characters; pass one short sentence.`
+- **Success return:** `{"ok": true|false, "reasons": [OOV | NOT_ONE_ERROR | UNKNOWN_RULE_CORRECT | ANSWER_LEAK | EXPLANATION]}`
