@@ -1,6 +1,7 @@
 """Per-learner classmate knowledge. The classmate is weaker than the learner by construction:
 a rule moves unknown -> taught only after the learner corrects it correctly; taught -> forgotten when
 the learner's own tracker predicts the learner is about to forget it (so the classmate 'forgets' too)."""
+from __future__ import annotations
 from .schemas import ClassmateRuleState
 
 

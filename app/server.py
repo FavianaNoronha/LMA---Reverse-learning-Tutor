@@ -4,6 +4,7 @@
   SETU_LLM=mock uvicorn app.server:app --reload            # or SETU_LLM=http://localhost:11434/v1 SETU_MODEL=gemma3:12b
 then open http://127.0.0.1:8000
 """
+from __future__ import annotations
 import os
 from pathlib import Path
 from fastapi import FastAPI

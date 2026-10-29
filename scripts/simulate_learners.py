@@ -2,6 +2,7 @@
   python scripts/simulate_learners.py                # 20 learners x sensitivity grid, mock model
 Writes docs/results_sim_learners.json. These numbers follow from the assumptions in setu/simlearner.py; they test
 the machinery and show which assumptions drive the A/B/C differences. They are NOT evidence about people."""
+from __future__ import annotations
 import argparse, json, math, random, sys, tempfile
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))

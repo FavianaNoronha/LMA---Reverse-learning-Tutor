@@ -1,6 +1,7 @@
 """Leak filter v0. A classmate draft is shown to the learner only if it passes all checks.
 Reasons: OOV (word the learner has not seen), NOT_ONE_ERROR, UNKNOWN_RULE_CORRECT,
 ANSWER_LEAK, EXPLANATION, and for no-error turns NOT_CORRECT."""
+from __future__ import annotations
 from dataclasses import dataclass, field
 from .schemas import Rule, Item, ClassmateTurn
 from .text import tokens, normalize

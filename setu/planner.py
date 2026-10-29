@@ -3,6 +3,7 @@ has been taught (it cannot use a rule correctly before that).
 Optional `weights` (rule_id -> weight) makes Raju plant mistakes the learner makes more often, borrowing the
 error-profile idea of 'Imitating Mistakes in a Learning Companion AI Agent' (arXiv 2507.12801). Raju's
 knowledge state is unaffected; weights only steer which unknown rule he is wrong about."""
+from __future__ import annotations
 import random
 from .state import RajuState
 
