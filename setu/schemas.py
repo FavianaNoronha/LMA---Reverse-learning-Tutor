@@ -31,6 +31,7 @@ class Item(BaseModel):
 class Rule(BaseModel):
     rule_id: str
     name: str
+    title: str = ""                 # plain-language title shown to learners (name stays the technical label)
     category: str
     l1_habit: str
     transfer: Transfer

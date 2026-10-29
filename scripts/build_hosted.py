@@ -9,7 +9,7 @@ sys.path.insert(0, str(ROOT))
 from setu.script import DIFFERENCES, _assigned
 tel2deva = {chr(c): chr(c - 0x300) for c in range(0x0C00, 0x0C80) if _assigned(c) and _assigned(c - 0x300)}
 def letters(lo, hi):
-    return [chr(c) for c in range(lo, hi + 1) if _assigned(c) and chr(c) in tel2deva and unicodedata.name(chr(c)).find("VOCALIC") < 0]
+    return [chr(c) for c in range(lo, hi + 1) if _assigned(c) and chr(c) in tel2deva and unicodedata.name(chr(c)).find("VOCALIC") < 0 and c != 0x0C34]
 script = {"tel2deva": tel2deva, "differences": DIFFERENCES,
           "vowels": letters(0x0C05, 0x0C14), "consonants": letters(0x0C15, 0x0C39),
           "signs": letters(0x0C3E, 0x0C4C) + ["ం", "ః", "్"]}

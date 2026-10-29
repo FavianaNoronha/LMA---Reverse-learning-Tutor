@@ -42,7 +42,8 @@
      "^तुम्हारी गाड़ी लाल है$"
     ]
    }
-  ]
+  ],
+  "title": "मेरा/मेरी: match the noun's gender"
  },
  {
   "rule_id": "TE-HI-002",
@@ -87,7 +88,8 @@
      "^चाय अच्छी है$"
     ]
    }
-  ]
+  ],
+  "title": "Things have gender in Hindi (पानी ठंडा)"
  },
  {
   "rule_id": "TE-HI-003",
@@ -133,7 +135,8 @@
      "^मैं कल आऊँगी$"
     ]
    }
-  ]
+  ],
+  "title": "A woman says जाती हूँ, a man जाता हूँ"
  },
  {
   "rule_id": "TE-HI-004",
@@ -178,7 +181,8 @@
      "^मेरी बहनें दिल्ली में रहती हैं$"
     ]
    }
-  ]
+  ],
+  "title": "Girls/women: आ रही हैं"
  },
  {
   "rule_id": "TE-HI-005",
@@ -223,7 +227,8 @@
      "^रवि ने किताब पढ़ी$"
     ]
    }
-  ]
+  ],
+  "title": "Past tense: मैंने, not मैं"
  },
  {
   "rule_id": "TE-HI-006",
@@ -268,7 +273,8 @@
      "^उसने एक किताब पढ़ी$"
     ]
    }
-  ]
+  ],
+  "title": "After ने the verb matches the object (चाय पी)"
  },
  {
   "rule_id": "TE-HI-007",
@@ -314,7 +320,8 @@
      "^लड़के को (दे )?दो$"
     ]
    }
-  ]
+  ],
+  "title": "मेरे घर में, लड़के को"
  },
  {
   "rule_id": "TE-HI-008",
@@ -360,7 +367,8 @@
      "^रवि को (दे )?दो$"
     ]
    }
-  ]
+  ],
+  "title": "Write में and को as separate words"
  },
  {
   "rule_id": "TE-HI-009",
@@ -406,7 +414,8 @@
      "^वह (टीचर|अध्यापक) है$"
     ]
    }
-  ]
+  ],
+  "title": "Hindi needs है in ‘This is a book’"
  },
  {
   "rule_id": "TE-HI-010",
@@ -455,6 +464,7 @@
      "खरीदा हुआ घर"
     ]
    }
-  ]
+  ],
+  "title": "‘The book I read’: use जो"
  }
 ]

@@ -18,7 +18,7 @@ from .ledger import apply_check
 from .llm import LLM
 from .memory import Learner, RuleMemory, Store
 from .planner import choose_turn
-from .schemas import Rule
+from .schemas import Rule, CheckResult
 from .state import RajuState
 from .text import tokens, normalize
 from .script import has_devanagari, has_telugu, deva_to_telugu, telugu_to_deva, fold_vowel_length, final_m_variant
@@ -187,7 +187,10 @@ class Tutor:
 
         # Raju turn
         raju = self._raju(l)
-        res = self._check(rule, item, text, typed_deva, no_error=p["turn_type"] == "no_error")
+        if p["turn_type"] == "planted" and text == NO_ERROR:     # "no mistake" pressed, but Raju's sentence had one
+            res = CheckResult(item_id=item.item_id, answer=text, verdict="wrong", reason="Raju's sentence had a mistake")
+        else:
+            res = self._check(rule, item, text, typed_deva, no_error=p["turn_type"] == "no_error")
         ev = apply_check(raju, lid, rule, item, res, p["turn_type"])
         self._log(l, "checked", rule=rule.rule_id, verdict=res.verdict, turn_type=p["turn_type"],
                   raju_changed=ev.classmate_state_changed, counts=ev.counts_toward_mastery)

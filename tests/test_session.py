@@ -125,3 +125,11 @@ def test_demo_app_inside_view_and_demo_answers(tmp_path, monkeypatch):
     monkeypatch.setenv("SETU_DEMO", "0"); importlib.reload(srv)
     c2 = TestClient(srv.app)
     assert "demo_answer" not in c2.post("/api/intro", json={"learner_id": "e"}).json()      # never leaks the answer outside demo mode
+
+
+def test_pressing_no_mistake_on_a_planted_turn_is_wrong_not_unsure(tmp_path):
+    t = tutor(tmp_path)
+    learn_first_rule(t)
+    t.turn("a")
+    out = t.answer("a", NO_ERROR)
+    assert out["verdict"] == "wrong" and out["raju_state"] == "unknown"

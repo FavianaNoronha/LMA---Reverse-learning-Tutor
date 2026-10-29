@@ -2,236 +2,252 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500&display=swap">
 <style>
-/* Layout: sticky top bar with four views (Learn, Study, Teacher, How it works). Learn = lesson column + progress/inside column.
-   Raju is marigold, the learner indigo, the rule-based referee teal; neutrals lean slightly toward indigo. */
+/* Layout: one centred column (max 760px) that shows ONE thing to do at a time. Research tools live on their own page.
+   Raju = marigold, learner = indigo, referee = teal. */
 :root{
-  --bg:#f5f5fa; --surface:#ffffff; --surface-2:#eef0f8; --ink:#1b2040; --muted:#5a6185; --line:#dcdfec;
-  --raju:#c97412; --raju-soft:#fcefdc; --you:#4a40c4; --you-soft:#e8e6fb; --ref:#167486; --ref-soft:#dcf0f3;
-  --good:#23824a; --good-soft:#e0f3e7; --bad:#bd3a33; --bad-soft:#fbe5e3; --warn:#946b00; --warn-soft:#fbf1d3;
+  --bg:#f6f6fb; --surface:#ffffff; --surface-2:#eff0f8; --ink:#1b2040; --muted:#5a6185; --line:#dcdfec;
+  --raju:#c97412; --raju-soft:#fdf1df; --you:#4a40c4; --you-soft:#ebe9fc; --ref:#167486; --ref-soft:#def1f4;
+  --good:#23824a; --good-soft:#e2f4e8; --bad:#bd3a33; --bad-soft:#fbe6e4; --warn:#946b00; --warn-soft:#fbf2d6;
   --display:"Baloo 2","Noto Sans",system-ui,sans-serif;
   --body:"Noto Sans","Noto Sans Telugu","Noto Sans Devanagari",system-ui,sans-serif;
   --te:"Noto Sans Telugu","Noto Sans",sans-serif; --hi:"Noto Sans Devanagari","Noto Sans",sans-serif;
-  --r:12px;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#10132a; --surface:#181c39; --surface-2:#20254a; --ink:#eceefb; --muted:#a4aacd; --line:#2f3562;
+  --bg:#10132a; --surface:#181c39; --surface-2:#21264b; --ink:#eceefb; --muted:#a4aacd; --line:#2f3562;
   --raju:#f2a33e; --raju-soft:#3a2b14; --you:#a59dff; --you-soft:#2a2659; --ref:#55c3d6; --ref-soft:#123941;
   --good:#62d38c; --good-soft:#163a26; --bad:#ff8a82; --bad-soft:#41201f; --warn:#f0c24b; --warn-soft:#3a3115; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#10132a; --surface:#181c39; --surface-2:#20254a; --ink:#eceefb; --muted:#a4aacd; --line:#2f3562;
+  --bg:#10132a; --surface:#181c39; --surface-2:#21264b; --ink:#eceefb; --muted:#a4aacd; --line:#2f3562;
   --raju:#f2a33e; --raju-soft:#3a2b14; --you:#a59dff; --you-soft:#2a2659; --ref:#55c3d6; --ref-soft:#123941;
   --good:#62d38c; --good-soft:#163a26; --bad:#ff8a82; --bad-soft:#41201f; --warn:#f0c24b; --warn-soft:#3a3115; color-scheme:dark}
 *{box-sizing:border-box}
 html,body{background:var(--bg);color:var(--ink)}
-body{font:15px/1.55 var(--body);margin:0}
+body{font:16px/1.6 var(--body);margin:0}
 .te{font-family:var(--te)} .hi{font-family:var(--hi)}
-h1,h2,h3{font-family:var(--display);line-height:1.1;margin:0;text-wrap:balance}
+h1,h2,h3{font-family:var(--display);line-height:1.12;margin:0;text-wrap:balance}
 button,input,textarea,select{font:inherit;color:inherit}
-button{cursor:pointer;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 13px;font-weight:600}
+button{cursor:pointer;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:10px 16px;font-weight:600}
 button:hover{border-color:var(--you)}
-button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--you);outline-offset:2px}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--you);outline-offset:2px}
 button:disabled{opacity:.5;cursor:default}
-button.primary{background:var(--you);border-color:var(--you);color:#fff}
-button.raju{background:var(--raju);border-color:var(--raju);color:#1d1300}
-button.ghost{background:transparent}
-button.small{padding:5px 9px;font-size:.85rem;border-radius:8px}
+.btn-main{background:var(--you);border-color:var(--you);color:#fff;font-size:1.05rem;padding:13px 22px}
+.btn-raju{background:var(--raju);border-color:var(--raju);color:#1d1300}
+.btn-big{font-size:1.05rem;padding:14px 18px;flex:1 1 200px}
+.btn-link{border:0;background:transparent;color:var(--you);padding:6px 4px;font-weight:600}
+.small{padding:6px 11px;font-size:.88rem;border-radius:9px}
 a{color:var(--you)}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
 .bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
-.bar-in{max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.brand{display:flex;align-items:baseline;gap:8px;margin-right:auto}
-.brand b{font:800 1.55rem/1 var(--display)} .brand b span{color:var(--raju)}
-.brand small{color:var(--muted);font-size:.8rem}
-nav{display:flex;gap:4px;flex-wrap:wrap}
-nav a{padding:7px 12px;border-radius:999px;text-decoration:none;color:var(--muted);font-weight:600;font-size:.92rem}
+.bar-in{max-width:1040px;margin:0 auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.brand{margin-right:auto;text-decoration:none;color:var(--ink);font:800 1.45rem/1 var(--display)} .brand span{color:var(--raju)}
+nav{display:flex;gap:2px;flex-wrap:wrap}
+nav a{padding:7px 12px;border-radius:999px;text-decoration:none;color:var(--muted);font-weight:600;font-size:.95rem}
 nav a[aria-current="page"]{background:var(--you-soft);color:var(--you)}
-.clock{display:flex;gap:6px;align-items:center;color:var(--muted);font-size:.85rem;font-variant-numeric:tabular-nums}
-main{max-width:1240px;margin:0 auto;padding-block:18px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:18px;align-items:start}
-@media (max-width:920px){.grid{grid-template-columns:1fr}}
-.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;min-width:0}
-.panel + .panel{margin-top:14px}
-.label{font:700 .72rem/1 var(--body);letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
-.label.ref{color:var(--ref)}
-.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.stack{display:flex;flex-direction:column;gap:10px}
-.muted{color:var(--muted)} .sm{font-size:.86rem}
-.notice{background:var(--warn-soft);color:var(--ink);border-radius:10px;padding:10px 12px;font-size:.88rem}
+nav a.research{font-size:.82rem;font-weight:500}
+main{padding-block:24px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.col{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.wide{max-width:1040px;margin:0 auto}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;min-width:0}
+.muted{color:var(--muted)} .sm{font-size:.88rem}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.label{font:700 .74rem/1 var(--body);letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+/* home */
+.hero h1{font-size:2.5rem} .hero h1 span{color:var(--raju)}
+.hero .hi{font-size:1.2rem;color:var(--muted);margin-top:4px}
+.steps3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:22px 0}
+@media (max-width:620px){.steps3{grid-template-columns:1fr}}
+.steps3 div{background:var(--surface-2);border-radius:14px;padding:14px}
+.steps3 b{display:block;font:700 1.08rem/1.25 var(--display);margin-bottom:2px}
+.num{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--you);color:#fff;font:800 .95rem/1 var(--display);margin-bottom:8px}
+.welcome{background:var(--you-soft);border-radius:14px;padding:14px 16px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
 /* lesson */
-#log{display:flex;flex-direction:column;gap:10px;min-height:280px;max-height:52vh;overflow:auto;padding:2px 4px 2px 0}
-.msg{padding:10px 14px;border-radius:14px;max-width:92%;background:var(--surface-2);border:1px solid transparent}
-.msg small{display:block;color:var(--muted);font-size:.82rem;margin-top:2px}
-.msg.raju{background:var(--raju-soft);border-color:var(--raju)}
-.msg.you{align-self:flex-end;background:var(--you-soft)}
-.msg.ref{background:var(--ref-soft)}
-.msg.rule{background:var(--surface);border:1px solid var(--line)}
-.msg .say{font:500 1.35rem/1.35 var(--te)}
-.who{display:flex;gap:8px;align-items:center;font-weight:700;font-size:.85rem;margin-bottom:4px}
-.av{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;font:800 .8rem/1 var(--display);color:#14172e}
-.av.r{background:var(--raju)} .av.y{background:var(--you)} .av.c{background:var(--ref)}
+.progress{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-size:.9rem;color:var(--muted)}
+.pbar{height:8px;border-radius:5px;background:var(--surface-2);overflow:hidden;flex:1 1 160px}
+.pbar i{display:block;height:100%;background:var(--you);border-radius:5px;transition:width .4s}
+.kicker{font:700 .78rem/1 var(--body);letter-spacing:.12em;text-transform:uppercase}
+.k-rule{color:var(--ref)} .k-you{color:var(--you)} .k-raju{color:var(--raju)}
+.card h2{font-size:1.65rem;margin:6px 0 4px}
+.why{color:var(--muted);margin:2px 0 14px}
+.pair{display:grid;gap:8px;margin:10px 0}
+.ex{display:flex;gap:10px;align-items:flex-start;border-radius:12px;padding:10px 12px}
+.ex.bad{background:var(--bad-soft)} .ex.good{background:var(--good-soft)}
+.ex .mark{font:800 1.1rem/1.5 var(--display);width:22px;flex:none}
+.ex.bad .mark{color:var(--bad)} .ex.good .mark{color:var(--good)}
+.say{font:500 1.5rem/1.35 var(--te)}
+.aid{display:block;font:500 .95rem var(--hi);color:var(--muted)}
+body.noaid .aid,body.noaid .aidbtn{display:none}
+.aidbtn{border:0;background:transparent;color:var(--you);padding:0;font-size:.85rem;font-weight:600}
+.listen{border:0;background:transparent;padding:2px 6px;font-size:1rem;color:var(--muted)}
+.task{background:var(--surface-2);border-radius:14px;padding:14px 16px;margin-top:6px}
+.task b{font-size:1.15rem}
+.raju{display:flex;gap:14px;align-items:flex-start}
+.av{flex:none;display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:var(--raju);color:#1d1300;font:800 1.4rem/1 var(--display)}
+.bubble{background:var(--raju-soft);border:1px solid var(--raju);border-radius:4px 16px 16px 16px;padding:12px 16px;min-width:0}
+.bubble .ask{font:500 .95rem var(--hi);color:var(--muted)}
+.q{font:700 1.15rem/1.3 var(--display);margin:18px 0 10px}
+textarea.ans{width:100%;min-height:58px;resize:vertical;border:2px solid var(--line);border-radius:12px;background:var(--bg);padding:10px 12px;font:500 1.3rem/1.4 var(--te)}
+textarea.ans:focus{border-color:var(--you)}
+.tiles{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.tile{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 12px;font:500 1.02rem var(--te);cursor:pointer}
+.kb{display:grid;grid-template-columns:repeat(auto-fill,minmax(40px,1fr));gap:4px;margin-top:8px}
+.kb button{padding:7px 0;font:500 1.05rem var(--te);border-radius:8px}
+details>summary{cursor:pointer;color:var(--you);font-size:.9rem;font-weight:600}
+.fb{border-radius:14px;padding:14px 16px;margin-top:14px}
+.fb.correct{background:var(--good-soft)} .fb.wrong{background:var(--bad-soft)} .fb.unsure,.fb.explanation{background:var(--warn-soft)}
+.fb h3{font-size:1.3rem}
+.fb.correct h3{color:var(--good)} .fb.wrong h3{color:var(--bad)} .fb.unsure h3,.fb.explanation h3{color:var(--warn)}
+.fb p{margin:4px 0}
+.caption{background:var(--ref-soft);border-radius:12px;padding:12px 14px;font-weight:600}
+.status{display:flex;gap:8px;flex-wrap:wrap}
+.pill{font:600 .85rem/1 var(--body);padding:7px 11px;border-radius:999px;background:var(--surface-2);color:var(--muted)}
+.pill b{color:var(--ink)}
+.inside .step{border-left:3px solid var(--line);padding:3px 0 3px 10px;font-size:.88rem;margin-top:8px}
+.inside .step.raju_turn{border-color:var(--raju)} .inside .step.checked{border-color:var(--ref)} .inside .step.forgot{border-color:var(--bad)}
+.reason{display:inline-block;font:700 .66rem/1 var(--body);padding:3px 6px;border-radius:6px;background:var(--bad-soft);color:var(--bad);margin:1px 2px}
+.okc{display:inline-block;font:700 .66rem/1 var(--body);padding:3px 6px;border-radius:6px;background:var(--good-soft);color:var(--good)}
+/* letters */
+.lt{display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:6px;margin:8px 0 14px}
+.lt div{background:var(--surface-2);border-radius:10px;padding:6px 4px;text-align:center}
+.lt b{display:block;font:600 1.45rem/1.2 var(--te)} .lt span{font:500 .9rem var(--hi);color:var(--muted)}
+.lt div.new{outline:2px solid var(--raju)}
+.diffs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:620px){.diffs{grid-template-columns:1fr}}
+.diffs div{background:var(--surface-2);border-radius:12px;padding:12px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.tabs button[aria-pressed="true"]{background:var(--you-soft);border-color:var(--you);color:var(--you)}
+/* research page (reuses the study / teacher markup) */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;min-width:0}
+.panel + .panel{margin-top:14px}
+.label.ref{color:var(--ref)}
+.grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:920px){.grid{grid-template-columns:1fr}}
+.cond{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.cond{grid-template-columns:1fr}}
+.cond .panel{margin:0}
+.tag{font:800 .95rem/1 var(--display);width:28px;height:28px;border-radius:8px;display:inline-grid;place-items:center;color:#14172e;margin-right:6px}
+.tA{background:var(--raju)} .tB{background:var(--ref)} .tC{background:var(--you)}
 .verdict{display:inline-block;font:700 .74rem/1 var(--body);padding:4px 8px;border-radius:7px;letter-spacing:.04em;text-transform:uppercase;margin-right:6px}
 .v-correct{background:var(--good-soft);color:var(--good)} .v-wrong{background:var(--bad-soft);color:var(--bad)}
-.v-unsure,.v-explanation,.v-recorded{background:var(--warn-soft);color:var(--warn)}
-.listen{border:0;background:transparent;padding:2px 6px;font-size:.85rem;color:var(--muted)}
-.composer{margin-top:12px;border-top:1px solid var(--line);padding-top:12px;display:flex;flex-direction:column;gap:9px}
-#ans{width:100%;min-height:52px;resize:vertical;border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:10px 12px;font:500 1.25rem/1.4 var(--te)}
-.chips{display:flex;gap:6px;flex-wrap:wrap}
-.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:3px 10px;font:500 1rem var(--te);cursor:pointer}
-.kb{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:4px}
-.kb button{padding:6px 0;font:500 1.05rem var(--te);border-radius:7px}
-details>summary{cursor:pointer;color:var(--muted);font-size:.86rem;font-weight:600}
-.next{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-.next h3{font-size:1.2rem}
-/* progress */
-.rules{display:flex;flex-direction:column}
-.rl{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:3px 10px;padding:10px 0;border-top:1px solid var(--line)}
-.rl:first-child{border-top:0}
-.rl b{font-size:.93rem}
-.state{font:700 .7rem/1 var(--body);padding:4px 8px;border-radius:7px;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
-.s-unknown{background:var(--raju-soft);color:var(--raju)} .s-taught{background:var(--good-soft);color:var(--good)} .s-forgotten{background:var(--bad-soft);color:var(--bad)} .s-none{background:var(--surface-2);color:var(--muted)}
-.meter{grid-column:1/-1;height:8px;border-radius:5px;background:var(--surface-2);position:relative}
-.meter i{position:absolute;inset:0 auto 0 0;border-radius:5px;background:var(--you);transition:width .5s}
-.meter b{position:absolute;top:-3px;bottom:-3px;left:50%;width:2px;background:var(--warn)}
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
-@media (max-width:520px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.stat{background:var(--surface-2);border-radius:10px;padding:9px 10px}
-.stat b{display:block;font:800 1.35rem/1.05 var(--display);font-variant-numeric:tabular-nums}
-.stat span{font-size:.78rem;color:var(--muted)}
-.step{border-left:3px solid var(--line);padding:3px 0 3px 10px;font-size:.88rem}
-.step + .step{margin-top:8px}
-.step.raju_turn{border-color:var(--raju)} .step.checked{border-color:var(--ref)} .step.forgot{border-color:var(--bad)} .step.intro{border-color:var(--you)}
-.tool{font-size:.84rem;color:var(--muted)}
-.reason{display:inline-block;font:700 .66rem/1 var(--body);padding:3px 6px;border-radius:6px;background:var(--bad-soft);color:var(--bad);margin:1px 2px}
-.ok{display:inline-block;font:700 .66rem/1 var(--body);padding:3px 6px;border-radius:6px;background:var(--good-soft);color:var(--good)}
-/* tables */
+.v-unsure,.v-explanation,.v-recorded,.v-saved{background:var(--warn-soft);color:var(--warn)}
+.notice{background:var(--warn-soft);border-radius:10px;padding:10px 12px;font-size:.9rem}
 .tw{overflow-x:auto}
 table{border-collapse:collapse;width:100%;font-size:.88rem}
 th,td{text-align:left;padding:8px 9px;border-bottom:1px solid var(--line);vertical-align:top}
 th{font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
 td.num{font-variant-numeric:tabular-nums;text-align:right}
 textarea.csv{width:100%;min-height:120px;font:12px/1.4 ui-monospace,Menlo,monospace;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px}
-.cond{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-@media (max-width:760px){.cond{grid-template-columns:1fr}}
-.cond .panel{margin:0}
-.tag{display:inline-block;font:800 .95rem/1 var(--display);width:28px;height:28px;border-radius:8px;display:inline-grid;place-items:center;color:#14172e;margin-right:6px}
-.tA{background:var(--raju)} .tB{background:var(--ref)} .tC{background:var(--you)}
-.prose{max-width:68ch}
-.prose p{margin:.4em 0 .9em}
+.prose{max-width:68ch} .prose p{margin:.4em 0 .9em}
 .flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:14px 0}
 @media (max-width:820px){.flow{grid-template-columns:1fr 1fr}}
-.flow div{background:var(--surface-2);border-radius:10px;padding:10px;font-size:.88rem}
-.flow b{display:block;font-family:var(--display);font-size:1.02rem}
-.lt{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:6px;margin:6px 0 12px}
-.lt div{background:var(--surface-2);border-radius:9px;padding:6px 4px;text-align:center}
-.lt b{display:block;font:600 1.5rem/1.2 var(--te)} .lt span{font:500 .9rem var(--hi);color:var(--muted)}
-.lt div.new{outline:2px solid var(--raju)}
-.aid{display:block;font:500 .9rem var(--hi);color:var(--muted)}
-body.noaid .aid,body.noaid .aidbtn{display:none}
-.aidbtn{border:0;background:transparent;color:var(--you);padding:0;font-size:.8rem;font-weight:600}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:9px 14px;border-radius:10px;font-weight:600;z-index:20;max-width:calc(100% - 32px)}
-.cap{background:var(--ref-soft);border-radius:10px;padding:10px 12px;font-weight:600;font-size:.92rem}
+.flow div{background:var(--surface-2);border-radius:12px;padding:12px;font-size:.9rem}
+.flow b{display:block;font-family:var(--display);font-size:1.05rem}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-weight:600;z-index:20;max-width:calc(100% - 32px)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
 <div class="bar"><div class="bar-in">
-  <div class="brand"><b>SETU · Teach <span>Raju</span></b><small>Telugu for Hindi speakers</small></div>
-  <nav aria-label="Views">
+  <a class="brand" href="#home">SETU · Teach <span>Raju</span></a>
+  <nav aria-label="Pages">
+    <a href="#home" data-view="home">Home</a>
     <a href="#letters" data-view="letters">Letters</a>
-    <a href="#learn" data-view="learn">Learn</a>
-    <a href="#study" data-view="study">Study mode</a>
-    <a href="#teacher" data-view="teacher">Teacher</a>
+    <a href="#learn" data-view="learn">Lessons</a>
     <a href="#about" data-view="about">How it works</a>
+    <a href="#research" data-view="research" class="research">Research team</a>
   </nav>
-  <div class="clock"><span id="dayLabel">Day 0</span>
-    <button class="small ghost" id="plus1" title="Pretend one day passed">+1 day</button>
-    <button class="small ghost" id="plus3" title="Pretend three days passed">+3 days</button>
-  </div>
 </div></div>
 
 <main>
-<!-- ============ LEARN ============ -->
-<section id="v-learn" data-v="learn">
-  <div class="grid">
-    <div>
-      <div class="panel next" id="nextPanel">
-        <div class="stack" style="gap:2px;min-width:0">
-          <span class="label">Next step</span>
-          <h3 id="nextTitle">Learn your first rule</h3>
-          <span class="muted sm" id="nextWhy">Every rule starts with a short example. Then Raju tries it.</span>
-        </div>
-        <div class="row">
-          <button class="primary" id="goNext">Continue</button>
-          <button class="raju" id="demoBtn" title="Plays a short scripted lesson">▶ Guided demo</button>
-        </div>
+<!-- ================= HOME ================= -->
+<section data-v="home">
+  <div class="col">
+    <div class="card hero">
+      <h1>Learn Telugu by teaching <span>Raju</span></h1>
+      <div class="hi">राजू को सिखाइए, तेलुगु सीखिए</div>
+      <p class="muted" style="margin:12px 0 0;max-width:58ch">Raju is a classmate who makes the mistakes Hindi speakers make in Telugu. You learn a rule, then you correct Raju. Teaching him is how you learn.</p>
+      <div class="steps3">
+        <div><span class="num">1</span><b>Learn a rule</b><span class="sm muted">One small rule with an example, explained through Hindi.</span></div>
+        <div><span class="num">2</span><b>Raju tries</b><span class="sm muted">He writes a Telugu sentence. Is it right or wrong?</span></div>
+        <div><span class="num">3</span><b>You correct him</b><span class="sm muted">Fix his mistake. When you start to forget, he forgets too.</span></div>
       </div>
-      <div class="cap" id="cap" hidden></div>
-      <div class="panel">
-        <div class="row" style="justify-content:space-between;margin-bottom:8px">
-          <span class="label">Lesson</span>
-          <div class="row">
-            <label class="sm muted" style="display:flex;gap:5px;align-items:center"><input type="checkbox" id="aidToggle" checked> Hindi letters</label>
-            <button class="small" id="bNew">New rule</button>
-            <button class="small" id="bTurn">Raju's turn</button>
-          </div>
-        </div>
-        <div id="log" aria-live="polite"></div>
-        <div class="composer">
-          <label class="sm muted" for="ans" id="ansLabel">Edit Raju's sentence so it is correct, or type your answer in Telugu or Hindi letters.</label>
-          <textarea id="ans" spellcheck="false" placeholder="తెలుగులో, or in Hindi letters: इदि पुस्तकं"></textarea>
-          <div class="row">
-            <button class="primary" id="send">Send</button>
-            <button id="none">No mistake</button>
-            <button class="ghost small" id="clear">Clear</button>
-          </div>
-          <div class="stack" style="gap:6px">
-            <span class="sm muted">Tap a word you have learned:</span>
-            <div class="chips" id="chips"></div>
-          </div>
-          <details id="kbBox"><summary>Telugu keyboard</summary><div class="kb" id="kb" style="margin-top:8px"></div></details>
-        </div>
+      <div id="welcomeBack" class="welcome" hidden></div>
+      <div class="row" style="margin-top:14px">
+        <button class="btn-main" id="homeStart">Start learning</button>
+        <button id="homeLetters">New to Telugu letters? 5-minute tour</button>
+        <button class="btn-raju" id="homeDemo">▶ Watch a 1-minute demo</button>
       </div>
+      <p class="sm muted" style="margin:14px 0 0">No sign-up. You can type in Telugu or in Hindi letters (हिंदी अक्षर). Your progress stays in this browser.</p>
     </div>
+  </div>
+</section>
 
-    <div>
-      <div class="panel">
-        <div class="stats" id="stats"></div>
+<!-- ================= LETTERS ================= -->
+<section data-v="letters" hidden>
+  <div class="col">
+    <div class="card">
+      <span class="kicker k-rule">Letters tour</span>
+      <h2>You already know most Telugu letters</h2>
+      <p class="why">Telugu and Hindi letters come in the same order: क ख ग is క ఖ గ. Most letters are just new shapes. Three short steps:</p>
+      <div class="tabs" role="group" aria-label="Letters tour steps">
+        <button id="lt1" aria-pressed="true">1 · Same order</button>
+        <button id="lt2" aria-pressed="false">2 · What is new</button>
+        <button id="lt3" aria-pressed="false">3 · Read a word</button>
       </div>
-      <div class="panel">
-        <div class="row" style="justify-content:space-between"><span class="label">Your rules and Raju's notebook</span><span class="sm muted">yellow line = 50% recall</span></div>
-        <div class="rules" id="rules" style="margin-top:6px"></div>
-      </div>
-      <div class="panel">
-        <details id="insideBox" open>
-          <summary>Inside the tutor (what the AI and the rules just did)</summary>
-          <div id="trace" style="margin-top:10px"></div>
-        </details>
+      <div id="ltBody"></div>
+      <div class="row" style="justify-content:space-between;margin-top:14px">
+        <button class="btn-link" id="ltBack">← Back</button>
+        <button class="btn-main" id="ltNext">Next</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ LETTERS ============ -->
-<section id="v-letters" data-v="letters" hidden>
-  <div class="panel">
-    <span class="label">Step 0 · the script bridge</span>
-    <h2 style="font-size:1.7rem;margin:6px 0 6px">You already know most Telugu letters</h2>
-    <p class="muted" style="max-width:75ch;margin:0 0 6px">Telugu and Devanagari are sister scripts with the same letter order: क ख ग is క ఖ గ. Most letters are new shapes for sounds you know. Learn the six differences below, then practise reading. You can always type your answers in Hindi letters; the tutor converts them.</p>
+<!-- ================= LESSONS ================= -->
+<section data-v="learn" hidden>
+  <div class="col">
+    <div class="progress"><span id="progText">Rule 0 of 15</span><div class="pbar"><i id="progBar" style="width:0%"></i></div>
+      <label class="sm" style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="aidToggle" checked> Show Hindi letters</label></div>
+    <div class="caption" id="cap" hidden></div>
+    <div class="card" id="stage" aria-live="polite"></div>
+    <div class="status" id="status"></div>
+    <details class="card inside" id="insideBox"><summary>See what the AI and the rules did (for the curious)</summary><div id="trace" style="margin-top:6px"></div></details>
   </div>
-  <div class="panel"><span class="label">What is new for a Hindi reader</span><div class="cond" id="diffs" style="margin-top:10px"></div></div>
-  <div class="grid">
-    <div class="panel"><span class="label">All letters, with their Hindi twins</span><div id="letterGrid" style="margin-top:8px"></div></div>
-    <div class="panel"><span class="label">Reading practice</span>
-      <p class="sm muted" style="margin:6px 0 10px">Read the Telugu word and type it in Hindi letters.</p>
-      <div id="readWord" style="font:600 2.2rem/1.2 var(--te)"></div>
-      <input id="readAns" autocomplete="off" style="width:100%;margin-top:10px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:var(--bg);font:500 1.2rem var(--hi)" placeholder="हिंदी अक्षरों में लिखिए">
-      <div class="row" style="margin-top:10px"><button class="primary" id="readCheck">Check</button><button id="readSkip">Show answer</button><span class="sm muted" id="readScore"></span></div>
-      <div id="readFb" class="sm" style="margin-top:8px"></div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section data-v="about" hidden>
+  <div class="col">
+    <div class="card prose" style="max-width:none">
+      <span class="kicker k-rule">How it works</span>
+      <h2>Why teaching Raju helps you learn</h2>
+      <p>Raju makes mistakes Hindi speakers make in Telugu, such as adding a word for “is” (<span class="te">ఇది పుస్తకం ఉంది</span>) because Hindi says <span class="hi">यह किताब है</span>. When you fix his sentence you have to recall the rule yourself, and explaining it makes it stick. When your memory of a rule starts to fade, Raju forgets it too and makes the mistake again, so your review comes as teaching.</p>
+      <p>An AI told to “act like a beginner” knows too much and gives answers away. So rules, not the AI, keep Raju one step behind you:</p>
+      <div class="flow">
+        <div><b>Planner</b>Picks a rule Raju does not know yet, more often the ones you get wrong.</div>
+        <div><b>Raju</b>An AI writes his sentence and checks it with a tool before you see it.</div>
+        <div><b>Filter</b>Only words you have met, exactly one mistake, no answer, no explaining.</div>
+        <div><b>Referee</b>Plain rules, no AI, decide if your fix is right. Only a right fix teaches Raju.</div>
+        <div><b>Memory</b>Tracks how well you remember each rule; below 50%, Raju forgets it too.</div>
+      </div>
+      <p><b>About this version.</b> The website runs fully in your browser with our 15 draft Hindi→Telugu rules. Raju's sentences come from a scripted stand-in for the AI model; the full system runs Raju on Gemma 3 12B with the same checks. The Telugu sentences are still being checked by a native speaker. Telugu speakers learning Hindi is the next direction.</p>
+      <p>SETU · LMA course project, IIIT Hyderabad · Team Token Guessers (Madhav Malhotra, Kushal Karan, Faviana Noronha, Shaik Areesh). Code and paper: <a href="https://github.com/FavianaNoronha/LMA---Reverse-learning-Tutor" target="_blank" rel="noopener">github.com/FavianaNoronha/LMA---Reverse-learning-Tutor</a></p>
     </div>
   </div>
 </section>
 
-<!-- ============ STUDY ============ -->
-<section id="v-study" data-v="study" hidden>
+<!-- ================= RESEARCH ================= -->
+<section data-v="research" hidden>
+  <div class="wide">
+    <div class="panel">
+      <span class="label">For the research team</span>
+      <h2 style="font-size:1.5rem;margin:6px 0 4px">Study tools</h2>
+      <p class="sm muted" style="margin:0 0 10px">Learners don't need this page. It has the three study conditions and tests, the teacher's checking queue, and demo controls.</p>
+      <div class="tabs" role="group" aria-label="Research tools">
+        <button id="rt1" aria-pressed="true">Study (A/B/C and tests)</button>
+        <button id="rt2" aria-pressed="false">Teacher</button>
+        <button id="rt3" aria-pressed="false">Demo controls</button>
+      </div>
+    </div>
+    <div id="rStudy" style="margin-top:14px"><section id="v-study">
   <div class="panel prose" style="max-width:none">
     <span class="label">Study mode · for the research pilot</span>
     <h2 style="font-size:1.7rem;margin:6px 0 8px">Three ways to practise, one learner</h2>
@@ -257,10 +273,8 @@ body.noaid .aid,body.noaid .aidbtn{display:none}
     <div class="tw" id="resTable" style="margin-top:8px"></div>
     <textarea class="csv" id="csvOut" readonly hidden aria-label="Results as CSV"></textarea>
   </div>
-</section>
-
-<!-- ============ TEACHER ============ -->
-<section id="v-teacher" data-v="teacher" hidden>
+</section></div>
+    <div id="rTeacher" style="margin-top:14px" hidden><section id="v-teacher">
   <div class="grid">
     <div>
       <div class="panel">
@@ -282,38 +296,27 @@ body.noaid .aid,body.noaid .aidbtn{display:none}
       </div>
     </div>
   </div>
-</section>
-
-<!-- ============ ABOUT ============ -->
-<section id="v-about" data-v="about" hidden>
-  <div class="panel prose" style="max-width:none">
-    <span class="label">How it works</span>
-    <h2 style="font-size:1.8rem;margin:6px 0 10px">You learn Telugu by teaching Raju</h2>
-    <div class="prose">
-      <p>Raju is an AI classmate who makes the mistakes a Hindi speaker makes in Telugu, such as adding a word for “is” (<span class="te">ఇది పుస్తకం ఉంది</span>) because Hindi says <span class="hi">यह किताब है</span>. You correct him. Fixing his sentence makes you recall the rule, explaining it makes it stick, and when your memory of a rule fades Raju forgets it too, so your review arrives as re-teaching.</p>
-      <p>An AI told to “act like a beginner” knows too much and leaks answers. So Raju is kept a step behind you by rules, not by the AI:</p>
+</section></div>
+    <div id="rDemo" style="margin-top:14px" hidden>
+      <div class="panel">
+        <span class="label">Time travel (to show forgetting)</span>
+        <p class="sm muted">Pretend days have passed. When a learner's recall of a rule drops below 50%, Raju forgets it.</p>
+        <div class="row"><span id="dayLabel" class="pill">Day 0</span><button id="plus1">+1 day</button><button id="plus3">+3 days</button><button id="plus7">+7 days</button></div>
+      </div>
+      <div class="panel">
+        <span class="label">Reset</span>
+        <p class="sm muted">Erase all progress, study data and teacher labels in this browser.</p>
+        <div class="row"><button id="resetAll">Reset everything</button><span id="resetConfirm" class="row" hidden><span class="sm">Erase everything?</span><button class="small" id="resetYes">Yes, erase</button><button class="small" id="resetNo">Keep</button></span></div>
+      </div>
     </div>
-    <div class="flow">
-      <div><b>Planner</b>Picks a rule Raju does not know yet, favouring ones you get wrong.</div>
-      <div><b>Raju (AI agent)</b>Drafts a sentence and calls a checking tool; revises if it is rejected.</div>
-      <div><b>Leak filter</b>Only words you have met, exactly one mistake, no answer, no explaining.</div>
-      <div><b>Referee (rules)</b>Marks your fix correct, wrong or unsure. Only a correct fix teaches Raju.</div>
-      <div><b>Memory</b>Tracks your recall; below 50%, Raju forgets the rule too.</div>
-    </div>
-    <div class="prose">
-      <p><b>Reading and typing.</b> Most Hindi speakers cannot yet read or type Telugu, so every Telugu sentence also shows its Hindi letters (they fade after you get a rule right three times), there is a listen button, and you can type answers in Hindi letters: the tutor converts them to Telugu before checking, and forgives ए/ओ typed for Telugu's short ఎ/ఒ. The Letters page teaches the six things that are new for a Hindi reader. The same aids are on in every study condition.</p>
-      <p><b>About this version.</b> This page runs entirely in your browser with the project's 15 draft Hindi→Telugu rules. Raju's drafts come from a scripted stand-in for the language model (every third conversation starts with a deliberately leaky draft, so you can see the checking tool reject it). The full system runs Raju on Gemma 3 12B through the same tool and filter. Your progress is kept only in this browser. The Telugu sentences are drafts awaiting native-speaker review. Telugu speakers learning Hindi is the next direction; its rules are being written.</p>
-      <p>Project: SETU, LMA course, IIIT Hyderabad · Team Token Guessers (Madhav Malhotra, Kushal Karan, Faviana Noronha, Shaik Areesh). Code and paper: <a href="https://github.com/FavianaNoronha/LMA---Reverse-learning-Tutor" target="_blank" rel="noopener">github.com/FavianaNoronha/LMA---Reverse-learning-Tutor</a></p>
-    </div>
-    <div class="row"><button id="resetAll" class="ghost">Reset all progress on this device</button><span id="resetConfirm" class="row" hidden><span class="sm">Erase everything?</span><button class="small" id="resetYes">Yes, erase</button><button class="small ghost" id="resetNo">Keep</button></span></div>
   </div>
 </section>
 </main>
 <div class="toast" id="toast" hidden></div>
 
 <script>
-const RULES = [{"rule_id": "HI-TE-001", "name": "Polar question: -aa ending, no kya", "category": "questions", "l1_habit": "Hindi 'क्या' at the start; Telugu marks yes/no questions with -ā on the verb/noun", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft (unreviewed)", "items": [{"item_id": "HI-TE-001-a", "english": "Are you coming?", "hindi": "क्या तुम आ रहे हो?", "accepted": ["నువ్వు వస్తావా", "నువ్వు వస్తున్నావా"], "planted_error": "క్యా నువ్వు వస్తావు", "wrong_regex": ["క్యా"], "fix_regex": ["^నువ్వు (వస్తావా|వస్తున్నావా)$"]}, {"item_id": "HI-TE-001-b", "english": "Is this a book?", "hindi": "क्या यह किताब है?", "accepted": ["ఇది పుస్తకమా"], "planted_error": "క్యా ఇది పుస్తకం", "wrong_regex": ["క్యా"], "fix_regex": ["^ఇది పుస్తకమా$"]}]}, {"rule_id": "HI-TE-002", "name": "Zero copula: no 'is' between two nouns", "category": "copula", "l1_habit": "Hindi है is always present; Telugu leaves it out in 'X is Y'", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)", "items": [{"item_id": "HI-TE-002-a", "english": "This is a book.", "hindi": "यह किताब है।", "accepted": ["ఇది పుస్తకం"], "planted_error": "ఇది పుస్తకం ఉంది", "wrong_regex": ["^(ఇది|అది) \\S+ ఉంది$"], "fix_regex": ["^ఇది పుస్తకం$"]}, {"item_id": "HI-TE-002-b", "english": "That is a pen.", "hindi": "वह कलम है।", "accepted": ["అది పెన్ను"], "planted_error": "అది పెన్ను ఉంది", "wrong_regex": ["^(ఇది|అది) \\S+ ఉంది$"], "fix_regex": ["^అది పెన్ను$"]}]}, {"rule_id": "HI-TE-003", "name": "Possession with dative: 'to me is a book'", "category": "possession", "l1_habit": "Hindi मेरे पास / मुझे; learner uses nominative 'I' + ఉంది", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft (unreviewed)", "items": [{"item_id": "HI-TE-003-a", "english": "I have a book.", "hindi": "मेरे पास एक किताब है।", "accepted": ["నాకు ఒక పుస్తకం ఉంది", "నా దగ్గర ఒక పుస్తకం ఉంది"], "planted_error": "నేను ఒక పుస్తకం ఉంది", "wrong_regex": ["^నేను .* ఉంది$"], "fix_regex": ["^(నాకు|నా దగ్గర) ఒక పుస్తకం ఉంది$"]}, {"item_id": "HI-TE-003-b", "english": "You have a pen.", "hindi": "तुम्हारे पास एक कलम है।", "accepted": ["నీకు ఒక పెన్ను ఉంది", "నీ దగ్గర ఒక పెన్ను ఉంది"], "planted_error": "నువ్వు ఒక పెన్ను ఉంది", "wrong_regex": ["^నువ్వు .* ఉంది$"], "fix_regex": ["^(నీకు|నీ దగ్గర) ఒక పెన్ను ఉంది$"]}]}, {"rule_id": "HI-TE-004", "name": "Case endings attach to the noun (no separate 'in')", "category": "case", "l1_habit": "Hindi में is a separate word; Telugu -lō is a suffix and the noun changes (ఇల్లు→ఇంట్లో)", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft (unreviewed)", "items": [{"item_id": "HI-TE-004-a", "english": "I am in the house.", "hindi": "मैं घर में हूँ।", "accepted": ["నేను ఇంట్లో ఉన్నాను"], "planted_error": "నేను ఇల్లు లో ఉన్నాను", "wrong_regex": [" లో( |$)"], "fix_regex": ["^నేను ఇంట్లో ఉన్నాను$"]}, {"item_id": "HI-TE-004-b", "english": "I am in the room.", "hindi": "मैं कमरे में हूँ।", "accepted": ["నేను గదిలో ఉన్నాను"], "planted_error": "నేను గది లో ఉన్నాను", "wrong_regex": [" లో( |$)"], "fix_regex": ["^నేను గదిలో ఉన్నాను$"]}]}, {"rule_id": "HI-TE-005", "name": "Negation: negative verb form, not 'not' after verb", "category": "negation", "l1_habit": "Hindi नहीं before the verb; Telugu uses a negative verb form (రాను) or కాదు only for nouns", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)", "items": [{"item_id": "HI-TE-005-a", "english": "I will not come.", "hindi": "मैं नहीं आऊँगा।", "accepted": ["నేను రాను"], "planted_error": "నేను వస్తాను కాదు", "wrong_regex": ["కాదు$"], "fix_regex": ["^నేను రాను$"]}, {"item_id": "HI-TE-005-b", "english": "He will not come.", "hindi": "वह नहीं आएगा।", "accepted": ["అతను రాడు", "వాడు రాడు"], "planted_error": "అతను వస్తాడు కాదు", "wrong_regex": ["కాదు$"], "fix_regex": ["^(అతను|వాడు) రాడు$"]}]}, {"rule_id": "HI-TE-006", "name": "'We': మేము (without you) vs మనం (with you)", "category": "pronouns", "l1_habit": "Hindi has one हम; Telugu splits inclusive and exclusive", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)", "items": [{"item_id": "HI-TE-006-a", "english": "We (but not you) are going.", "hindi": "हम (तुम्हारे बिना) जा रहे हैं।", "accepted": ["మేము వెళ్తున్నాం", "మేము వెళ్తున్నాము", "మేము వెళ్తాం"], "planted_error": "మనం వెళ్తున్నాం", "wrong_regex": ["^మనం "], "fix_regex": ["^మేము (వెళ్తున్నాం|వెళ్తున్నాము|వెళ్తాం)$"]}, {"item_id": "HI-TE-006-b", "english": "We (you and I) are going.", "hindi": "हम (तुम और मैं) जा रहे हैं।", "accepted": ["మనం వెళ్తున్నాం", "మనం వెళ్తాం", "మనం వెళ్దాం"], "planted_error": "మేము వెళ్తున్నాం", "wrong_regex": ["^మేము "], "fix_regex": ["^మనం (వెళ్తున్నాం|వెళ్తాం|వెళ్దాం)$"]}]}, {"rule_id": "HI-TE-007", "name": "'He' vs 'she' pronouns (Hindi वह is gender-neutral)", "category": "pronouns", "l1_habit": "Hindi वह covers he and she; Telugu uses అతను / ఆమె", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft (unreviewed)", "items": [{"item_id": "HI-TE-007-a", "english": "She is a teacher.", "hindi": "वह शिक्षिका है।", "accepted": ["ఆమె టీచరు", "ఆమె టీచర్"], "planted_error": "అతను టీచరు", "wrong_regex": ["^అతను (టీచరు|టీచర్)$"], "fix_regex": ["^ఆమె (టీచరు|టీచర్)$"]}, {"item_id": "HI-TE-007-b", "english": "He is a doctor.", "hindi": "वह डॉक्टर है।", "accepted": ["అతను డాక్టరు", "అతను డాక్టర్", "వాడు డాక్టరు", "వాడు డాక్టర్"], "planted_error": "ఆమె డాక్టరు", "wrong_regex": ["^ఆమె (డాక్టరు|డాక్టర్)$"], "fix_regex": ["^(అతను|వాడు) (డాక్టరు|డాక్టర్)$"]}]}, {"rule_id": "HI-TE-008", "name": "Third-person verb ending follows he / she (positive-transfer control)", "category": "agreement", "l1_habit": "Hindi verbs also agree in gender, so this is expected to be easy; used as a control", "transfer": "positive_control", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft (unreviewed)", "items": [{"item_id": "HI-TE-008-a", "english": "She comes.", "hindi": "वह आती है।", "accepted": ["ఆమె వస్తుంది"], "planted_error": "ఆమె వస్తాడు", "wrong_regex": ["^ఆమె \\S*డు$"], "fix_regex": ["^ఆమె వస్తుంది$"]}, {"item_id": "HI-TE-008-b", "english": "He comes.", "hindi": "वह आता है।", "accepted": ["అతను వస్తాడు", "వాడు వస్తాడు"], "planted_error": "అతను వస్తుంది", "wrong_regex": ["^(అతను|వాడు) \\S*ంది$"], "fix_regex": ["^(అతను|వాడు) వస్తాడు$"]}]}, {"rule_id": "HI-TE-009", "name": "Respect: మీరు takes the plural -āru ending", "category": "respect", "l1_habit": "Hindi आप takes plural verb; learner keeps singular -āvu/-āvā after మీరు", "transfer": "unclear", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)", "items": [{"item_id": "HI-TE-009-a", "english": "Sir, are you coming?", "hindi": "आप आ रहे हैं?", "accepted": ["మీరు వస్తారా"], "planted_error": "మీరు వస్తావా", "wrong_regex": ["^మీరు \\S*ావా$"], "fix_regex": ["^మీరు వస్తారా$"]}, {"item_id": "HI-TE-009-b", "english": "Sir, you eat.", "hindi": "आप खाते हैं।", "accepted": ["మీరు తింటారు"], "planted_error": "మీరు తింటావు", "wrong_regex": ["^మీరు \\S*ావు$"], "fix_regex": ["^మీరు తింటారు$"]}]}, {"rule_id": "HI-TE-010", "name": "Relative clause: participle before the noun, no 'jo'", "category": "clauses", "l1_habit": "Hindi जो…वह clause after/before; Telugu uses a -ina participle before the noun", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)", "items": [{"item_id": "HI-TE-010-a", "english": "This is the book that I read.", "hindi": "यह वह किताब है जो मैंने पढ़ी।", "accepted": ["ఇది నేను చదివిన పుస్తకం"], "planted_error": "ఇది జో పుస్తకం నేను చదివాను", "wrong_regex": ["జో"], "fix_regex": ["చదివిన పుస్తకం"]}]}, {"rule_id": "HI-TE-011", "name": "No 'ne' marking: subject stays in the plain form in the past", "category": "case", "l1_habit": "Hindi ने on past transitive subject; learner marks Telugu subject with a case ending", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)", "items": [{"item_id": "HI-TE-011-a", "english": "He read the book.", "hindi": "उसने किताब पढ़ी।", "accepted": ["అతను పుస్తకం చదివాడు", "వాడు పుస్తకం చదివాడు"], "planted_error": "అతనికి పుస్తకం చదివాడు", "wrong_regex": ["^(అతనికి|వాడికి) "], "fix_regex": ["^(అతను|వాడు) పుస్తకం చదివాడు$"]}, {"item_id": "HI-TE-011-b", "english": "I ate the rice.", "hindi": "मैंने चावल खाया।", "accepted": ["నేను అన్నం తిన్నాను"], "planted_error": "నాకు అన్నం తిన్నాను", "wrong_regex": ["^నాకు \\S+ తిన్నాను$"], "fix_regex": ["^నేను అన్నం తిన్నాను$"]}]}, {"rule_id": "HI-TE-012", "name": "Object with -ను when it is a person", "category": "case", "l1_habit": "Hindi को is optional-ish; learner drops Telugu -ను on animate objects", "transfer": "unclear", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft (unreviewed)", "items": [{"item_id": "HI-TE-012-a", "english": "I called mother.", "hindi": "मैंने माँ को बुलाया।", "accepted": ["నేను అమ్మను పిలిచాను"], "planted_error": "నేను అమ్మ పిలిచాను", "wrong_regex": ["^నేను అమ్మ \\S+$"], "fix_regex": ["అమ్మను"]}, {"item_id": "HI-TE-012-b", "english": "I saw father.", "hindi": "मैंने पिताजी को देखा।", "accepted": ["నేను నాన్నను చూశాను"], "planted_error": "నేను నాన్న చూశాను", "wrong_regex": ["^నేను నాన్న \\S+$"], "fix_regex": ["నాన్నను"]}]}, {"rule_id": "HI-TE-013", "name": "Present continuous: -tunnānu, not verb + 'am'", "category": "tense", "l1_habit": "Hindi रहा हूँ is two words; Telugu fuses it, or uses -tū unnānu", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft (unreviewed)", "items": [{"item_id": "HI-TE-013-a", "english": "I am eating.", "hindi": "मैं खा रहा हूँ।", "accepted": ["నేను తింటున్నాను", "నేను తింటూ ఉన్నాను"], "planted_error": "నేను తింటాను ఉన్నాను", "wrong_regex": ["ాను ఉన్నాను$"], "fix_regex": ["^నేను (తింటున్నాను|తింటూ ఉన్నాను)$"]}, {"item_id": "HI-TE-013-b", "english": "I am going.", "hindi": "मैं जा रहा हूँ।", "accepted": ["నేను వెళ్తున్నాను", "నేను వెళ్తూ ఉన్నాను"], "planted_error": "నేను వెళ్తాను ఉన్నాను", "wrong_regex": ["ాను ఉన్నాను$"], "fix_regex": ["^నేను (వెళ్తున్నాను|వెళ్తూ ఉన్నాను)$"]}]}, {"rule_id": "HI-TE-014", "name": "'For': కోసం comes after the noun", "category": "postposition", "l1_habit": "Hindi के लिए follows the noun, but learner puts కోసం first like an English preposition", "transfer": "unclear", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)", "items": [{"item_id": "HI-TE-014-a", "english": "This is for you.", "hindi": "यह तुम्हारे लिए है।", "accepted": ["ఇది నీ కోసం"], "planted_error": "ఇది కోసం నీ", "wrong_regex": ["^ఇది కోసం "], "fix_regex": ["^ఇది నీ కోసం$"]}, {"item_id": "HI-TE-014-b", "english": "This is for me.", "hindi": "यह मेरे लिए है।", "accepted": ["ఇది నా కోసం"], "planted_error": "ఇది కోసం నా", "wrong_regex": ["^ఇది కోసం "], "fix_regex": ["^ఇది నా కోసం$"]}]}, {"rule_id": "HI-TE-015", "name": "Going to a place: -కి, not -లో", "category": "case", "l1_habit": "Hindi में/को confusion; destination takes -కి", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)", "items": [{"item_id": "HI-TE-015-a", "english": "I am going home.", "hindi": "मैं घर जा रहा हूँ।", "accepted": ["నేను ఇంటికి వెళ్తున్నాను"], "planted_error": "నేను ఇంట్లో వెళ్తున్నాను", "wrong_regex": ["ఇంట్లో వెళ్"], "fix_regex": ["ఇంటికి"]}, {"item_id": "HI-TE-015-b", "english": "I go to school.", "hindi": "मैं स्कूल जाता हूँ।", "accepted": ["నేను బడికి వెళ్తాను"], "planted_error": "నేను బడిలో వెళ్తాను", "wrong_regex": ["బడిలో వెళ్"], "fix_regex": ["బడికి"]}]}];
-const SCRIPT = {"tel2deva": {"ఀ": "ऀ", "ఁ": "ँ", "ం": "ं", "ః": "ः", "ఄ": "ऄ", "అ": "अ", "ఆ": "आ", "ఇ": "इ", "ఈ": "ई", "ఉ": "उ", "ఊ": "ऊ", "ఋ": "ऋ", "ఌ": "ऌ", "ఎ": "ऎ", "ఏ": "ए", "ఐ": "ऐ", "ఒ": "ऒ", "ఓ": "ओ", "ఔ": "औ", "క": "क", "ఖ": "ख", "గ": "ग", "ఘ": "घ", "ఙ": "ङ", "చ": "च", "ఛ": "छ", "జ": "ज", "ఝ": "झ", "ఞ": "ञ", "ట": "ट", "ఠ": "ठ", "డ": "ड", "ఢ": "ढ", "ణ": "ण", "త": "त", "థ": "थ", "ద": "द", "ధ": "ध", "న": "न", "ప": "प", "ఫ": "फ", "బ": "ब", "భ": "भ", "మ": "म", "య": "य", "ర": "र", "ఱ": "ऱ", "ల": "ल", "ళ": "ळ", "ఴ": "ऴ", "వ": "व", "శ": "श", "ష": "ष", "స": "स", "హ": "ह", "఼": "़", "ఽ": "ऽ", "ా": "ा", "ి": "ि", "ీ": "ी", "ు": "ु", "ూ": "ू", "ృ": "ृ", "ౄ": "ॄ", "ె": "ॆ", "ే": "े", "ై": "ै", "ొ": "ॊ", "ో": "ो", "ౌ": "ौ", "్": "्", "ౕ": "ॕ", "ౖ": "ॖ", "ౘ": "क़", "ౙ": "ख़", "ౚ": "ग़", "ౝ": "ढ़", "ౠ": "ॠ", "ౡ": "ॡ", "ౢ": "ॢ", "ౣ": "ॣ", "౦": "०", "౧": "१", "౨": "२", "౩": "३", "౪": "४", "౫": "५", "౬": "६", "౭": "७", "౮": "८", "౯": "९", "౷": "ॷ", "౸": "ॸ", "౹": "ॹ", "౺": "ॺ", "౻": "ॻ", "౼": "ॼ", "౽": "ॽ", "౾": "ॾ", "౿": "ॿ"}, "differences": [{"telugu": "ఎ కె / ఏ కే", "deva": "ऎ कॆ / ए के", "note": "Telugu has a short e and a long e. Hindi has only the long one.", "example": ["ఎవరు", "ఏమిటి"]}, {"telugu": "ఒ కొ / ఓ కో", "deva": "ऒ कॊ / ओ को", "note": "Telugu has a short o and a long o.", "example": ["ఒకటి", "ఓడ"]}, {"telugu": "ళ", "deva": "ळ", "note": "Retroflex l: the tongue curls back, as in Marathi.", "example": ["పళ్ళు"]}, {"telugu": "ఱ", "deva": "ऱ", "note": "An older strong r; in modern Telugu usually said like ర.", "example": []}, {"telugu": "కం", "deva": "कं", "note": "Very common at the end of words (పుస్తకం). Type it as ं, or a final म.", "example": ["పుస్తకం"]}, {"telugu": "అది", "deva": "अदि", "note": "Telugu says the last vowel. Hindi readers drop it (कमल = kamal), Telugu does not.", "example": ["అది", "ఇది"]}], "vowels": ["అ", "ఆ", "ఇ", "ఈ", "ఉ", "ఊ", "ఎ", "ఏ", "ఐ", "ఒ", "ఓ", "ఔ"], "consonants": ["క", "ఖ", "గ", "ఘ", "ఙ", "చ", "ఛ", "జ", "ఝ", "ఞ", "ట", "ఠ", "డ", "ఢ", "ణ", "త", "థ", "ద", "ధ", "న", "ప", "ఫ", "బ", "భ", "మ", "య", "ర", "ఱ", "ల", "ళ", "ఴ", "వ", "శ", "ష", "స", "హ"], "signs": ["ా", "ి", "ీ", "ు", "ూ", "ె", "ే", "ై", "ొ", "ో", "ౌ", "ం", "ః", "్"]};
+const RULES = [{"rule_id": "HI-TE-001", "name": "Polar question: -aa ending, no kya", "category": "questions", "l1_habit": "Hindi 'क्या' at the start; Telugu marks yes/no questions with -ā on the verb/noun", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft (unreviewed)", "items": [{"item_id": "HI-TE-001-a", "english": "Are you coming?", "hindi": "क्या तुम आ रहे हो?", "accepted": ["నువ్వు వస్తావా", "నువ్వు వస్తున్నావా"], "planted_error": "క్యా నువ్వు వస్తావు", "wrong_regex": ["క్యా"], "fix_regex": ["^నువ్వు (వస్తావా|వస్తున్నావా)$"]}, {"item_id": "HI-TE-001-b", "english": "Is this a book?", "hindi": "क्या यह किताब है?", "accepted": ["ఇది పుస్తకమా"], "planted_error": "క్యా ఇది పుస్తకం", "wrong_regex": ["క్యా"], "fix_regex": ["^ఇది పుస్తకమా$"]}], "title": "Questions: add -ā at the end, no ‘क्या’"}, {"rule_id": "HI-TE-002", "name": "Zero copula: no 'is' between two nouns", "category": "copula", "l1_habit": "Hindi है is always present; Telugu leaves it out in 'X is Y'", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)", "items": [{"item_id": "HI-TE-002-a", "english": "This is a book.", "hindi": "यह किताब है।", "accepted": ["ఇది పుస్తకం"], "planted_error": "ఇది పుస్తకం ఉంది", "wrong_regex": ["^(ఇది|అది) \\S+ ఉంది$"], "fix_regex": ["^ఇది పుస్తకం$"]}, {"item_id": "HI-TE-002-b", "english": "That is a pen.", "hindi": "वह कलम है।", "accepted": ["అది పెన్ను"], "planted_error": "అది పెన్ను ఉంది", "wrong_regex": ["^(ఇది|అది) \\S+ ఉంది$"], "fix_regex": ["^అది పెన్ను$"]}], "title": "No word for ‘is’ in ‘This is a book’"}, {"rule_id": "HI-TE-003", "name": "Possession with dative: 'to me is a book'", "category": "possession", "l1_habit": "Hindi मेरे पास / मुझे; learner uses nominative 'I' + ఉంది", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft (unreviewed)", "items": [{"item_id": "HI-TE-003-a", "english": "I have a book.", "hindi": "मेरे पास एक किताब है।", "accepted": ["నాకు ఒక పుస్తకం ఉంది", "నా దగ్గర ఒక పుస్తకం ఉంది"], "planted_error": "నేను ఒక పుస్తకం ఉంది", "wrong_regex": ["^నేను .* ఉంది$"], "fix_regex": ["^(నాకు|నా దగ్గర) ఒక పుస్తకం ఉంది$"]}, {"item_id": "HI-TE-003-b", "english": "You have a pen.", "hindi": "तुम्हारे पास एक कलम है।", "accepted": ["నీకు ఒక పెన్ను ఉంది", "నీ దగ్గర ఒక పెన్ను ఉంది"], "planted_error": "నువ్వు ఒక పెన్ను ఉంది", "wrong_regex": ["^నువ్వు .* ఉంది$"], "fix_regex": ["^(నీకు|నీ దగ్గర) ఒక పెన్ను ఉంది$"]}], "title": "‘I have’ is ‘to me there is’ (నాకు … ఉంది)"}, {"rule_id": "HI-TE-004", "name": "Case endings attach to the noun (no separate 'in')", "category": "case", "l1_habit": "Hindi में is a separate word; Telugu -lō is a suffix and the noun changes (ఇల్లు→ఇంట్లో)", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft (unreviewed)", "items": [{"item_id": "HI-TE-004-a", "english": "I am in the house.", "hindi": "मैं घर में हूँ।", "accepted": ["నేను ఇంట్లో ఉన్నాను"], "planted_error": "నేను ఇల్లు లో ఉన్నాను", "wrong_regex": [" లో( |$)"], "fix_regex": ["^నేను ఇంట్లో ఉన్నాను$"]}, {"item_id": "HI-TE-004-b", "english": "I am in the room.", "hindi": "मैं कमरे में हूँ।", "accepted": ["నేను గదిలో ఉన్నాను"], "planted_error": "నేను గది లో ఉన్నాను", "wrong_regex": [" లో( |$)"], "fix_regex": ["^నేను గదిలో ఉన్నాను$"]}], "title": "‘in’ sticks to the word (ఇంట్లో = in the house)"}, {"rule_id": "HI-TE-005", "name": "Negation: negative verb form, not 'not' after verb", "category": "negation", "l1_habit": "Hindi नहीं before the verb; Telugu uses a negative verb form (రాను) or కాదు only for nouns", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)", "items": [{"item_id": "HI-TE-005-a", "english": "I will not come.", "hindi": "मैं नहीं आऊँगा।", "accepted": ["నేను రాను"], "planted_error": "నేను వస్తాను కాదు", "wrong_regex": ["కాదు$"], "fix_regex": ["^నేను రాను$"]}, {"item_id": "HI-TE-005-b", "english": "He will not come.", "hindi": "वह नहीं आएगा।", "accepted": ["అతను రాడు", "వాడు రాడు"], "planted_error": "అతను వస్తాడు కాదు", "wrong_regex": ["కాదు$"], "fix_regex": ["^(అతను|వాడు) రాడు$"]}], "title": "Saying ‘not’: change the verb (రాను = I won't come)"}, {"rule_id": "HI-TE-006", "name": "'We': మేము (without you) vs మనం (with you)", "category": "pronouns", "l1_habit": "Hindi has one हम; Telugu splits inclusive and exclusive", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)", "items": [{"item_id": "HI-TE-006-a", "english": "We (but not you) are going.", "hindi": "हम (तुम्हारे बिना) जा रहे हैं।", "accepted": ["మేము వెళ్తున్నాం", "మేము వెళ్తున్నాము", "మేము వెళ్తాం"], "planted_error": "మనం వెళ్తున్నాం", "wrong_regex": ["^మనం "], "fix_regex": ["^మేము (వెళ్తున్నాం|వెళ్తున్నాము|వెళ్తాం)$"]}, {"item_id": "HI-TE-006-b", "english": "We (you and I) are going.", "hindi": "हम (तुम और मैं) जा रहे हैं।", "accepted": ["మనం వెళ్తున్నాం", "మనం వెళ్తాం", "మనం వెళ్దాం"], "planted_error": "మేము వెళ్తున్నాం", "wrong_regex": ["^మేము "], "fix_regex": ["^మనం (వెళ్తున్నాం|వెళ్తాం|వెళ్దాం)$"]}], "title": "Two words for ‘we’: మేము and మనం"}, {"rule_id": "HI-TE-007", "name": "'He' vs 'she' pronouns (Hindi वह is gender-neutral)", "category": "pronouns", "l1_habit": "Hindi वह covers he and she; Telugu uses అతను / ఆమె", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft (unreviewed)", "items": [{"item_id": "HI-TE-007-a", "english": "She is a teacher.", "hindi": "वह शिक्षिका है।", "accepted": ["ఆమె టీచరు", "ఆమె టీచర్"], "planted_error": "అతను టీచరు", "wrong_regex": ["^అతను (టీచరు|టీచర్)$"], "fix_regex": ["^ఆమె (టీచరు|టీచర్)$"]}, {"item_id": "HI-TE-007-b", "english": "He is a doctor.", "hindi": "वह डॉक्टर है।", "accepted": ["అతను డాక్టరు", "అతను డాక్టర్", "వాడు డాక్టరు", "వాడు డాక్టర్"], "planted_error": "ఆమె డాక్టరు", "wrong_regex": ["^ఆమె (డాక్టరు|డాక్టర్)$"], "fix_regex": ["^(అతను|వాడు) (డాక్టరు|డాక్టర్)$"]}], "title": "‘He’ and ‘she’ are different words"}, {"rule_id": "HI-TE-008", "name": "Third-person verb ending follows he / she (positive-transfer control)", "category": "agreement", "l1_habit": "Hindi verbs also agree in gender, so this is expected to be easy; used as a control", "transfer": "positive_control", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft (unreviewed)", "items": [{"item_id": "HI-TE-008-a", "english": "She comes.", "hindi": "वह आती है।", "accepted": ["ఆమె వస్తుంది"], "planted_error": "ఆమె వస్తాడు", "wrong_regex": ["^ఆమె \\S*డు$"], "fix_regex": ["^ఆమె వస్తుంది$"]}, {"item_id": "HI-TE-008-b", "english": "He comes.", "hindi": "वह आता है।", "accepted": ["అతను వస్తాడు", "వాడు వస్తాడు"], "planted_error": "అతను వస్తుంది", "wrong_regex": ["^(అతను|వాడు) \\S*ంది$"], "fix_regex": ["^(అతను|వాడు) వస్తాడు$"]}], "title": "Verb endings for ‘he’ and ‘she’"}, {"rule_id": "HI-TE-009", "name": "Respect: మీరు takes the plural -āru ending", "category": "respect", "l1_habit": "Hindi आप takes plural verb; learner keeps singular -āvu/-āvā after మీరు", "transfer": "unclear", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)", "items": [{"item_id": "HI-TE-009-a", "english": "Sir, are you coming?", "hindi": "आप आ रहे हैं?", "accepted": ["మీరు వస్తారా"], "planted_error": "మీరు వస్తావా", "wrong_regex": ["^మీరు \\S*ావా$"], "fix_regex": ["^మీరు వస్తారా$"]}, {"item_id": "HI-TE-009-b", "english": "Sir, you eat.", "hindi": "आप खाते हैं।", "accepted": ["మీరు తింటారు"], "planted_error": "మీరు తింటావు", "wrong_regex": ["^మీరు \\S*ావు$"], "fix_regex": ["^మీరు తింటారు$"]}], "title": "Respect: మీరు takes a plural ending"}, {"rule_id": "HI-TE-010", "name": "Relative clause: participle before the noun, no 'jo'", "category": "clauses", "l1_habit": "Hindi जो…वह clause after/before; Telugu uses a -ina participle before the noun", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)", "items": [{"item_id": "HI-TE-010-a", "english": "This is the book that I read.", "hindi": "यह वह किताब है जो मैंने पढ़ी।", "accepted": ["ఇది నేను చదివిన పుస్తకం"], "planted_error": "ఇది జో పుస్తకం నేను చదివాను", "wrong_regex": ["జో"], "fix_regex": ["చదివిన పుస్తకం"]}], "title": "‘The book I read’: the describing part comes first"}, {"rule_id": "HI-TE-011", "name": "No 'ne' marking: subject stays in the plain form in the past", "category": "case", "l1_habit": "Hindi ने on past transitive subject; learner marks Telugu subject with a case ending", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)", "items": [{"item_id": "HI-TE-011-a", "english": "He read the book.", "hindi": "उसने किताब पढ़ी।", "accepted": ["అతను పుస్తకం చదివాడు", "వాడు పుస్తకం చదివాడు"], "planted_error": "అతనికి పుస్తకం చదివాడు", "wrong_regex": ["^(అతనికి|వాడికి) "], "fix_regex": ["^(అతను|వాడు) పుస్తకం చదివాడు$"]}, {"item_id": "HI-TE-011-b", "english": "I ate the rice.", "hindi": "मैंने चावल खाया।", "accepted": ["నేను అన్నం తిన్నాను"], "planted_error": "నాకు అన్నం తిన్నాను", "wrong_regex": ["^నాకు \\S+ తిన్నాను$"], "fix_regex": ["^నేను అన్నం తిన్నాను$"]}], "title": "No ‘ने’ in Telugu"}, {"rule_id": "HI-TE-012", "name": "Object with -ను when it is a person", "category": "case", "l1_habit": "Hindi को is optional-ish; learner drops Telugu -ను on animate objects", "transfer": "unclear", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft (unreviewed)", "items": [{"item_id": "HI-TE-012-a", "english": "I called mother.", "hindi": "मैंने माँ को बुलाया।", "accepted": ["నేను అమ్మను పిలిచాను"], "planted_error": "నేను అమ్మ పిలిచాను", "wrong_regex": ["^నేను అమ్మ \\S+$"], "fix_regex": ["అమ్మను"]}, {"item_id": "HI-TE-012-b", "english": "I saw father.", "hindi": "मैंने पिताजी को देखा।", "accepted": ["నేను నాన్నను చూశాను"], "planted_error": "నేను నాన్న చూశాను", "wrong_regex": ["^నేను నాన్న \\S+$"], "fix_regex": ["నాన్నను"]}], "title": "Add -ను when the object is a person"}, {"rule_id": "HI-TE-013", "name": "Present continuous: -tunnānu, not verb + 'am'", "category": "tense", "l1_habit": "Hindi रहा हूँ is two words; Telugu fuses it, or uses -tū unnānu", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft (unreviewed)", "items": [{"item_id": "HI-TE-013-a", "english": "I am eating.", "hindi": "मैं खा रहा हूँ।", "accepted": ["నేను తింటున్నాను", "నేను తింటూ ఉన్నాను"], "planted_error": "నేను తింటాను ఉన్నాను", "wrong_regex": ["ాను ఉన్నాను$"], "fix_regex": ["^నేను (తింటున్నాను|తింటూ ఉన్నాను)$"]}, {"item_id": "HI-TE-013-b", "english": "I am going.", "hindi": "मैं जा रहा हूँ।", "accepted": ["నేను వెళ్తున్నాను", "నేను వెళ్తూ ఉన్నాను"], "planted_error": "నేను వెళ్తాను ఉన్నాను", "wrong_regex": ["ాను ఉన్నాను$"], "fix_regex": ["^నేను (వెళ్తున్నాను|వెళ్తూ ఉన్నాను)$"]}], "title": "‘I am coming’ is one word: వస్తున్నాను"}, {"rule_id": "HI-TE-014", "name": "'For': కోసం comes after the noun", "category": "postposition", "l1_habit": "Hindi के लिए follows the noun, but learner puts కోసం first like an English preposition", "transfer": "unclear", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)", "items": [{"item_id": "HI-TE-014-a", "english": "This is for you.", "hindi": "यह तुम्हारे लिए है।", "accepted": ["ఇది నీ కోసం"], "planted_error": "ఇది కోసం నీ", "wrong_regex": ["^ఇది కోసం "], "fix_regex": ["^ఇది నీ కోసం$"]}, {"item_id": "HI-TE-014-b", "english": "This is for me.", "hindi": "यह मेरे लिए है।", "accepted": ["ఇది నా కోసం"], "planted_error": "ఇది కోసం నా", "wrong_regex": ["^ఇది కోసం "], "fix_regex": ["^ఇది నా కోసం$"]}], "title": "‘For’: కోసం comes after the word"}, {"rule_id": "HI-TE-015", "name": "Going to a place: -కి, not -లో", "category": "case", "l1_habit": "Hindi में/को confusion; destination takes -కి", "transfer": "negative", "version": 1, "reviewer": null, "reviewed_at": null, "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)", "items": [{"item_id": "HI-TE-015-a", "english": "I am going home.", "hindi": "मैं घर जा रहा हूँ।", "accepted": ["నేను ఇంటికి వెళ్తున్నాను"], "planted_error": "నేను ఇంట్లో వెళ్తున్నాను", "wrong_regex": ["ఇంట్లో వెళ్"], "fix_regex": ["ఇంటికి"]}, {"item_id": "HI-TE-015-b", "english": "I go to school.", "hindi": "मैं स्कूल जाता हूँ।", "accepted": ["నేను బడికి వెళ్తాను"], "planted_error": "నేను బడిలో వెళ్తాను", "wrong_regex": ["బడిలో వెళ్"], "fix_regex": ["బడికి"]}], "title": "Going somewhere: use -కి, not -లో"}];
+const SCRIPT = {"tel2deva": {"ఀ": "ऀ", "ఁ": "ँ", "ం": "ं", "ః": "ः", "ఄ": "ऄ", "అ": "अ", "ఆ": "आ", "ఇ": "इ", "ఈ": "ई", "ఉ": "उ", "ఊ": "ऊ", "ఋ": "ऋ", "ఌ": "ऌ", "ఎ": "ऎ", "ఏ": "ए", "ఐ": "ऐ", "ఒ": "ऒ", "ఓ": "ओ", "ఔ": "औ", "క": "क", "ఖ": "ख", "గ": "ग", "ఘ": "घ", "ఙ": "ङ", "చ": "च", "ఛ": "छ", "జ": "ज", "ఝ": "झ", "ఞ": "ञ", "ట": "ट", "ఠ": "ठ", "డ": "ड", "ఢ": "ढ", "ణ": "ण", "త": "त", "థ": "थ", "ద": "द", "ధ": "ध", "న": "न", "ప": "प", "ఫ": "फ", "బ": "ब", "భ": "भ", "మ": "म", "య": "य", "ర": "र", "ఱ": "ऱ", "ల": "ल", "ళ": "ळ", "ఴ": "ऴ", "వ": "व", "శ": "श", "ష": "ष", "స": "स", "హ": "ह", "఼": "़", "ఽ": "ऽ", "ా": "ा", "ి": "ि", "ీ": "ी", "ు": "ु", "ూ": "ू", "ృ": "ृ", "ౄ": "ॄ", "ె": "ॆ", "ే": "े", "ై": "ै", "ొ": "ॊ", "ో": "ो", "ౌ": "ौ", "్": "्", "ౕ": "ॕ", "ౖ": "ॖ", "ౘ": "क़", "ౙ": "ख़", "ౚ": "ग़", "ౝ": "ढ़", "ౠ": "ॠ", "ౡ": "ॡ", "ౢ": "ॢ", "ౣ": "ॣ", "౦": "०", "౧": "१", "౨": "२", "౩": "३", "౪": "४", "౫": "५", "౬": "६", "౭": "७", "౮": "८", "౯": "९", "౷": "ॷ", "౸": "ॸ", "౹": "ॹ", "౺": "ॺ", "౻": "ॻ", "౼": "ॼ", "౽": "ॽ", "౾": "ॾ", "౿": "ॿ"}, "differences": [{"telugu": "ఎ కె / ఏ కే", "deva": "ऎ कॆ / ए के", "note": "Telugu has a short e and a long e. Hindi has only the long one.", "example": ["ఎవరు", "ఏమిటి"]}, {"telugu": "ఒ కొ / ఓ కో", "deva": "ऒ कॊ / ओ को", "note": "Telugu has a short o and a long o.", "example": ["ఒకటి", "ఓడ"]}, {"telugu": "ళ", "deva": "ळ", "note": "Retroflex l: the tongue curls back, as in Marathi.", "example": ["పళ్ళు"]}, {"telugu": "ఱ", "deva": "ऱ", "note": "An older strong r; in modern Telugu usually said like ర.", "example": []}, {"telugu": "కం", "deva": "कं", "note": "Very common at the end of words (పుస్తకం). Type it as ं, or a final म.", "example": ["పుస్తకం"]}, {"telugu": "అది", "deva": "अदि", "note": "Telugu says the last vowel. Hindi readers drop it (कमल = kamal), Telugu does not.", "example": ["అది", "ఇది"]}], "vowels": ["అ", "ఆ", "ఇ", "ఈ", "ఉ", "ఊ", "ఎ", "ఏ", "ఐ", "ఒ", "ఓ", "ఔ"], "consonants": ["క", "ఖ", "గ", "ఘ", "ఙ", "చ", "ఛ", "జ", "ఝ", "ఞ", "ట", "ఠ", "డ", "ఢ", "ణ", "త", "థ", "ద", "ధ", "న", "ప", "ఫ", "బ", "భ", "మ", "య", "ర", "ఱ", "ల", "ళ", "వ", "శ", "ష", "స", "హ"], "signs": ["ా", "ి", "ీ", "ు", "ూ", "ె", "ే", "ై", "ొ", "ో", "ౌ", "ం", "ః", "్"]};
 </script>
 <script>
 (() => {
@@ -402,10 +405,10 @@ function checkTyped(rule, item, text, typed, noErr) {
   }
   return res;
 }
-const hint = (rule, item, attempt) => attempt <= 1 ? `Hint: ${rule.name}. ${rule.l1_habit}.` : `Answer: ${item.accepted[0]}`;
+const hint = (rule, item, attempt) => attempt <= 1 ? `Hint: ${rule.title || rule.name}. ${rule.l1_habit}.` : `Answer: ${item.accepted[0]}`;
 
 // ---------------- state ----------------
-const KEY = "setu-hosted-v1";
+const KEY = "setu-hosted-v3";
 const fresh = () => ({start: Date.now(), offset: 0, seen: [], rules: {}, raju: {}, pending: null, trace: [], chat: [], queue: [], labels: {},
   turns: 0, calls: 0, fixes: 0, convs: 0, events: [], conditions: {}, exposures: {}, tests: [], reviewed: {}, lid: "P01", studyRules: null});
 let S = fresh();
@@ -486,7 +489,7 @@ function answer(text) {
     S.events.push({rule: rule.rule_id, verdict: res.verdict, mode: "intro"}); save(); return res;
   }
   if (p.kind === "tutor" || p.kind === "test") return studyAnswer(p, rule, item, text, typed);
-  const res = checkTyped(rule, item, text, typed, p.type === "no_error");
+  const res = (p.type === "planted" && text === NO_ERROR) ? {verdict: "wrong", reason: "Raju's sentence had a mistake"} : checkTyped(rule, item, text, typed, p.type === "no_error");
   const before = S.raju[rule.rule_id];
   if (res.verdict === "correct" && p.type === "planted") S.raju[rule.rule_id] = "taught";
   if (res.verdict !== "unsure") update(rule.rule_id, res.verdict, p.type === "no_error");
@@ -523,124 +526,215 @@ function studyAnswer(p, rule, item, text, typed) {
   save(); return {verdict: res.verdict, msg};
 }
 
-// ---------------- UI ----------------
+
+// ================= UI =================
 const $ = id => document.getElementById(id);
 function aid(text, rid) { const faded = rid && (S.rules[rid]?.correct || 0) >= 3;
   return faded ? `<button class="aidbtn" data-aid="${esc(telToDeva(text))}">Show Hindi letters</button>` : `<span class="aid">${esc(telToDeva(text))}</span>`; }
-document.addEventListener("click", e => { const b = e.target.closest("[data-aid]"); if (b) { const sp = document.createElement("span"); sp.className = "aid"; sp.textContent = b.dataset.aid; b.replaceWith(sp); } });
 function listenBtn(text) { return `<button class="listen" data-say="${esc(text)}" title="Listen" aria-label="Listen">🔊</button>`; }
+function toast(t) { const el = $("toast"); el.textContent = t; el.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => el.hidden = true, 3400); }
 let teVoice = null;
-function loadVoice() { try { const vs = speechSynthesis.getVoices(); teVoice = vs.find(v => /^te/i.test(v.lang)) || null; } catch (e) {} }
+function loadVoice() { try { teVoice = speechSynthesis.getVoices().find(v => /^te/i.test(v.lang)) || null; } catch (e) {} }
 try { loadVoice(); speechSynthesis.onvoiceschanged = loadVoice; } catch (e) {}
-document.addEventListener("click", e => { const b = e.target.closest("[data-say]"); if (!b) return;
-  try { const u = new SpeechSynthesisUtterance(b.dataset.say); u.lang = "te-IN"; if (teVoice) u.voice = teVoice; u.rate = 0.85; speechSynthesis.cancel(); speechSynthesis.speak(u);
-    if (!teVoice) toast("No Telugu voice on this device; it may sound wrong. Native voices come with the speech version."); } catch (err) { toast("Listening is not available in this browser."); } });
-function toast(t) { const el = $("toast"); el.textContent = t; el.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => el.hidden = true, 3200); }
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-say]");
+  if (b) { try { const u = new SpeechSynthesisUtterance(b.dataset.say); u.lang = "te-IN"; if (teVoice) u.voice = teVoice; u.rate = .85; speechSynthesis.cancel(); speechSynthesis.speak(u);
+    if (!teVoice) toast("This device has no Telugu voice, so it may sound wrong."); } catch (err) { toast("Listening isn't available in this browser."); } }
+  const a = e.target.closest("[data-aid]"); if (a) { const sp = document.createElement("span"); sp.className = "aid"; sp.textContent = a.dataset.aid; a.replaceWith(sp); }
+  const t = e.target.closest("[data-w]"); if (t) { const box = document.querySelector("textarea.ans"); if (!box) return;
+    box.value = t.dataset.w === "⌫" ? box.value.trim().split(/\s+/).slice(0, -1).join(" ") : (box.value.trim() + " " + t.dataset.w).trim(); box.focus(); }
+  const k = e.target.closest("[data-k]"); if (k) { const box = document.querySelector("textarea.ans"); if (!box) return;
+    box.value = k.dataset.k === "BS" ? [...box.value].slice(0, -1).join("") : box.value + k.dataset.k; }
+});
 
-function renderLog() { const log = $("log"); log.innerHTML = S.chat.length ? S.chat.map(m => `<div class="msg ${m.cls}">${m.html}</div>`).join("") :
-  `<div class="msg ref">Welcome. New to the Telugu script? Start with <a href="#letters">Letters</a> (most letters are twins of Hindi ones). Then press <b>Continue</b> to meet your first rule, or <b>Guided demo</b> to watch a short lesson. Raju speaks Hindi to you and writes Telugu; you can answer in Telugu or in Hindi letters.</div>`; log.scrollTop = log.scrollHeight; }
-const STATE_TXT = {unknown: "Raju doesn't know", taught: "Raju knows", forgotten: "Raju forgot"};
-function renderSide() {
-  const intro = RULES.filter(r => S.rules[r.rule_id]?.introduced);
-  $("rules").innerHTML = intro.length ? intro.map(r => { const m = S.rules[r.rule_id], st = m.ready ? (S.raju[r.rule_id] || "unknown") : null, p = Math.round(recall(r.rule_id) * 100);
-    const cond = studyMode() ? ` · condition ${condOf(r.rule_id)}` : "";
-    return `<div class="rl"><div style="min-width:0"><b>${esc(r.name)}</b><div class="sm muted">recall ${p}% · right ${m.correct} · wrong ${m.wrong}${cond}</div></div>
-      <span class="state ${st ? "s-" + st : "s-none"}">${st ? STATE_TXT[st] : (m.ready ? "" : condOf(r.rule_id) === "A" ? "answer once first" : "no Raju (study)")}</span>
-      <div class="meter"><i style="width:${p}%"></i><b></b></div></div>`; }).join("") : `<p class="sm muted">No rules yet. Your first rule is about questions: Telugu adds <span class="te">-ā</span> where Hindi starts with <span class="hi">क्या</span>.</p>`;
-  const taught = Object.values(S.raju).filter(x => x === "taught").length;
-  const due = intro.filter(r => S.rules[r.rule_id].last != null && recall(r.rule_id) < FORGET).length;
-  $("stats").innerHTML = [[intro.length + "/" + RULES.length, "rules met"], [taught, "taught to Raju"], [due, "due for review"], [S.turns ? (S.calls / S.turns).toFixed(1) : "–", "AI calls per turn"]]
-    .map(([b, s]) => `<div class="stat"><b>${b}</b><span>${s}</span></div>`).join("");
-  $("dayLabel").textContent = "Day " + day().toFixed(1).replace(/\.0$/, "");
-  const t = [...S.trace].reverse();
-  const REASON = {OOV: "a word you haven't met", NOT_ONE_ERROR: "not exactly one mistake", UNKNOWN_RULE_CORRECT: "uses a rule Raju doesn't know", ANSWER_LEAK: "gives the answer away", EXPLANATION: "explains like a teacher", NOT_CORRECT: "not a correct sentence"};
-  $("trace").innerHTML = t.length ? t.map(s => { let b = "";
-    if (s.kind === "intro") b = `<b>You met a rule</b> · ${esc(s.title)}`;
-    if (s.kind === "raju_turn") b = `<b>Raju's turn</b> · ${s.type === "no_error" ? "a sentence with no mistake" : "plants one mistake"} (${esc(BY_ID[s.rule].name)})` +
-      s.tools.map(c => `<div class="tool">🔧 calls <b>check_classmate_sentence</b>(<span class="te">${esc(c.sentence)}</span>) → ${typeof c.result === "string" ? esc(c.result) : c.result.ok ? '<span class="ok">ok</span>' : c.result.reasons.map(x => `<span class="reason">${esc(x)}</span>`).join("") + " " + c.result.reasons.map(x => esc(REASON[x] || x)).join(", ")}</div>`).join("") +
-      `<div class="tool">${s.source === "llm" ? "✓ shown after passing the tool and the leak filter" : "✓ pre-written sentence from the rule bank"} · ${s.calls} AI call${s.calls > 1 ? "s" : ""}</div>`;
-    if (s.kind === "checked") b = `<b>Referee (rules, no AI)</b> · <span class="verdict v-${s.verdict}">${s.verdict}</span>${s.changed ? "Raju learned this rule" : "Raju's knowledge unchanged"}${s.counts ? "" : " · counts for nothing"}<div class="tool">${esc(s.reason || "")}</div>`;
-    if (s.kind === "forgot") b = `<b>Raju forgets</b> · your recall of “${esc(BY_ID[s.rule].name)}” fell to ${Math.round(s.recall * 100)}%, so Raju makes the mistake again`;
-    if (s.kind === "example") b = `<b>Study example</b> (condition B) · ${esc(BY_ID[s.rule].name)}`;
-    if (s.kind === "skip") b = `<b>${s.days} day${s.days > 1 ? "s" : ""} pass</b>`;
-    return `<div class="step ${s.kind}"><span class="sm muted">day ${s.day}</span><div>${b}</div></div>`; }).join("") : `<p class="sm muted">Each step the AI and the rules take will appear here, newest first.</p>`;
-}
-function renderComposer() {
-  const p = S.pending;
-  $("ansLabel").textContent = !p ? "Press Continue for the next step." : p.kind === "raju" ? "Edit Raju's sentence so it is correct, or press No mistake." : p.kind === "why" ? "Explain to Raju why it changes (Hindi or Telugu)." : "Type your answer in Telugu or in Hindi letters.";
-  $("none").disabled = !(p && p.kind === "raju");
-  $("send").disabled = !p || p.kind === "tutor" || p.kind === "test";
-  $("chips").innerHTML = S.seen.length ? S.seen.map(w => `<button class="chip" data-w="${esc(w)}">${esc(w)}</button>`).join("") + `<button class="chip" data-w="⌫" title="Delete last word">⌫</button>` : `<span class="sm muted">Words appear here as you learn them.</span>`;
-}
-function nextStep() {
-  const p = S.pending, st = rajuState();
-  if (p && p.kind === "intro_check") return ["Answer the rule check", "Say the sentence in Telugu to unlock this rule for Raju.", null];
-  if (p && p.kind === "raju") return ["Check Raju's sentence", "Fix his mistake, or press No mistake if it is already right.", null];
-  if (p && p.kind === "why") return ["Answer Raju's question", "He wants to know why. Your explanation goes to the teacher.", null];
-  const forgot = Object.keys(st).filter(k => st[k] === "taught" && recall(k) < FORGET);
-  if (forgot.length) return ["Review: Raju forgot a rule", `Your recall of “${BY_ID[forgot[0]].name}” is low. Teach Raju again.`, "turn"];
-  if (Object.values(st).some(x => x !== "taught")) return ["Raju's turn", "He will try a rule you have unlocked. Check his sentence.", "turn"];
-  const left = RULES.filter(r => !mem(r.rule_id).introduced && (!studyMode() || S.conditions[r.rule_id] === "A")).length;
-  if (left) return ["Learn a new rule", `${left} rule${left > 1 ? "s" : ""} left. Raju knows everything you have taught him.`, "intro"];
-  return ["Raju is up to date", "Come back later or press +1 day: when your memory fades, Raju forgets and you review by teaching him.", "turn"];
-}
-function render() { renderLog(); renderSide(); renderComposer(); const [t, w] = nextStep(); $("nextTitle").textContent = t; $("nextWhy").textContent = w; }
-
-function doNext() { const [, , act] = nextStep();
-  if (act === "intro") { const r = intro(studyMode() ? "A" : null); if (!r) toast("All rules met."); }
-  else if (act === "turn") { const t = turn(); if (!t) toast("Learn a rule first."); else $("ans").value = t.sentence; }
-  else $("ans").focus();
-  render(); }
-function doSend(noError) { const p = S.pending; if (!p) return; let text = $("ans").value.trim();
-  if (noError) text = NO_ERROR; else if (!text) { toast("Type your answer first."); return; }
-  say("you", `<div class="who" style="justify-content:flex-end"><span class="av y">Y</span>You</div>${noError ? "There's no mistake." : `<span class="te" style="font-size:1.2rem">${esc(text)}</span>`}`);
-  answer(text); $("ans").value = ""; render(); }
-$("goNext").onclick = doNext;
-$("bNew").onclick = () => { if (!intro(studyMode() ? "A" : null)) toast("All rules met."); render(); };
-$("bTurn").onclick = () => { const t = turn(); if (!t) toast("Learn a rule and answer it first."); else $("ans").value = t.sentence; render(); };
-$("send").onclick = () => doSend(false);
-$("none").onclick = () => doSend(true);
-$("clear").onclick = () => { $("ans").value = ""; $("ans").focus(); };
-$("ans").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); doSend(false); } });
-$("chips").addEventListener("click", e => { const b = e.target.closest("[data-w]"); if (!b) return; const a = $("ans");
-  if (b.dataset.w === "⌫") a.value = a.value.trim().split(/\s+/).slice(0, -1).join(" "); else a.value = (a.value.trim() + " " + b.dataset.w).trim(); a.focus(); });
 const KB = "అ ఆ ఇ ఈ ఉ ఊ ఎ ఏ ఐ ఒ ఓ ఔ క ఖ గ ఘ చ ఛ జ ఝ ట ఠ డ ఢ ణ త థ ద ధ న ప ఫ బ భ మ య ర ల వ శ ష స హ ళ ా ి ీ ు ూ ె ే ై ొ ో ౌ ం ః ్".split(" ");
-$("kb").innerHTML = KB.map(k => `<button type="button" data-k="${k}" aria-label="${k}">${/^[ా-్ంః]$/u.test(k) ? "◌" + k : k}</button>`).join("") + `<button type="button" data-k=" ">␣</button><button type="button" data-k="BS">⌫</button>`;
-$("kb").addEventListener("click", e => { const b = e.target.closest("[data-k]"); if (!b) return; const a = $("ans"); a.value = b.dataset.k === "BS" ? [...a.value].slice(0, -1).join("") : a.value + b.dataset.k; });
-function skip(d) { S.offset += d; log("skip", {days: d}); say("ref", `${d} day${d > 1 ? "s" : ""} later…`); save(); render(); }
-$("plus1").onclick = () => skip(1); $("plus3").onclick = () => skip(3);
+function inputBlock(prefill) {
+  const tiles = S.seen.map(w => `<button type="button" class="tile" data-w="${esc(w)}">${esc(w)}</button>`).join("");
+  return `<textarea class="ans" id="ans" spellcheck="false" placeholder="తెలుగులో, or in Hindi letters: इदि पुस्तकं">${esc(prefill || "")}</textarea>
+    ${S.seen.length ? `<div class="sm muted" style="margin-top:8px">Tap words you've learned:</div><div class="tiles">${tiles}<button type="button" class="tile" data-w="⌫" aria-label="Delete last word">⌫</button></div>` : ""}
+    <details style="margin-top:10px"><summary>Telugu keyboard</summary><div class="kb">${KB.map(c => `<button type="button" data-k="${c}">${/^[ా-్ంః]$/u.test(c) ? "◌" + c : c}</button>`).join("")}<button type="button" data-k=" ">space</button><button type="button" data-k="BS">⌫</button></div></details>`;
+}
+const lastRef = () => [...S.chat].reverse().find(m => m.cls === "ref")?.html || "";
+const plain = html => { const d = document.createElement("div"); d.innerHTML = html; d.querySelectorAll(".verdict").forEach(v => v.remove()); return d.innerHTML; };
+const TITLE = {correct: "Correct!", wrong: "Not quite", unsure: "We'll check this one", explanation: "Thanks for explaining", recorded: "Saved"};
 
-// guided demo
+// ---- lesson view: one step at a time ----
+let view = {mode: "next"};   // next | intro | introFb | raju | rajuFix | rajuFb | why | whyFb | done
+function nextAction() {
+  const st = rajuState();
+  const forgot = Object.keys(st).filter(k => st[k] === "taught" && recall(k) < FORGET);
+  if (forgot.length || Object.values(st).some(x => x !== "taught")) return "turn";
+  if (RULES.some(r => !mem(r.rule_id).introduced && (!studyMode() || S.conditions[r.rule_id] === "A"))) return "intro";
+  return "done";
+}
+function go() {
+  const p = S.pending;
+  if (p && p.kind === "intro_check") { view = {mode: "intro"}; return renderStage(); }
+  if (p && p.kind === "raju") { view = {mode: "raju"}; return renderStage(); }
+  if (p && p.kind === "why") { view = {mode: "why"}; return renderStage(); }
+  const a = nextAction();
+  if (a === "intro") { intro(studyMode() ? "A" : null); view = {mode: "intro"}; }
+  else if (a === "turn") { const t = turn(); view = t ? {mode: "raju"} : {mode: "done"}; }
+  else view = {mode: "done"};
+  renderStage();
+}
+function ruleBlock(rule) {
+  const ex = rule.items[0];
+  return `<span class="kicker k-rule">New rule</span><h2>${esc(rule.title || rule.name)}</h2><p class="why">${esc(rule.l1_habit)}.</p>
+    <div class="pair"><div class="ex bad"><span class="mark">✗</span><div><span class="say" style="font-size:1.25rem">${esc(ex.planted_error)}</span>${aid(ex.planted_error)}</div></div>
+    <div class="ex good"><span class="mark">✓</span><div><span class="say" style="font-size:1.25rem">${esc(ex.accepted[0])}</span> ${listenBtn(ex.accepted[0])}${aid(ex.accepted[0])}</div></div></div>`;
+}
+function rajuBlock(p) {
+  const [rule, item] = ITEMS[p.item];
+  return `<span class="kicker k-raju">Raju's turn · ${esc(rule.title || rule.name)}</span>
+    <div class="raju" style="margin-top:12px"><div class="av" aria-hidden="true">R</div><div class="bubble"><div class="say">${esc(p.sentence)} ${listenBtn(p.sentence)}</div>${aid(p.sentence, p.rule)}<div class="ask">${esc(p.ask || ASK[0])}</div><div class="sm muted">Meaning: ${esc(item.english)}</div></div></div>`;
+}
+function fbBlock(verdict, html, extra) {
+  return `<div class="fb ${verdict}"><h3>${TITLE[verdict] || verdict}</h3><p>${html}</p>${extra || ""}</div>`;
+}
+function renderStage() {
+  const el = $("stage"), p = S.pending;
+  const m = view.mode;
+  if (m === "intro") {
+    const [rule, item] = ITEMS[p.item];
+    el.innerHTML = ruleBlock(rule) + `<div class="task"><span class="kicker k-you">Your turn</span><div>Say in Telugu: <b>${esc(item.english)}</b> <span class="hi muted">(${esc(item.hindi)})</span></div></div>
+      <div style="margin-top:12px">${inputBlock("")}</div><div class="row" style="margin-top:12px"><button class="btn-main" id="bCheck">Check my answer</button></div>`;
+    $("bCheck").onclick = () => submit("intro");
+  } else if (m === "introFb" || m === "rajuFb" || m === "whyFb") {
+    el.innerHTML = (view.top || "") + fbBlock(view.verdict, view.html, view.extra) + `<div class="row" style="margin-top:14px"><button class="btn-main" id="bNext">${S.pending ? "Try again" : "Continue"}</button></div>`;
+    $("bNext").onclick = () => { if (S.pending && S.pending.kind === "why") { view = {mode: "why"}; renderStage(); } else if (S.pending) { view = {mode: S.pending.kind === "intro_check" ? "intro" : "rajuFix"}; renderStage(); } else go(); };
+  } else if (m === "raju") {
+    el.innerHTML = rajuBlock(p) + `<div class="q">Is Raju's sentence correct?</div>
+      <div class="row"><button class="btn-big" id="bYes">✓ Yes, it's correct</button><button class="btn-big btn-raju" id="bNo">✗ No, there's a mistake</button></div>`;
+    $("bYes").onclick = () => submit("noerror"); $("bNo").onclick = () => { view = {mode: "rajuFix"}; renderStage(); };
+  } else if (m === "rajuFix") {
+    el.innerHTML = rajuBlock(p) + `<div class="q">Fix Raju's sentence</div><p class="sm muted" style="margin:-4px 0 8px">Change only what is wrong. His sentence is already in the box.</p>
+      ${inputBlock(p.sentence)}<div class="row" style="margin-top:12px"><button class="btn-main" id="bFix">Send my fix</button><button class="btn-link" id="bBack">← Back</button></div>`;
+    $("bFix").onclick = () => submit("fix"); $("bBack").onclick = () => { view = {mode: "raju"}; renderStage(); };
+  } else if (m === "why") {
+    el.innerHTML = `<span class="kicker k-raju">Raju has a question</span><div class="raju" style="margin-top:12px"><div class="av" aria-hidden="true">R</div><div class="bubble"><div class="hi" style="font-size:1.2rem">${esc(WHY.find(w => ([...S.chat].reverse().find(x => x.cls === "raju")?.html || "").includes(w)) || WHY[0])}</div><div class="sm muted">“Why did it have to change?”</div></div></div>
+      <div class="q">Explain it to him in your own words (Hindi or English is fine)</div>
+      <textarea class="ans hi" id="ans" style="font-family:var(--hi);font-size:1.1rem" placeholder="क्योंकि…"></textarea>
+      <div class="row" style="margin-top:12px"><button class="btn-main" id="bWhy">Send</button><button class="btn-link" id="bSkip">Skip</button></div>`;
+    $("bWhy").onclick = () => submit("why"); $("bSkip").onclick = () => { S.pending = null; save(); go(); };
+  } else if (m === "done") {
+    el.innerHTML = `<span class="kicker k-rule">All caught up</span><h2>Raju knows everything you've taught him</h2>
+      <p class="why">${RULES.every(r => mem(r.rule_id).introduced) ? "You've met every rule." : "Learn a new rule, or come back tomorrow."} When you start to forget a rule, Raju forgets it too and you'll get to teach him again.</p>
+      <div class="row">${RULES.some(r => !mem(r.rule_id).introduced) ? `<button class="btn-main" id="bMore">Learn a new rule</button>` : ""}<button id="bHome">Back to home</button></div>`;
+    if ($("bMore")) $("bMore").onclick = () => { intro(studyMode() ? "A" : null); view = {mode: "intro"}; renderStage(); };
+    $("bHome").onclick = () => location.hash = "home";
+  } else { go(); return; }
+  if ($("ans") && m !== "why") $("ans").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); (document.getElementById("bCheck") || document.getElementById("bFix"))?.click(); } });
+  renderStatus();
+}
+function submit(kind) {
+  const p = S.pending; if (!p) return go();
+  const text = kind === "noerror" ? NO_ERROR : ($("ans")?.value || "").trim();
+  if (kind !== "noerror" && !text) { toast(kind === "why" ? "Write a short explanation, or press Skip." : "Type your answer first."); return; }
+  const before = S.pending, rajuTop = before.kind === "raju" ? rajuBlock(before) : "";
+  const res = answer(text) || {};
+  const v = res.verdict || "recorded";
+  const typed = kind !== "noerror" && kind !== "why" && hasDeva(text) && !hasTel(text);
+  const note = typed ? `<p class="sm muted">You typed Hindi letters; we read it as <span class="te">${esc(devaToTel(text))}</span>.</p>` : "";
+  let html = plain(lastRef());
+  if (before.kind === "intro_check") { const [r0, i0] = ITEMS[before.item]; view = {mode: "introFb", verdict: v, html, extra: note, top: `<span class="kicker k-you">Your turn</span><div style="margin:4px 0 0">Say in Telugu: <b>${esc(i0.english)}</b> <span class="hi muted">(${esc(i0.hindi)})</span></div><div class="sm muted">You wrote: <span class="te">${esc(text)}</span></div>`}; }
+  else if (before.kind === "why") view = {mode: "whyFb", verdict: "explanation", html: "Your explanation goes to the teacher. It doesn't change any score.", extra: ""};
+  else {
+    let extra = note;
+    html = html.replace(THANKS, `<span class="hi">${THANKS}</span> <span class="sm muted">(“Got it, thanks!”)</span>`);
+    if (kind === "fix") extra = `<p class="sm">Your fix: <span class="te">${esc(typed ? devaToTel(text) : text)}</span></p>` + extra;
+    if (kind === "noerror") { extra = `<p class="sm">You said: no mistake.</p>` + extra; if (v === "wrong") html = "Raju's sentence does have a mistake. " + html; }
+    if (S.pending && S.pending.kind === "why") { const w = [...S.chat].reverse().find(m => m.cls === "raju"); view = {mode: "rajuFb", verdict: v, html, extra: extra + `<p class="sm">Raju wants to ask you something…</p>`, top: rajuTop}; view.whyText = w ? w.html : ""; }
+    else view = {mode: "rajuFb", verdict: v, html, extra, top: rajuTop};
+  }
+  renderStage(); renderTrace();
+}
+function renderStatus() {
+  const met = RULES.filter(r => S.rules[r.rule_id]?.introduced).length;
+  $("progText").textContent = `Rule ${met} of ${RULES.length}`; $("progBar").style.width = (100 * met / RULES.length) + "%";
+  const taught = Object.values(S.raju).filter(x => x === "taught").length;
+  const due = RULES.filter(r => S.rules[r.rule_id]?.ready && S.raju[r.rule_id] === "taught" && recall(r.rule_id) < FORGET).length;
+  $("status").innerHTML = `<span class="pill">Raju knows <b>${taught}</b> rule${taught === 1 ? "" : "s"}</span><span class="pill">Reviews due <b>${due}</b></span><span class="pill">Rules met <b>${met}</b>/${RULES.length}</span>`;
+}
+const REASON = {OOV: "a word you haven't met", NOT_ONE_ERROR: "not exactly one mistake", UNKNOWN_RULE_CORRECT: "uses a rule Raju doesn't know", ANSWER_LEAK: "gives the answer away", EXPLANATION: "explains like a teacher", NOT_CORRECT: "not a correct sentence"};
+function renderTrace() {
+  const t = [...S.trace].reverse();
+  $("trace").innerHTML = t.length ? t.map(s => { let b = "";
+    if (s.kind === "intro") b = `You met a rule: ${esc(s.title)}`;
+    if (s.kind === "raju_turn") b = `<b>Raju (AI)</b> ${s.type === "no_error" ? "wrote a correct sentence" : "planted one mistake"} and checked it with a tool:` + s.tools.map(c => `<div class="sm muted">🔧 <span class="te">${esc(c.sentence)}</span> → ${typeof c.result === "string" ? esc(c.result) : c.result.ok ? '<span class="okc">ok</span>' : c.result.reasons.map(x => `<span class="reason">${esc(x)}</span>`).join("") + " " + c.result.reasons.map(x => esc(REASON[x] || x)).join(", ")}</div>`).join("");
+    if (s.kind === "checked") b = `<b>Referee (rules, no AI)</b>: ${esc(s.verdict)}. ${s.changed ? "Raju learned the rule." : "Raju's knowledge didn't change."}`;
+    if (s.kind === "forgot") b = `<b>Raju forgot</b> a rule because your recall fell to ${Math.round(s.recall * 100)}%.`;
+    if (s.kind === "skip") b = `${s.days} day(s) passed.`;
+    if (s.kind === "example") b = `Study example (condition B).`;
+    return b ? `<div class="step ${esc(s.kind)}">${b}</div>` : ""; }).join("") : `<p class="sm muted">Nothing yet.</p>`;
+}
+
+// ---- guided demo ----
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const cap = t => { $("cap").textContent = t; $("cap").hidden = !t; };
-$("demoBtn").onclick = async () => {
-  if (Object.values(S.rules).some(m => m.introduced) && !confirmDemo()) return;
-  $("demoBtn").disabled = true;
+let demoRunning = false;
+async function demo() {
+  if (demoRunning) return; demoRunning = true;
+  const saved = JSON.stringify(S); S = fresh(); location.hash = "learn"; await sleep(300);
+  const P = 2600; const click = async id => { await sleep(900); const b = $(id); if (b) b.click(); };
   try {
-    S = fresh(); save(); render(); const P = 2300;
-    cap("1 · You meet a rule and answer it once yourself. Only then is Raju allowed not to know it."); await sleep(P);
-    let r = intro(null); render(); await sleep(P); $("ans").value = r.item.accepted[0]; await sleep(900); doSend(false); await sleep(P);
-    cap("2 · Raju is a small AI agent: he drafts a sentence and calls a checking tool before you see it (right panel)."); await sleep(P);
-    S.convs = 2; let t = turn(); render(); await sleep(P * 1.5);
-    cap("3 · You leave his mistake in. The referee (plain rules) says wrong and gives a hint. Raju learns nothing."); await sleep(P);
-    $("ans").value = t.sentence; doSend(false); await sleep(P * 1.3);
-    cap("4 · Now you fix it. Only a checked correct fix teaches Raju."); await sleep(P);
-    $("ans").value = t.item.accepted[0]; await sleep(700); doSend(false); await sleep(P * 1.3);
-    cap("5 · A second rule. About one turn in five, Raju's sentence has no mistake, so you must really check."); await sleep(P);
-    r = intro(null); render(); await sleep(P); $("ans").value = r.item.accepted[0]; doSend(false); await sleep(P);
-    for (let k = 0; k < 4; k++) { t = turn(); render(); await sleep(P * .9); if (t.type === "no_error") { doSend(true); } else { $("ans").value = t.item.accepted[0]; doSend(false); if (S.pending && S.pending.kind === "why") { await sleep(P * .9); cap("Every third fix, Raju asks why. Your answer goes to the teacher; it changes no score."); $("ans").value = "हिंदी में 'क्या' आता है, तेलुगु में -ā लगता है"; await sleep(P); doSend(false); } } await sleep(P * .9); }
-    cap("6 · Days pass. When your memory of a rule falls below 50%, Raju forgets it too."); await sleep(P);
-    for (let k = 0; k < 3; k++) { skip(3); await sleep(800); }
-    t = turn(); render(); await sleep(P * 1.2);
-    cap("7 · Raju makes the mistake again. Your review arrives as re-teaching."); $("ans").value = t.type === "no_error" ? "" : t.item.accepted[0]; await sleep(P); doSend(t.type === "no_error"); await sleep(P);
-    if (S.pending && S.pending.kind === "why") { $("ans").value = "तेलुगु में यहाँ अलग लिखते हैं"; doSend(false); await sleep(P * .7); }
-    cap("That's the loop. The AI only writes; the rules decide. Press Continue to try it yourself.");
-    setTimeout(() => cap(""), 9000);
-  } finally { $("demoBtn").disabled = false; }
-};
-let demoOk = false;
-function confirmDemo() { if (demoOk) return true; demoOk = true; toast("The demo replaces your progress on this device. Press Guided demo again to start it."); return false; }
+    cap("1 · You learn a rule and answer it once. Then Raju may try it."); go(); await sleep(P);
+    $("ans").value = ITEMS[S.pending.item][1].accepted[0]; await click("bCheck"); await sleep(P);
+    cap("2 · Raju writes a sentence. You decide: correct or not?"); await click("bNext"); await sleep(P);
+    cap("3 · There is a mistake, so you fix it. Only a correct fix teaches Raju."); await click("bNo"); await sleep(P * .8);
+    $("ans").value = ITEMS[S.pending.item][1].accepted[0]; await click("bFix"); await sleep(P);
+    cap("4 · When you start to forget a rule, Raju forgets it too. Let's jump 9 days ahead…"); S.offset += 9; save(); await sleep(P);
+    await click("bNext"); await sleep(P);
+    cap("5 · Raju makes the old mistake again. Teaching him again is your review."); await click("bNo"); await sleep(P * .8);
+    if (S.pending && S.pending.kind === "raju") { $("ans").value = ITEMS[S.pending.item][1].accepted[0]; await click("bFix"); }
+    await sleep(P);
+    cap("That's it. Your turn: press Continue, or go back to Home.");
+    await sleep(6000);
+  } finally {
+    cap(""); try { S = JSON.parse(saved); } catch (e) { S = fresh(); } save(); view = {mode: "next"}; demoRunning = false; if (location.hash === "#learn") go();
+  }
+}
 
+// ---- letters tour ----
+const NEW = new Set(["ఎ", "ఒ", "ె", "ొ", "ళ", "ఱ", "ం"]);
+const WORDS = [...new Set(RULES.flatMap(r => r.items.flatMap(i => i.accepted.flatMap(tokens))))];
+let lt = 1, readW = null, readOk = 0, readN = 0;
+const foldDeva = t => normalize(t).replace(/ऎ/g, "ए").replace(/ऒ/g, "ओ").replace(/ॆ/g, "े").replace(/ॊ/g, "ो");
+function renderLetters() {
+  ["lt1", "lt2", "lt3"].forEach((id, k) => $(id).setAttribute("aria-pressed", String(lt === k + 1)));
+  const grp = (title, ls) => `<div class="sm muted">${title}</div><div class="lt">${ls.map(c => `<div class="${NEW.has(c) ? "new" : ""}"><b>${/^[ా-్ంః]$/u.test(c) ? "◌" + c : c}</b><span>${esc(T2D[c] || "")}</span></div>`).join("")}</div>`;
+  if (lt === 1) $("ltBody").innerHTML = `<p>Each Telugu letter (big) has a Hindi twin (small). The outlined ones are new.</p>` + grp("Vowels", SCRIPT.vowels) + grp("Consonants", SCRIPT.consonants);
+  if (lt === 2) $("ltBody").innerHTML = `<p>Only these things are new for a Hindi reader:</p><div class="diffs">${SCRIPT.differences.map(d => `<div><div class="te" style="font-size:1.5rem">${esc(d.telugu)}</div><div class="hi muted">${esc(d.deva)}</div><p class="sm" style="margin:6px 0">${esc(d.note)}</p>${d.example.map(w => `<span class="te">${esc(w)}</span> <span class="hi muted">${esc(telToDeva(w))}</span> ${listenBtn(w)}`).join("<br>")}</div>`).join("")}</div>`;
+  if (lt === 3) { if (!readW) readW = pick(WORDS);
+    $("ltBody").innerHTML = `<p>Read the Telugu word and type it in Hindi letters.</p><div class="say" style="font-size:2.2rem">${esc(readW)} ${listenBtn(readW)}</div>
+      <input id="readAns" autocomplete="off" style="width:100%;margin-top:10px;padding:11px 12px;border:2px solid var(--line);border-radius:12px;background:var(--bg);font:500 1.2rem var(--hi)" placeholder="हिंदी अक्षरों में लिखिए">
+      <div class="row" style="margin-top:10px"><button id="readCheck">Check</button><button class="btn-link" id="readSkip">Show me</button><span class="sm muted">${readN ? `${readOk} of ${readN} right` : ""}</span></div><div id="readFb" style="margin-top:8px"></div>`;
+    const nextW = () => { readW = pick(WORDS); renderLetters(); };
+    $("readCheck").onclick = () => { const ok = foldDeva($("readAns").value) === foldDeva(telToDeva(readW)); readN++; readOk += ok;
+      $("readFb").innerHTML = ok ? `<span class="verdict v-correct">correct</span>` : `<span class="verdict v-wrong">not quite</span> it reads <b class="hi">${esc(telToDeva(readW))}</b>`; setTimeout(nextW, ok ? 900 : 2600); };
+    $("readSkip").onclick = () => { $("readFb").innerHTML = `It reads <b class="hi">${esc(telToDeva(readW))}</b>`; setTimeout(nextW, 2200); };
+    $("readAns").addEventListener("keydown", e => { if (e.key === "Enter") $("readCheck").click(); }); }
+  $("ltBack").style.visibility = lt === 1 ? "hidden" : "visible";
+  $("ltNext").textContent = lt === 3 ? "Start the lessons →" : "Next";
+}
+$("lt1").onclick = () => { lt = 1; renderLetters(); }; $("lt2").onclick = () => { lt = 2; renderLetters(); }; $("lt3").onclick = () => { lt = 3; renderLetters(); };
+$("ltBack").onclick = () => { lt = Math.max(1, lt - 1); renderLetters(); };
+$("ltNext").onclick = () => { if (lt < 3) { lt++; renderLetters(); } else location.hash = "learn"; };
+
+// ---- home ----
+function renderHome() {
+  const met = RULES.filter(r => S.rules[r.rule_id]?.introduced).length;
+  const due = RULES.filter(r => S.raju[r.rule_id] === "taught" && recall(r.rule_id) < FORGET).length;
+  const w = $("welcomeBack");
+  if (met) { w.hidden = false; w.innerHTML = `<span>Welcome back. You've met <b>${met}</b> of ${RULES.length} rules${due ? ` and <b>${due}</b> review${due > 1 ? "s are" : " is"} due` : ""}.</span><button class="btn-main" id="homeCont">Continue</button>`; $("homeCont").onclick = () => location.hash = "learn"; }
+  else w.hidden = true;
+  $("homeStart").textContent = met ? "Continue learning" : "Start learning";
+}
+$("homeStart").onclick = () => location.hash = "learn";
+$("homeLetters").onclick = () => location.hash = "letters";
+$("homeDemo").onclick = demo;
+
+// ---- research page ----
 // ---------------- study view ----------------
 function assign() { S.lid = $("lid").value.trim() || "P01"; const shift = [...S.lid].reduce((a, c) => a + c.charCodeAt(0), 0) % 3;
   S.conditions = Object.fromEntries(RULES.map((r, k) => [r.rule_id, "ABC"[(k + shift) % 3]])); save(); renderStudy(); toast(`Conditions assigned for ${S.lid}.`); }
@@ -694,44 +788,37 @@ function renderTeacher() {
 document.addEventListener("click", e => { const b = e.target.closest("[data-lab]"); if (b) { S.labels[b.dataset.k] = b.dataset.lab; save(); renderTeacher(); toast("Saved as a teacher label."); }
   const v = e.target.closest("[data-rev]"); if (v) { S.reviewed[v.dataset.rev] = true; save(); renderTeacher(); } });
 
-// reset
+function render() { renderStatus(); }   // used by the study tools
+function showR(n) { ["rt1", "rt2", "rt3"].forEach((id, k) => $(id).setAttribute("aria-pressed", String(n === k + 1)));
+  $("rStudy").hidden = n !== 1; $("rTeacher").hidden = n !== 2; $("rDemo").hidden = n !== 3;
+  if (n === 1) renderStudy(); if (n === 2) renderTeacher(); $("dayLabel").textContent = "Day " + day().toFixed(1).replace(/\.0$/, ""); }
+$("rt1").onclick = () => showR(1); $("rt2").onclick = () => showR(2); $("rt3").onclick = () => showR(3);
+function skip(d) { S.offset += d; log("skip", {days: d}); save(); $("dayLabel").textContent = "Day " + day().toFixed(1).replace(/\.0$/, ""); toast(`${d} day${d > 1 ? "s" : ""} later.`); }
+$("plus1").onclick = () => skip(1); $("plus3").onclick = () => skip(3); $("plus7").onclick = () => skip(7);
 $("resetAll").onclick = () => { $("resetConfirm").hidden = false; };
 $("resetNo").onclick = () => { $("resetConfirm").hidden = true; };
-$("resetYes").onclick = () => { S = fresh(); save(); $("resetConfirm").hidden = true; render(); renderStudy(); renderTeacher(); toast("All progress erased."); };
+$("resetYes").onclick = () => { S = fresh(); save(); $("resetConfirm").hidden = true; view = {mode: "next"}; toast("Everything erased."); showR(1); };
 
 // reading aid toggle
 try { if (localStorage.getItem(KEY + "-noaid") === "1") { document.body.classList.add("noaid"); $("aidToggle").checked = false; } } catch (e) {}
 $("aidToggle").onchange = () => { const off = !$("aidToggle").checked; document.body.classList.toggle("noaid", off); try { localStorage.setItem(KEY + "-noaid", off ? "1" : "0"); } catch (e) {} };
 
-// ---------------- letters view (Step 0) ----------------
-const NEW = new Set(["ఎ", "ఒ", "ె", "ొ", "ళ", "ఱ", "ం"]);
-function renderLetters() {
-  $("diffs").innerHTML = SCRIPT.differences.map(d => `<div class="panel" style="margin:0"><div style="font:600 1.6rem/1.2 var(--te)">${esc(d.telugu)}</div><div class="hi muted">${esc(d.deva)}</div><p class="sm" style="margin:6px 0">${esc(d.note)}</p>${d.example.map(w => `<span class="te">${esc(w)}</span> <span class="aid" style="display:inline">${esc(telToDeva(w))}</span> ${listenBtn(w)}`).join("<br>")}</div>`).join("");
-  const grp = (title, ls) => `<div class="sm muted">${title}</div><div class="lt">${ls.map(c => `<div class="${NEW.has(c) ? "new" : ""}"><b>${/^[ా-్ంః]$/u.test(c) ? "◌" + c : c}</b><span>${esc(T2D[c] || "")}</span></div>`).join("")}</div>`;
-  $("letterGrid").innerHTML = grp("Vowels", SCRIPT.vowels) + grp("Consonants", SCRIPT.consonants) + grp("Vowel signs and marks", SCRIPT.signs) + `<p class="sm muted">Outlined letters are the new ones.</p>`;
-  if (!readW) nextRead();
-}
-const WORDS = [...new Set(RULES.flatMap(r => r.items.flatMap(i => i.accepted.flatMap(tokens))))];
-let readW = null, readOk = 0, readN = 0;
-const foldDeva = t => normalize(t).replace(/ऎ/g, "ए").replace(/ऒ/g, "ओ").replace(/ॆ/g, "े").replace(/ॊ/g, "ो");
-function nextRead() { readW = pick(WORDS); $("readWord").innerHTML = `${esc(readW)} ${listenBtn(readW)}`; $("readAns").value = ""; $("readFb").textContent = ""; }
-$("readCheck").onclick = () => { if (!readW) return; const ok = foldDeva($("readAns").value) === foldDeva(telToDeva(readW)); readN++; readOk += ok;
-  $("readFb").innerHTML = ok ? `<span class="verdict v-correct">correct</span>${esc(telToDeva(readW))}` : `<span class="verdict v-wrong">not quite</span>It reads <b class="hi">${esc(telToDeva(readW))}</b>`;
-  $("readScore").textContent = `${readOk}/${readN} right`; setTimeout(nextRead, ok ? 900 : 2600); };
-$("readSkip").onclick = () => { if (readW) { $("readFb").innerHTML = `It reads <b class="hi">${esc(telToDeva(readW))}</b>`; setTimeout(nextRead, 2200); } };
-$("readAns").addEventListener("keydown", e => { if (e.key === "Enter") $("readCheck").click(); });
-
-// routing
-const VIEWS = ["letters", "learn", "study", "teacher", "about"];
-function route() { const v = VIEWS.includes(location.hash.slice(1)) ? location.hash.slice(1) : "learn";
+// ---- routing ----
+const VIEWS = ["home", "letters", "learn", "about", "research"];
+function route() {
+  const v = VIEWS.includes(location.hash.slice(1)) ? location.hash.slice(1) : "home";
   document.querySelectorAll("[data-v]").forEach(s => s.hidden = s.dataset.v !== v);
   document.querySelectorAll("nav a").forEach(a => { if (a.dataset.view === v) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
-  if (v === "study") renderStudy(); if (v === "teacher") renderTeacher(); if (v === "learn") render(); if (v === "letters") renderLetters(); }
+  if (v === "home") renderHome();
+  if (v === "letters") renderLetters();
+  if (v === "learn") { if (!demoRunning && view.mode === "next") go(); else renderStage(); renderTrace(); }
+  if (v === "research") showR(1);
+  scrollTo(0, 0);
+}
 addEventListener("hashchange", route);
-document.querySelectorAll("nav a").forEach(a => a.addEventListener("click", () => setTimeout(route)));
-route(); render();
-setInterval(() => { if (!document.hidden && !$("v-learn").hidden) renderSide(); }, 30000);
-window.__setu = {S: () => S, check, checkDraft, turn, intro, answer, devaToTel, telToDeva}; window.__items = id => ITEMS[id];
+route();
+window.__setu = {S: () => S, check, checkDraft, turn, intro, answer, devaToTel, telToDeva};
+window.__items = id => ITEMS[id];
 })();
 </script>
 </body></html>

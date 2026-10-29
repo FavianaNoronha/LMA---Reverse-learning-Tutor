@@ -5,5 +5,5 @@ from .schemas import Rule, Item
 
 def hint(rule: Rule, item: Item, attempt: int) -> str:
     if attempt <= 1:
-        return f"Hint: {rule.name}. {rule.l1_habit}."
+        return f"Hint: {rule.title or rule.name}. {rule.l1_habit}."
     return f"Answer: {item.accepted[0]}"
