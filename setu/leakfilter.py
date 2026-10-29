@@ -56,14 +56,15 @@ def check_draft(draft: str, rule: Rule, item: Item, rules: list[Rule],
     return LeakDecision(ok=not reasons, reasons=sorted(set(reasons)))
 
 
-def select_classmate_sentence(drafts: list[str], rule: Rule, item: Item, rules: list[Rule],
+def select_classmate_sentence(drafts, rule: Rule, item: Item, rules: list[Rule],
                               seen_words: set[str], rule_state: dict[str, str],
                               learner_id: str = "anon", max_tries: int = 3, no_error: bool = False,
                               model: str | None = None, prompt_version: str | None = None) -> ClassmateTurn:
     rejected = []
     meta = dict(learner_id=learner_id, item_id=item.item_id, turn_type="no_error" if no_error else "planted",
                 rule_version=rule.version, model=model, prompt_version=prompt_version)
-    for d in drafts[:max_tries]:
+    from itertools import islice
+    for d in islice(drafts, max_tries):   # lazy: stops calling the model at the first draft that passes
         dec = check_draft(d, rule, item, rules, seen_words, rule_state, no_error=no_error)
         if dec.ok:
             return ClassmateTurn(draft=d, source="llm", rejected=rejected, **meta)

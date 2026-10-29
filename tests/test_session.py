@@ -30,6 +30,7 @@ def test_full_loop_teach_forget_reteach(tmp_path):
     rule = learn_first_rule(t)
     turn = t.turn("a")
     assert turn["kind"] == "raju" and turn["source"] == "llm"
+    assert t.llm.calls == 1                               # stops at the first draft that passes
     item = t.items[t.store.load("a").pending["item_id"]][1]
     assert turn["sentence"] == item.planted_error
     out = t.answer("a", item.accepted[0])

@@ -27,14 +27,15 @@ def build_messages(item: Item, seen_words: set[str], no_error: bool) -> list[dic
 
 def raju_turn(llm: LLM | None, rule: Rule, item: Item, rules: list[Rule], seen_words: set[str],
               rule_state: dict[str, str], learner_id: str, no_error: bool = False, n_drafts: int = 3) -> ClassmateTurn:
-    drafts: list[str] = []
-    if llm is not None:
+    def drafts():
+        if llm is None:
+            return
         msgs = build_messages(item, seen_words, no_error)
         for _ in range(n_drafts):
             try:
-                drafts.append(parse_sentence(llm.chat(msgs, schema=SCHEMA)))
+                yield parse_sentence(llm.chat(msgs, schema=SCHEMA))
             except Exception:
-                drafts.append("")
-    return select_classmate_sentence(drafts, rule, item, rules, seen_words, rule_state, learner_id=learner_id,
+                yield ""
+    return select_classmate_sentence(drafts(), rule, item, rules, seen_words, rule_state, learner_id=learner_id,
                                      max_tries=n_drafts, no_error=no_error,
                                      model=getattr(llm, "model", None), prompt_version=PROMPT_VERSION)
