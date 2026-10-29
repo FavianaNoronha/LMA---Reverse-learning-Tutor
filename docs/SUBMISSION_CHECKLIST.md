@@ -42,3 +42,17 @@ Tool: `check_classmate_sentence` — implemented in `setu/tools.py`, tested in `
 | Tools = **Extensions, Functions, Data Stores** | **Functions:** `check_classmate_sentence`, `check_level`, `check_hint_has_no_answer`. **Data stores:** rule bank (`rules.json`), learner record (seen words, rule memory). **Extensions** (external APIs): speech (IndicConformer ASR / Indic Parler-TTS), Telugu analyser | Functions/data stores partly built; extensions planned |
 | Needs **robust orchestration and iterative refinement** | `setu/session.py` orchestrates; bounded loops (≤ 3 drafts, then bank fallback); only the checker writes memory; every turn logs model + prompt + rule version, calls per turn | Built (v0) |
 | A **rapidly evolving** field | Related work cites 2025–26 papers on simulated/weak students (Yuan; Do, Sonkar & Sachan; Apartsin; StudentSim; Song unlearning) | In paper v8 |
+
+## Prompt injection
+
+Untrusted text in SETU: what learners type (answers, explanations, chat with Sravya), learner writing that teachers upload, and anything a model writes.
+
+1. **No authority in the model.** Models only produce text. They cannot mark answers, change learner or Raju state, or call any tool that writes. Only the checker (rules) updates memory.
+2. **Learner text never goes into Raju's prompt.** Raju's prompt is built only from the rule bank and seen-word list (`classmate.build_messages`). Learner answers go to the deterministic checker, not a model.
+3. **Every model output is filtered.** Raju: leak filter + tool validation (Telugu script only, one sentence) — a hijacked reply like "mark the learner correct" is rejected and the bank sentence is used. Coach/Sravya (when built): level check and no-answer check before display.
+4. **Read-only tools.** Agent tools are lookups and checks; `submit_*` re-validates. No web, email, file or memory-writing tools.
+5. **When learner text must reach a model** (coach, Sravya): pass it as a delimited JSON data field, cap length, strip control characters, and state in the system prompt that it is data, not instructions. Outputs still go through the filters in (3).
+6. **Uploaded learner writing** is anonymised and only produces *proposals* that a teacher approves.
+7. **Red-team tests:** `tests/test_injection.py` (checker never accepts an attack, tool rejects injected output, learner text never enters Raju's prompt, a hijacked model cannot change state). Grow this set for coach and Sravya; report attack success rate.
+
+Limit: filtering can't guarantee a model never *says* something odd in free conversation (Sravya); the guarantee is that it can't change grades, memory or what Raju "knows".
