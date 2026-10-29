@@ -60,3 +60,9 @@ SETU_LLM=http://localhost:11434/v1 SETU_MODEL=gemma3:12b uvicorn app.server:app 
 Open http://127.0.0.1:8000. Left: learner view. Right: live inside view (Raju's state, the learner's recall,
 each tool call Raju makes and its result, the referee's verdict, teacher queue, model calls per turn).
 Raju runs as a tool-using agent by default (`SETU_AGENT=0` switches to the plain generate-and-filter path).
+
+## Hosted (browser-only) version
+`app/hosted/setu_app.html` is built by `python scripts/build_hosted.py` from `app/hosted/setu_app.template.html` and the rule bank.
+It ports the checker, leak filter, tool, planner, Raju state, forgetting, study conditions and tests to JavaScript;
+Raju's drafts come from a scripted stand-in for the model. Parity with Python: `python scripts/evaluate.py` then
+`node scripts/js/parity_hosted.js` (needs Playwright; 185 cases, 0 mismatches on 29 Oct 2026).
