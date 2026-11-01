@@ -404,25 +404,26 @@ body.record .viewport{border:0;border-radius:0}
 </section>
 
 <!-- 9d how we test -->
-<section class="scene" data-dur="36.44" data-base="14" data-name="11 · How we test it">
+<section class="scene" data-dur="34.88" data-base="14" data-name="11 · How we test it">
   <h2 class="el" data-at="0.1">How we know if it works</h2>
   <div class="row" style="margin-top:20px;gap:20px">
     <div class="inside el" data-at="0.6" style="flex:1">
       <div class="label">1 · The parts</div>
-      <div style="font-size:17px">112 automated tests</div>
+      <div style="font-size:17px">116 automated tests</div>
       <div style="font-size:17px">A scorecard against every target</div>
       <div class="card el" data-at="2.0" style="font-size:15px">It found a gap: the referee was unsure on <b>60%</b> of learner-style answers. Fixed to <b>20%</b>.</div>
-      <div style="font-size:14px;color:var(--warn)">Still missing: real Gemma run, teacher labels, native review</div>
+      <div class="card el" data-at="4.0" style="font-size:15px">A bilingual teammate marked 145 answers blind: the referee agreed on <b>63%</b> (κ 0.32, target 0.6).</div>
+      <div style="font-size:14px;color:var(--warn)">Still missing: real Gemma run, an outside native rater</div>
     </div>
-    <div class="inside el" data-at="3.6" style="flex:1.15">
+    <div class="inside el" data-at="6.8" style="flex:1.15">
       <div class="label">2 · Simulated learners (20 each)</div>
       <div style="font-size:15px;color:var(--muted)">Recall one week later</div>
-      <div><div style="font-size:15px">A · teach Raju 0.50</div><div class="bar"><i data-at="4.6" data-w="50%" data-w0="0%" style="background:var(--raju)"></i></div></div>
-      <div><div style="font-size:15px">B · study examples 0.25</div><div class="bar"><i data-at="4.9" data-w="25%" data-w0="0%" style="background:var(--rule)"></i></div></div>
-      <div><div style="font-size:15px">C · normal tutor 0.67</div><div class="bar"><i data-at="5.2" data-w="67%" data-w0="0%" style="background:var(--you)"></i></div></div>
-      <div class="el" data-at="6.6" style="font-size:14px;color:var(--muted)">Honest result: in the simulation, once Raju learns a rule he stops making the mistake, so Ankit gets less practice. Only real people can show whether teaching makes up for it.</div>
+      <div><div style="font-size:15px">A · teach Raju 0.50</div><div class="bar"><i data-at="7.6" data-w="50%" data-w0="0%" style="background:var(--raju)"></i></div></div>
+      <div><div style="font-size:15px">B · study examples 0.25</div><div class="bar"><i data-at="7.9" data-w="25%" data-w0="0%" style="background:var(--rule)"></i></div></div>
+      <div><div style="font-size:15px">C · normal tutor 0.67</div><div class="bar"><i data-at="8.2" data-w="67%" data-w0="0%" style="background:var(--you)"></i></div></div>
+      <div class="el" data-at="9.4" style="font-size:14px;color:var(--muted)">Honest result: once Raju learns a rule he stops making the mistake, so Ankit gets less practice. The team’s separate FSRS simulation agrees (A .25, C .31). Only real people can settle it.</div>
     </div>
-    <div class="inside el" data-at="8.4" style="flex:1">
+    <div class="inside el" data-at="11.6" style="flex:1">
       <div class="label">3 · Real learners</div>
       <div style="font-size:17px">5 adult Hindi speakers</div>
       <div style="font-size:17px">A, B and C on different rules</div>
@@ -433,8 +434,36 @@ body.record .viewport{border:0;border-radius:0}
   <div class="cc el" data-at="0.6">Three layers of checks: the code, simulated learners, and real learners. The first two are done; the third is next.</div>
 </section>
 
+<!-- native review -->
+<section class="scene" data-dur="36.18" data-base="14" data-name="12 · First native review">
+  <h2 class="el" data-at="0.1">A bilingual teammate checked our work</h2>
+  <div class="row" style="margin-top:20px;gap:20px">
+    <div class="inside el" data-at="0.5" style="flex:1">
+      <div class="label">1 · The rules</div>
+      <div style="font-size:17px">24 of 25 rules passed</div>
+      <div class="bar"><i data-at="1.2" data-w="96%" data-w0="0%" style="background:var(--good)"></i></div>
+      <div class="card el" data-at="1.9" style="font-size:15px">One explanation (adding <span class="hi">-ను</span> for people) is “partly” right. Fix pending.</div>
+      <div style="font-size:14px;color:var(--muted)">Each item also got a level, A1 to B1.</div>
+    </div>
+    <div class="inside el" data-at="2.4" style="flex:1.2">
+      <div class="label">2 · 145 answers, marked blind</div>
+      <div style="font-size:17px">Referee agreed on <b>63%</b></div>
+      <div style="font-size:15px;color:var(--muted)">κ 0.32 · target 0.6</div>
+      <div class="card el" data-at="5.4" style="font-size:15px">29 answers with an extra <b>కదా</b>: she says <span class="chip no">wrong</span>, the referee said <span class="chip un">unsure</span></div>
+      <div class="card el" data-at="6.4" style="font-size:15px">New rule added. But it was fitted to these same answers, so it proves nothing yet.</div>
+    </div>
+    <div class="inside el" data-at="8.6" style="flex:1">
+      <div class="label" style="color:var(--warn)">3 · Honest caveats</div>
+      <div class="card el" data-at="9.3" style="font-size:15px">She is on our team, so this is not an outside check.</div>
+      <div class="card el" data-at="10.4" style="font-size:15px">5 of her answers look like slips. Sent back to her to confirm.</div>
+      <div style="font-size:14px;color:var(--warn)" class="el" data-at="11.6">Still needed: an outside native rater</div>
+    </div>
+  </div>
+  <div class="cc el" data-at="0.8">First native review: rules mostly pass, but the referee and the teacher disagree on a third of the answers, so we keep working.</div>
+</section>
+
 <!-- 10 outputs -->
-<section class="scene" data-dur="17.63" data-base="12.0" data-name="12 · What comes out">
+<section class="scene" data-dur="17.63" data-base="12.0" data-name="13 · What comes out">
   <h2 class="el" data-at="0.1">What comes out</h2>
   <div class="row" style="margin-top:22px;gap:20px">
     <div class="inside el" data-at="0.6" style="flex:1">

@@ -70,7 +70,7 @@ Limit: filtering can't guarantee a model never *says* something odd in free conv
 | Public website | Live on GitHub Pages: https://favianaNoronha.github.io/LMA---Reverse-learning-Tutor/ (simple one-step lesson flow, letters tour, feedback form with SUS; research tools on a separate page) |
 | Demo application | Done: FastAPI app (`SETU_LLM=demo SETU_DEMO=1 uvicorn app.server:app`) and a hosted browser-only version (`app/hosted/setu_app.html`, published as a claude.ai link) with Learn, Study mode, Teacher and How it works |
 | Paper v8+ | Done; real-model numbers missing |
-| Plain-language explainer + video | Done: `docs/video/SETU_How_It_Works_v8_full.mp4` (5:50, voice-over, 18 scenes incl. Step 0 letters) |
+| Plain-language explainer + video | Done: `docs/video/SETU_How_It_Works_v9_full.mp4` (6:24, voice-over, 19 scenes incl. the first native review; v8 kept for comparison; 18 scenes in v8 incl. Step 0 letters) |
 | Gemma leak baseline | **Missing** (needs Faviana's Mac run) |
 | Table 10 metrics filled in | Partly: `scripts/evaluate.py` → `docs/EVAL_REPORT.md` (scorecard on held-out split); mock-model and simulated values only |
 | Script bridge (Step 0) | Done: `setu/script.py` (Devanagari↔Telugu, forgiveness for ए/ओ and final म), Letters page in the hosted app, Hindi-letter typing in every condition; conversion rules need a native check |
