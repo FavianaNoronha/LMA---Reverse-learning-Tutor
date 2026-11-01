@@ -86,4 +86,6 @@ def test_checker_v01_near_miss_and_other_sentence_are_wrong_not_unsure():
     assert check(rule, item, acc[:-1]).verdict == "wrong"                        # one letter dropped
     other = next(i for r in RULES for i in r.items if i.english != item.english)
     assert check(rule, item, other.accepted[0]).verdict == "wrong"               # a different sentence
-    assert check(rule, item, acc + " కదా").verdict == "unsure"                   # extra word: teacher decides
+    assert check(rule, item, acc + " కదా").verdict == "wrong"                    # tag particle (native reviewer, Nov 2026)
+    assert check(rule, item, acc + " అండి").verdict == "unsure"                  # other extra words still go to the teacher
+    assert check(rule, item, "ఆమె " + acc).verdict == "unsure"

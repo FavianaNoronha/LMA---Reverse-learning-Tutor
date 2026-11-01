@@ -26,6 +26,9 @@ class Item(BaseModel):
     wrong_regex: list[str]         # patterns that identify this rule's error
     fix_regex: list[str]           # patterns that identify the correct form
     allowed_new: list[str] = Field(default_factory=list)  # extra words the classmate may use
+    level: str = ""                 # A1/A2/B1 as judged by the native reviewer (empty = not yet judged)
+    frequency: str = ""             # how often learners make this mistake (reviewer: often/sometimes/rarely)
+    review_notes: list[str] = Field(default_factory=list)  # reviewer comments; NOT used by the checker
 
 
 class Rule(BaseModel):

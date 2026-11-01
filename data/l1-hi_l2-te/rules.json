@@ -6,8 +6,8 @@
   "l1_habit": "Hindi 'क्या' at the start; Telugu marks yes/no questions with -ā on the verb/noun",
   "transfer": "negative",
   "version": 1,
-  "reviewer": null,
-  "reviewed_at": null,
+  "reviewer": "R1 (bilingual team member; initials pending)",
+  "reviewed_at": "2026-11-02",
   "source": "Claude draft (unreviewed)",
   "items": [
    {
@@ -24,7 +24,10 @@
     ],
     "fix_regex": [
      "^నువ్వు (వస్తావా|వస్తున్నావా)$"
-    ]
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": []
    },
    {
     "item_id": "HI-TE-001-b",
@@ -39,10 +42,14 @@
     ],
     "fix_regex": [
      "^ఇది పుస్తకమా$"
-    ]
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": []
    }
   ],
-  "title": "Questions: add -ā at the end, no ‘क्या’"
+  "title": "Questions: add -ā at the end, no ‘क्या’",
+  "status": "native_checked"
  },
  {
   "rule_id": "HI-TE-002",
@@ -51,8 +58,8 @@
   "l1_habit": "Hindi है is always present; Telugu leaves it out in 'X is Y'",
   "transfer": "negative",
   "version": 1,
-  "reviewer": null,
-  "reviewed_at": null,
+  "reviewer": "R1 (bilingual team member; initials pending)",
+  "reviewed_at": "2026-11-02",
   "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)",
   "items": [
    {
@@ -68,7 +75,10 @@
     ],
     "fix_regex": [
      "^ఇది పుస్తకం$"
-    ]
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": []
    },
    {
     "item_id": "HI-TE-002-b",
@@ -83,10 +93,14 @@
     ],
     "fix_regex": [
      "^అది పెన్ను$"
-    ]
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": []
    }
   ],
-  "title": "No word for ‘is’ in ‘This is a book’"
+  "title": "No word for ‘is’ in ‘This is a book’",
+  "status": "native_checked"
  },
  {
   "rule_id": "HI-TE-003",
@@ -95,8 +109,8 @@
   "l1_habit": "Hindi मेरे पास / मुझे; learner uses nominative 'I' + ఉంది",
   "transfer": "negative",
   "version": 1,
-  "reviewer": null,
-  "reviewed_at": null,
+  "reviewer": "R1 (bilingual team member; initials pending)",
+  "reviewed_at": "2026-11-02",
   "source": "Claude draft (unreviewed)",
   "items": [
    {
@@ -113,7 +127,10 @@
     ],
     "fix_regex": [
      "^(నాకు|నా దగ్గర) ఒక పుస్తకం ఉంది$"
-    ]
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": []
    },
    {
     "item_id": "HI-TE-003-b",
@@ -129,10 +146,14 @@
     ],
     "fix_regex": [
      "^(నీకు|నీ దగ్గర) ఒక పెన్ను ఉంది$"
-    ]
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": []
    }
   ],
-  "title": "‘I have’ is ‘to me there is’ (నాకు … ఉంది)"
+  "title": "‘I have’ is ‘to me there is’ (నాకు … ఉంది)",
+  "status": "native_checked"
  },
  {
   "rule_id": "HI-TE-004",
@@ -141,8 +162,8 @@
   "l1_habit": "Hindi में is a separate word; Telugu -lō is a suffix and the noun changes (ఇల్లు→ఇంట్లో)",
   "transfer": "negative",
   "version": 1,
-  "reviewer": null,
-  "reviewed_at": null,
+  "reviewer": "R1 (bilingual team member; initials pending)",
+  "reviewed_at": "2026-11-02",
   "source": "Claude draft (unreviewed)",
   "items": [
    {
@@ -158,7 +179,10 @@
     ],
     "fix_regex": [
      "^నేను ఇంట్లో ఉన్నాను$"
-    ]
+    ],
+    "level": "A2",
+    "frequency": "often",
+    "review_notes": []
    },
    {
     "item_id": "HI-TE-004-b",
@@ -173,10 +197,14 @@
     ],
     "fix_regex": [
      "^నేను గదిలో ఉన్నాను$"
-    ]
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": []
    }
   ],
-  "title": "‘in’ sticks to the word (ఇంట్లో = in the house)"
+  "title": "‘in’ sticks to the word (ఇంట్లో = in the house)",
+  "status": "native_checked"
  },
  {
   "rule_id": "HI-TE-005",
@@ -185,8 +213,8 @@
   "l1_habit": "Hindi नहीं before the verb; Telugu uses a negative verb form (రాను) or కాదు only for nouns",
   "transfer": "negative",
   "version": 1,
-  "reviewer": null,
-  "reviewed_at": null,
+  "reviewer": "R1 (bilingual team member; initials pending)",
+  "reviewed_at": "2026-11-02",
   "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)",
   "items": [
    {
@@ -202,7 +230,10 @@
     ],
     "fix_regex": [
      "^నేను రాను$"
-    ]
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": []
    },
    {
     "item_id": "HI-TE-005-b",
@@ -218,10 +249,14 @@
     ],
     "fix_regex": [
      "^(అతను|వాడు) రాడు$"
-    ]
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": []
    }
   ],
-  "title": "Saying ‘not’: change the verb (రాను = I won't come)"
+  "title": "Saying ‘not’: change the verb (రాను = I won't come)",
+  "status": "native_checked"
  },
  {
   "rule_id": "HI-TE-006",
@@ -230,8 +265,8 @@
   "l1_habit": "Hindi has one हम; Telugu splits inclusive and exclusive",
   "transfer": "negative",
   "version": 1,
-  "reviewer": null,
-  "reviewed_at": null,
+  "reviewer": "R1 (bilingual team member; initials pending)",
+  "reviewed_at": "2026-11-02",
   "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)",
   "items": [
    {
@@ -249,7 +284,10 @@
     ],
     "fix_regex": [
      "^మేము (వెళ్తున్నాం|వెళ్తున్నాము|వెళ్తాం)$"
-    ]
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": []
    },
    {
     "item_id": "HI-TE-006-b",
@@ -266,10 +304,14 @@
     ],
     "fix_regex": [
      "^మనం (వెళ్తున్నాం|వెళ్తాం|వెళ్దాం)$"
-    ]
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": []
    }
   ],
-  "title": "Two words for ‘we’: మేము and మనం"
+  "title": "Two words for ‘we’: మేము and మనం",
+  "status": "native_checked"
  },
  {
   "rule_id": "HI-TE-007",
@@ -278,8 +320,8 @@
   "l1_habit": "Hindi वह covers he and she; Telugu uses అతను / ఆమె",
   "transfer": "negative",
   "version": 1,
-  "reviewer": null,
-  "reviewed_at": null,
+  "reviewer": "R1 (bilingual team member; initials pending)",
+  "reviewed_at": "2026-11-02",
   "source": "Claude draft (unreviewed)",
   "items": [
    {
@@ -296,7 +338,10 @@
     ],
     "fix_regex": [
      "^ఆమె (టీచరు|టీచర్)$"
-    ]
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": []
    },
    {
     "item_id": "HI-TE-007-b",
@@ -314,10 +359,14 @@
     ],
     "fix_regex": [
      "^(అతను|వాడు) (డాక్టరు|డాక్టర్)$"
-    ]
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": []
    }
   ],
-  "title": "‘He’ and ‘she’ are different words"
+  "title": "‘He’ and ‘she’ are different words",
+  "status": "native_checked"
  },
  {
   "rule_id": "HI-TE-008",
@@ -326,8 +375,8 @@
   "l1_habit": "Hindi verbs also agree in gender, so this is expected to be easy; used as a control",
   "transfer": "positive_control",
   "version": 1,
-  "reviewer": null,
-  "reviewed_at": null,
+  "reviewer": "R1 (bilingual team member; initials pending)",
+  "reviewed_at": "2026-11-02",
   "source": "Claude draft (unreviewed)",
   "items": [
    {
@@ -343,7 +392,10 @@
     ],
     "fix_regex": [
      "^ఆమె వస్తుంది$"
-    ]
+    ],
+    "level": "A1",
+    "frequency": "rarely",
+    "review_notes": []
    },
    {
     "item_id": "HI-TE-008-b",
@@ -359,10 +411,14 @@
     ],
     "fix_regex": [
      "^(అతను|వాడు) వస్తాడు$"
-    ]
+    ],
+    "level": "A1",
+    "frequency": "sometimes",
+    "review_notes": []
    }
   ],
-  "title": "Verb endings for ‘he’ and ‘she’"
+  "title": "Verb endings for ‘he’ and ‘she’",
+  "status": "native_checked"
  },
  {
   "rule_id": "HI-TE-009",
@@ -371,8 +427,8 @@
   "l1_habit": "Hindi आप takes plural verb; learner keeps singular -āvu/-āvā after మీరు",
   "transfer": "unclear",
   "version": 1,
-  "reviewer": null,
-  "reviewed_at": null,
+  "reviewer": "R1 (bilingual team member; initials pending)",
+  "reviewed_at": "2026-11-02",
   "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)",
   "items": [
    {
@@ -388,7 +444,10 @@
     ],
     "fix_regex": [
      "^మీరు వస్తారా$"
-    ]
+    ],
+    "level": "A2",
+    "frequency": "sometimes",
+    "review_notes": []
    },
    {
     "item_id": "HI-TE-009-b",
@@ -403,10 +462,14 @@
     ],
     "fix_regex": [
      "^మీరు తింటారు$"
-    ]
+    ],
+    "level": "A2",
+    "frequency": "sometimes",
+    "review_notes": []
    }
   ],
-  "title": "Respect: మీరు takes a plural ending"
+  "title": "Respect: మీరు takes a plural ending",
+  "status": "native_checked"
  },
  {
   "rule_id": "HI-TE-010",
@@ -415,8 +478,8 @@
   "l1_habit": "Hindi जो…वह clause after/before; Telugu uses a -ina participle before the noun",
   "transfer": "negative",
   "version": 1,
-  "reviewer": null,
-  "reviewed_at": null,
+  "reviewer": "R1 (bilingual team member; initials pending)",
+  "reviewed_at": "2026-11-02",
   "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)",
   "items": [
    {
@@ -432,10 +495,14 @@
     ],
     "fix_regex": [
      "చదివిన పుస్తకం"
-    ]
+    ],
+    "level": "B1",
+    "frequency": "sometimes",
+    "review_notes": []
    }
   ],
-  "title": "‘The book I read’: the describing part comes first"
+  "title": "‘The book I read’: the describing part comes first",
+  "status": "native_checked"
  },
  {
   "rule_id": "HI-TE-011",
@@ -444,8 +511,8 @@
   "l1_habit": "Hindi ने on past transitive subject; learner marks Telugu subject with a case ending",
   "transfer": "negative",
   "version": 1,
-  "reviewer": null,
-  "reviewed_at": null,
+  "reviewer": "R1 (bilingual team member; initials pending)",
+  "reviewed_at": "2026-11-02",
   "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)",
   "items": [
    {
@@ -462,7 +529,10 @@
     ],
     "fix_regex": [
      "^(అతను|వాడు) పుస్తకం చదివాడు$"
-    ]
+    ],
+    "level": "B2",
+    "frequency": "often",
+    "review_notes": []
    },
    {
     "item_id": "HI-TE-011-b",
@@ -477,10 +547,14 @@
     ],
     "fix_regex": [
      "^నేను అన్నం తిన్నాను$"
-    ]
+    ],
+    "level": "A2",
+    "frequency": "often",
+    "review_notes": []
    }
   ],
-  "title": "No ‘ने’ in Telugu"
+  "title": "No ‘ने’ in Telugu",
+  "status": "native_checked"
  },
  {
   "rule_id": "HI-TE-012",
@@ -506,6 +580,11 @@
     ],
     "fix_regex": [
      "అమ్మను"
+    ],
+    "level": "A2",
+    "frequency": "often",
+    "review_notes": [
+     "explanation: partly"
     ]
    },
    {
@@ -521,6 +600,11 @@
     ],
     "fix_regex": [
      "నాన్నను"
+    ],
+    "level": "A2",
+    "frequency": "often",
+    "review_notes": [
+     "explanation: partly"
     ]
    }
   ],
@@ -533,8 +617,8 @@
   "l1_habit": "Hindi रहा हूँ is two words; Telugu fuses it, or uses -tū unnānu",
   "transfer": "negative",
   "version": 1,
-  "reviewer": null,
-  "reviewed_at": null,
+  "reviewer": "R1 (bilingual team member; initials pending)",
+  "reviewed_at": "2026-11-02",
   "source": "Claude draft (unreviewed)",
   "items": [
    {
@@ -551,7 +635,10 @@
     ],
     "fix_regex": [
      "^నేను (తింటున్నాను|తింటూ ఉన్నాను)$"
-    ]
+    ],
+    "level": "A2",
+    "frequency": "often",
+    "review_notes": []
    },
    {
     "item_id": "HI-TE-013-b",
@@ -567,10 +654,14 @@
     ],
     "fix_regex": [
      "^నేను (వెళ్తున్నాను|వెళ్తూ ఉన్నాను)$"
-    ]
+    ],
+    "level": "A2",
+    "frequency": "often",
+    "review_notes": []
    }
   ],
-  "title": "‘I am coming’ is one word: వస్తున్నాను"
+  "title": "‘I am coming’ is one word: వస్తున్నాను",
+  "status": "native_checked"
  },
  {
   "rule_id": "HI-TE-014",
@@ -579,8 +670,8 @@
   "l1_habit": "Hindi के लिए follows the noun, but learner puts కోసం first like an English preposition",
   "transfer": "unclear",
   "version": 1,
-  "reviewer": null,
-  "reviewed_at": null,
+  "reviewer": "R1 (bilingual team member; initials pending)",
+  "reviewed_at": "2026-11-02",
   "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)",
   "items": [
    {
@@ -596,7 +687,10 @@
     ],
     "fix_regex": [
      "^ఇది నీ కోసం$"
-    ]
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": []
    },
    {
     "item_id": "HI-TE-014-b",
@@ -611,10 +705,14 @@
     ],
     "fix_regex": [
      "^ఇది నా కోసం$"
-    ]
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": []
    }
   ],
-  "title": "‘For’: కోసం comes after the word"
+  "title": "‘For’: కోసం comes after the word",
+  "status": "native_checked"
  },
  {
   "rule_id": "HI-TE-015",
@@ -623,8 +721,8 @@
   "l1_habit": "Hindi में/को confusion; destination takes -కి",
   "transfer": "negative",
   "version": 1,
-  "reviewer": null,
-  "reviewed_at": null,
+  "reviewer": "R1 (bilingual team member; initials pending)",
+  "reviewed_at": "2026-11-02",
   "source": "Claude draft; contrast confirmed in Krishnamurti & Gwynn 1985 examples (see book_examples.jsonl)",
   "items": [
    {
@@ -640,7 +738,10 @@
     ],
     "fix_regex": [
      "ఇంటికి"
-    ]
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": []
    },
    {
     "item_id": "HI-TE-015-b",
@@ -655,9 +756,13 @@
     ],
     "fix_regex": [
      "బడికి"
-    ]
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": []
    }
   ],
-  "title": "Going somewhere: use -కి, not -లో"
+  "title": "Going somewhere: use -కి, not -లో",
+  "status": "native_checked"
  }
 ]

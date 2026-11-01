@@ -5,11 +5,11 @@
   "category": "gender",
   "l1_habit": "Telugu నా / నీ never change; Hindi मेरा/मेरी/मेरे follow the possessed noun's gender and number",
   "transfer": "negative",
-  "status": "draft_unverified",
+  "status": "native_checked",
   "evidence": "model_predicted",
   "version": 1,
-  "reviewer": null,
-  "reviewed_at": null,
+  "reviewer": "R1 (bilingual team member; initials pending)",
+  "reviewed_at": "2026-11-02",
   "source": "Claude draft (unreviewed); contrast to be checked against NCERT Hindi grammar and Krishnamurti & Gwynn 1985",
   "items": [
    {
@@ -25,6 +25,11 @@
     ],
     "fix_regex": [
      "^यह मेरी किताब है$"
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": [
+     "reviewer's other forms (not used by checker): यह मेरी पुस्तक है"
     ]
    },
    {
@@ -40,6 +45,11 @@
     ],
     "fix_regex": [
      "^तुम्हारी गाड़ी लाल है$"
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": [
+     "reviewer's other forms (not used by checker): आपकी कार लाल है"
     ]
    }
   ],
@@ -51,11 +61,11 @@
   "category": "gender",
   "l1_habit": "Telugu things are neuter; Hindi assigns every noun masculine or feminine, and adjectives/verbs agree",
   "transfer": "negative",
-  "status": "draft_unverified",
+  "status": "native_checked",
   "evidence": "model_predicted",
   "version": 1,
-  "reviewer": null,
-  "reviewed_at": null,
+  "reviewer": "R1 (bilingual team member; initials pending)",
+  "reviewed_at": "2026-11-02",
   "source": "Claude draft (unreviewed); contrast to be checked against NCERT Hindi grammar and Krishnamurti & Gwynn 1985",
   "items": [
    {
@@ -71,6 +81,11 @@
     ],
     "fix_regex": [
      "^पानी ठंडा है$"
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": [
+     "reviewer's other forms (not used by checker): ठंडा पानी है"
     ]
    },
    {
@@ -86,6 +101,12 @@
     ],
     "fix_regex": [
      "^चाय अच्छी है$"
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": [
+     "explanation: Yyes",
+     "reviewer's other forms (not used by checker): चाय स्वादिष्ट है"
     ]
    }
   ],
@@ -97,11 +118,11 @@
   "category": "gender",
   "l1_habit": "Telugu వెళ్తున్నాను is the same for a man or a woman; Hindi जाता/जाती हूँ shows who speaks",
   "transfer": "negative",
-  "status": "draft_unverified",
+  "status": "native_checked",
   "evidence": "model_predicted",
   "version": 1,
-  "reviewer": null,
-  "reviewed_at": null,
+  "reviewer": "R1 (bilingual team member; initials pending)",
+  "reviewed_at": "2026-11-02",
   "source": "Claude draft (unreviewed); contrast to be checked against NCERT Hindi grammar and Krishnamurti & Gwynn 1985",
   "items": [
    {
@@ -118,6 +139,11 @@
     ],
     "fix_regex": [
      "^मैं (जा रही|जाती) हूँ$"
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": [
+     "reviewer's other forms (not used by checker): मैं अभी जा रही हूँ"
     ]
    },
    {
@@ -133,6 +159,11 @@
     ],
     "fix_regex": [
      "^मैं कल आऊँगी$"
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": [
+     "reviewer's other forms (not used by checker): मैं कल वापस आऊँगी"
     ]
    }
   ],
@@ -144,11 +175,11 @@
   "category": "gender",
   "l1_habit": "Telugu human plurals (వస్తున్నారు) do not mark gender; Hindi रहे हैं / रही हैं does",
   "transfer": "negative",
-  "status": "draft_unverified",
+  "status": "native_checked",
   "evidence": "model_predicted",
   "version": 1,
-  "reviewer": null,
-  "reviewed_at": null,
+  "reviewer": "R1 (bilingual team member; initials pending)",
+  "reviewed_at": "2026-11-02",
   "source": "Claude draft (unreviewed); contrast to be checked against NCERT Hindi grammar and Krishnamurti & Gwynn 1985",
   "items": [
    {
@@ -164,6 +195,11 @@
     ],
     "fix_regex": [
      "^लड़कियाँ आ रही हैं$"
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": [
+     "reviewer's other forms (not used by checker): सभी लड़कियाँ आ रही हैं"
     ]
    },
    {
@@ -179,6 +215,11 @@
     ],
     "fix_regex": [
      "^मेरी बहनें दिल्ली में रहती हैं$"
+    ],
+    "level": "A2",
+    "frequency": "often",
+    "review_notes": [
+     "reviewer's other forms (not used by checker): मेरी बहनें दिल्ली में रहती हैं"
     ]
    }
   ],
@@ -190,11 +231,11 @@
   "category": "case",
   "l1_habit": "Telugu has no ergative marker: నేను అన్నం తిన్నాను keeps నేను; Hindi needs मैंने in the past of a transitive verb",
   "transfer": "negative",
-  "status": "draft_unverified",
+  "status": "native_checked",
   "evidence": "model_predicted",
   "version": 1,
-  "reviewer": null,
-  "reviewed_at": null,
+  "reviewer": "R1 (bilingual team member; initials pending)",
+  "reviewed_at": "2026-11-02",
   "source": "Claude draft (unreviewed); contrast to be checked against NCERT Hindi grammar and Krishnamurti & Gwynn 1985",
   "items": [
    {
@@ -210,6 +251,11 @@
     ],
     "fix_regex": [
      "^मैंने खाना खाया$"
+    ],
+    "level": "A2",
+    "frequency": "often",
+    "review_notes": [
+     "reviewer's other forms (not used by checker): मैंने भोजन खाया"
     ]
    },
    {
@@ -225,6 +271,11 @@
     ],
     "fix_regex": [
      "^रवि ने किताब पढ़ी$"
+    ],
+    "level": "A2",
+    "frequency": "often",
+    "review_notes": [
+     "reviewer's other forms (not used by checker): रवि ने पुस्तक पढ़ी"
     ]
    }
   ],
@@ -236,11 +287,11 @@
   "category": "agreement",
   "l1_habit": "In Telugu the verb agrees with the subject (చదివాడు = he read); in Hindi after ने it agrees with the object (किताब पढ़ी)",
   "transfer": "negative",
-  "status": "draft_unverified",
+  "status": "native_checked",
   "evidence": "model_predicted",
   "version": 1,
-  "reviewer": null,
-  "reviewed_at": null,
+  "reviewer": "R1 (bilingual team member; initials pending)",
+  "reviewed_at": "2026-11-02",
   "source": "Claude draft (unreviewed); contrast to be checked against NCERT Hindi grammar and Krishnamurti & Gwynn 1985",
   "items": [
    {
@@ -256,7 +307,10 @@
     ],
     "fix_regex": [
      "^मैंने चाय पी$"
-    ]
+    ],
+    "level": "A2",
+    "frequency": "often",
+    "review_notes": []
    },
    {
     "item_id": "TE-HI-006-b",
@@ -271,6 +325,11 @@
     ],
     "fix_regex": [
      "^उसने एक किताब पढ़ी$"
+    ],
+    "level": "A2",
+    "frequency": "often",
+    "review_notes": [
+     "reviewer's other forms (not used by checker): उसने पुस्तक पढ़ी।"
     ]
    }
   ],
@@ -282,11 +341,11 @@
   "category": "case",
   "l1_habit": "Telugu adds the case ending to the noun; Hindi changes मेरा→मेरे, लड़का→लड़के before में, को, से",
   "transfer": "negative",
-  "status": "draft_unverified",
+  "status": "native_checked",
   "evidence": "model_predicted",
   "version": 1,
-  "reviewer": null,
-  "reviewed_at": null,
+  "reviewer": "R1 (bilingual team member; initials pending)",
+  "reviewed_at": "2026-11-02",
   "source": "Claude draft (unreviewed); contrast to be checked against NCERT Hindi grammar and Krishnamurti & Gwynn 1985",
   "items": [
    {
@@ -302,6 +361,11 @@
     ],
     "fix_regex": [
      "^रवि मेरे घर में है$"
+    ],
+    "level": "A2",
+    "frequency": "often",
+    "review_notes": [
+     "reviewer's other forms (not used by checker): रवि हमारे मकान में है"
     ]
    },
    {
@@ -318,6 +382,11 @@
     ],
     "fix_regex": [
      "^लड़के को (दे )?दो$"
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": [
+     "reviewer's other forms (not used by checker): बच्चे को दे दो"
     ]
    }
   ],
@@ -329,11 +398,11 @@
   "category": "spelling",
   "l1_habit": "Telugu writes case endings joined (ఇంట్లో, రవికి); Hindi writes में, को, से apart after nouns (घर में, रवि को)",
   "transfer": "negative",
-  "status": "draft_unverified",
+  "status": "native_checked",
   "evidence": "model_predicted",
   "version": 1,
-  "reviewer": null,
-  "reviewed_at": null,
+  "reviewer": "R1 (bilingual team member; initials pending)",
+  "reviewed_at": "2026-11-02",
   "source": "Claude draft (unreviewed); contrast to be checked against NCERT Hindi grammar and Krishnamurti & Gwynn 1985; pronoun forms such as मुझको, उसने are correctly written joined",
   "items": [
    {
@@ -349,6 +418,11 @@
     ],
     "fix_regex": [
      "^रवि घर में है$"
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": [
+     "reviewer's other forms (not used by checker): रवि अपने घर पर है"
     ]
    },
    {
@@ -365,6 +439,11 @@
     ],
     "fix_regex": [
      "^रवि को (दे )?दो$"
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": [
+     "reviewer's other forms (not used by checker): रवि को यह दे दो"
     ]
    }
   ],
@@ -376,11 +455,11 @@
   "category": "copula",
   "l1_habit": "Telugu says ఇది పుస్తకం with no 'is'; Hindi needs है (the mirror of HI-TE-002)",
   "transfer": "negative",
-  "status": "draft_unverified",
+  "status": "native_checked",
   "evidence": "model_predicted",
   "version": 1,
-  "reviewer": null,
-  "reviewed_at": null,
+  "reviewer": "R1 (bilingual team member; initials pending)",
+  "reviewed_at": "2026-11-02",
   "source": "Claude draft (unreviewed); contrast to be checked against NCERT Hindi grammar and Krishnamurti & Gwynn 1985",
   "items": [
    {
@@ -396,6 +475,11 @@
     ],
     "fix_regex": [
      "^यह किताब है$"
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": [
+     "reviewer's other forms (not used by checker): यह एक पुस्तक है"
     ]
    },
    {
@@ -412,6 +496,11 @@
     ],
     "fix_regex": [
      "^वह (टीचर|अध्यापक) है$"
+    ],
+    "level": "A1",
+    "frequency": "often",
+    "review_notes": [
+     "reviewer's other forms (not used by checker): वह अध्यापक है"
     ]
    }
   ],
@@ -423,11 +512,11 @@
   "category": "clause",
   "l1_habit": "Telugu puts the clause before the noun (నేను చదివిన పుస్తకం); Hindi usually uses जो (वह किताब जो मैंने पढ़ी) or पढ़ी हुई",
   "transfer": "negative",
-  "status": "draft_unverified",
+  "status": "native_checked",
   "evidence": "model_predicted",
   "version": 1,
-  "reviewer": null,
-  "reviewed_at": null,
+  "reviewer": "R1 (bilingual team member; initials pending)",
+  "reviewed_at": "2026-11-02",
   "source": "Claude draft (unreviewed); contrast to be checked against NCERT Hindi grammar and Krishnamurti & Gwynn 1985",
   "items": [
    {
@@ -445,6 +534,11 @@
     "fix_regex": [
      "जो मैंने पढ़ी$",
      "पढ़ी हुई किताब"
+    ],
+    "level": "B1",
+    "frequency": "sometimes",
+    "review_notes": [
+     "reviewer's other forms (not used by checker): यह वह पुस्तक है जिसे मैंने पढ़ा था"
     ]
    },
    {
@@ -462,6 +556,11 @@
     "fix_regex": [
      "जो मैंने खरीदा$",
      "खरीदा हुआ घर"
+    ],
+    "level": "B1",
+    "frequency": "sometimes",
+    "review_notes": [
+     "reviewer's other forms (not used by checker): यह वह मकान है जिसे मैंने खरीदा था"
     ]
    }
   ],

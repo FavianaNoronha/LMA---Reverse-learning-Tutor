@@ -1,0 +1,11 @@
+﻿direction (HI->TE or TE->HI),mistake_you_have_heard,correct_form,spoken_form_if_different,why_learners_make_it,how_often (often/sometimes),"where_you_heard_it (class, office, auto, ...)"
+HI->TE,నేను బాగుంది,నేను బాగున్నాను,నేను బాగున్నా,Hindi sentence structure influences Telugu verb usage,often,classroom 
+HI->TE,ఆమె వస్తాడు,ఆమె వస్తుంది,ఆమె వస్తుంది,        Confusion in Telugu gender-based verb endings,often,classroom 
+HI->TE,నేను ఇంట్లో వెళ్తున్నాను,నేను ఇంటికి వెళ్తున్నాను,నేను ఇంటికి వెళ్తున్నా  ,Confusion between ఇంట్లో (inside the house) and ఇంటికి (to home),often,everyday conversation
+HI->TE,నేను ఏమి చేస్తున్నాను?,నేనేం చేస్తున్నాను?,నేనేం చేస్తున్నాను?,Learners may not recognise shortened spoken forms,sometimes,classroom 
+HI->TE,        నువ్వు వస్తున్నాను,నువ్వు వస్తున్నావు,నువ్వు వస్తున్నావ్,Confusion between first-person and second-person verb endings,often,clasroom
+TE->HI  ,        मैं घर को जा रहा हूँ,मैं घर जा रहा हूँ,मैं घर जा रहा हूँ,Direct translation of Telugu ఇంటికి into Hindi घर को,sometimes,everyday conversation
+TE->HI,मैं स्कूल जाता है,मैं स्कूल जाता हूँ      ,मैं स्कूल जाता हूँ      ,Confusion in Hindi subject-verb agreement,often,classroom 
+TE->HI,तुम कहाँ जा रहा है?,तुम कहाँ जा रहे हो?,तुम कहाँ जा रहे हो?,Incorrect verb agreement with तुम,often,classroom 
+TE->HI,वह मेरे को दिया,उसने मुझे दिया,उसने मुझे दिया,Direct translation of Telugu dative construction into Hindi,sometimes,everyday conversation
+TE->HI,मेरे को पानी चाहिए,मेरे को पानी चाहिए,मेरे को पानी चाहिए      ,Regional spoken Hindi uses मेरे को instead of standard मुझे,often,everyday conversation

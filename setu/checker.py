@@ -5,6 +5,9 @@ from .text import normalize
 from .bank import matches
 
 
+TAG_PARTICLES = ("కదా",)   # from the native reviewer: always changes the meaning when added to a plain sentence
+
+
 def check(rule: Rule, item: Item, answer: str) -> CheckResult:
     n = normalize(answer)
     if not n:
@@ -15,6 +18,11 @@ def check(rule: Rule, item: Item, answer: str) -> CheckResult:
         return CheckResult(item_id=item.item_id, answer=answer, verdict="wrong", reason="classmate error left unchanged")
     if matches(item.wrong_regex, n):
         return CheckResult(item_id=item.item_id, answer=answer, verdict="wrong", reason="matches known error pattern")
+    # v0.2 (native review, Nov 2026): a tag particle after a correct sentence changes its meaning ("...కదా" = "...isn't it?")
+    for p in TAG_PARTICLES:
+        if n.endswith(" " + p) and normalize(n[: -len(p) - 1]) in {normalize(a) for a in item.accepted}:
+            return CheckResult(item_id=item.item_id, answer=answer, verdict="wrong",
+                               reason=f"extra word '{p}' turns the sentence into a tag question (different meaning)")
     # v0.1 (found by the scorecard: 60% of learner-style variants came back unsure)
     if any(_edits(n, normalize(a)) == 1 for a in item.accepted):
         return CheckResult(item_id=item.item_id, answer=answer, verdict="wrong", reason="near miss: one letter away from the right form (spelling)")
