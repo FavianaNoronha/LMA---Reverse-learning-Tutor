@@ -84,8 +84,13 @@ def main():
     if labels:
         k = kappa([r["checker_verdict"] for r in labels], [r["teacher_verdict"].strip() for r in labels])
         un = sum(r["checker_verdict"] == "unsure" for r in labels) / len(labels)
-        add("Checker", "Agreement with teacher (κ), teacher-labelled answers", "κ ≥ 0.6", f"{k} (n={len(labels)})", pf((k or 0) >= 0.6))
-        add("Checker", "Unsure rate on teacher-labelled answers", "< 15%", f"{un:.2f}", pf(un < 0.15))
+        if labels and "checker_verdict_at_return" in labels[0]:
+            k0 = kappa([r["checker_verdict_at_return"] for r in labels], [r["teacher_verdict"].strip() for r in labels])
+            un0 = sum(r["checker_verdict_at_return"] == "unsure" for r in labels) / len(labels)
+            add("Checker", "Agreement with teacher (κ), checker as it was when the labels came back (v0.1) - the honest number", "κ ≥ 0.6", f"{k0} (n={len(labels)})", pf((k0 or 0) >= 0.6))
+            add("Checker", "Unsure rate on teacher-labelled answers, v0.1", "< 15%", f"{un0:.2f}", pf(un0 < 0.15))
+        add("Checker", "Agreement with teacher (κ), checker v0.2 (tag-particle rule was fitted to these same labels, so not independent)", "κ ≥ 0.6", f"{k} (n={len(labels)})", pf((k or 0) >= 0.6))
+        add("Checker", "Unsure rate on teacher-labelled answers, v0.2 (same caveat)", "< 15%", f"{un:.2f}", pf(un < 0.15))
     else:
         add("Checker", "Agreement with teacher (κ), teacher-labelled answers", "κ ≥ 0.6", "teacher_labels_v0.csv not filled", NM)
     if lp.exists():

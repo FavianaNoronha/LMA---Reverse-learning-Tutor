@@ -76,8 +76,8 @@ Limit: filtering can't guarantee a model never *says* something odd in free conv
 | Script bridge (Step 0) | Done: `setu/script.py` (Devanagari↔Telugu, forgiveness for ए/ओ and final म), Letters page in the hosted app, Hindi-letter typing in every condition; conversion rules need a native check |
 | Study conditions A/B/C + tests | Done (`setu/session.py`, `tests/test_study.py`, study mode in both apps) |
 | Simulated learners | Done (v0 parametric): `scripts/simulate_learners.py` → `docs/results_sim_learners.json`; A beat B, not C |
-| Teacher-label sheet | Made: `data/l1-hi_l2-te/teacher_labels_v0.csv` (145 answers) — needs a native teacher |
-| Native review of 15 HI→TE rules | **Missing** |
+| Teacher-label sheet | **Marked** (2 Nov 2026) by one bilingual team member: checker v0.1 agreed on 63% (κ 0.32, target 0.6); see `docs/REVIEW_RETURN_2026-11.md`. Needs re-confirmation of 5 probable slips and an outside rater |
+| Native review of 15 HI→TE rules | **14/15 passed** by one team member (HI-TE-012 explanation "partly" right, fix pending); sheet 1 lost its Telugu text, re-export as CSV UTF-8; not independent |
 | Telugu→Hindi rules (10) | **Missing** |
 | Consent forms, interview notes, 5-learner study | Consent form, background questionnaire and facilitator script ready (`docs/study/`); needs ethics approval, then learners |
 | Speech, teacher console, Sravya, morphological analyser | Not built |
