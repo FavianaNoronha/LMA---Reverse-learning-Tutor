@@ -24,6 +24,7 @@ step leak_plain       python scripts/plain_prompt_leak_test.py $MODEL_ARGS --n $
 if [ "$MOCK" != "1" ]; then cp "$OUT/leak_plain.json" docs/results_gemma_leak.json; fi     # the scorecard reads this path
 step baselines        python scripts/gemma_baselines.py $MODEL_ARGS --reps $REPS --out "$OUT/baselines.json"
 step controllability  python scripts/simulated_eval.py $SIM_ARGS --learners $EVAL_N --out "$OUT/simulated_eval.json"
+step students         python scripts/simulate_students.py $SIM_ARGS --n $SIM_N --free --out "$OUT/students_llm.json"
 step sim_learners     python scripts/simulate_learners.py $SIM_ARGS --n $SIM_N --default-only --out "$OUT/sim_learners.json"
 
 END=$(date +%s)

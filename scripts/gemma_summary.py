@@ -40,6 +40,18 @@ def main():
         d = sim.get("settings", {}).get("default (testing + spacing effects)")
         L += [f"## Simulated learners, default assumptions ({sim.get('model')})", "", "```", json.dumps(d, indent=1)[:1500] if d else "missing", "```",
               "These follow from the assumptions in setu/simlearner.py; they are not evidence about people.", ""]
+    stu = load(R / "students_llm.json")
+    if stu:
+        c = stu["controlled"]
+        L += [f"## AI student simulator ({stu['model']}{', MOCK' if stu.get('mock') else ''})", "",
+              f"The model writes what the learner types; the parametric learner decides right or wrong. Of {c['n_intended_correct']} answers meant to be correct, the checker marked **{c['intended_correct_marked_correct']}** correct (unsure {c['intended_correct_marked_unsure']}); of {c['n_intended_wrong']} meant to be wrong, **{c['intended_wrong_marked_wrong']}** were marked wrong.", "",
+              "| Intended / style | n | correct | wrong | unsure |", "|---|---|---|---|---|"]
+        L += [f"| {k} | {v['n']} | {v['correct']} | {v['wrong']} | {v['unsure']} |" for k, v in c["checker_on_llm_written_answers"].items()]
+        d = c["by_phase"]["delayed"]
+        L += ["", f"Delayed recall with LLM-written answers: A {d['A']['mean']}, B {d['B']['mean']}, C {d['C']['mean']}.", ""]
+        if "free" in stu:
+            f = stu["free"]
+            L += [f"Uncontrolled student (told which rules it has not met): marked correct on the unmet rule **{f['rate_correct_on_unmet_rule']}** of {f['n']} attempts, wrong {f['rate_planted_mistake_or_wrong']}, unsure {f['rate_unsure']}. A high first number means prompting alone cannot make an LLM play a weak learner.", ""]
     (R / "SUMMARY.md").write_text("\n".join(L) + "\n", encoding="utf-8"); print("\n".join(L))
 
 

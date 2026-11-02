@@ -36,6 +36,27 @@ class SimLearner:
     rng: random.Random
     h: dict[str, float] = field(default_factory=dict)
     last: dict[str, float] = field(default_factory=dict)
+    writer: object | None = None                    # optional LLM student: writes the answer text; the outcome is still decided here
+    log: list = field(default_factory=list)
+
+    def say(self, item, rule, ok: bool, mode: str = "fix", copied: bool = False):
+        """(text, meta). mode 'fix': a miss is the planted mistake; 'intro'/'test': a miss is 'I don't know' unless copied."""
+        intended = "correct" if ok else ("wrong" if (mode == "fix" or copied) else "dontknow")
+        canned = item.accepted[0] if intended == "correct" else (item.planted_error if intended == "wrong" else "నాకు తెలియదు")
+        if self.writer is None or intended == "dontknow":
+            return canned, None
+        text, style = self.writer.write(item, rule, intended, canned)
+        return text, {"intended": intended, "style": style, "item": item.item_id}
+
+    def submit(self, t, lid, item, rule, ok: bool, mode: str = "fix", copied: bool = False):
+        text, meta = self.say(item, rule, ok, mode, copied)
+        r = t.answer(lid, text)
+        if meta:
+            v = r["verdict"]
+            if v == "recorded":                          # tests give no feedback; the checker's verdict is in the stored test record
+                v = t.store.load(lid).tests[-1]["verdict"]
+            self.log.append({**meta, "verdict": v, "text": text, "mode": mode})
+        return r
 
     def p(self, rid: str, day: float) -> float:
         if rid not in self.h:
@@ -73,18 +94,18 @@ def answer_raju(sim: SimLearner, t, lid: str, out: dict) -> None:
         r = t.answer(lid, NO_ERROR if knows or sim.rng.random() < 0.5 else item.planted_error)
     else:
         ok = sim.retrieve(rid, day)
-        r = t.answer(lid, item.accepted[0] if ok else item.planted_error)
+        r = sim.submit(t, lid, item, rule, ok)
         if r["verdict"] == "wrong" and t.store.load(lid).pending:          # hint, second try
             ok = sim.retrieve(rid, day, bonus=sim.params.hint_help)
-            r = t.answer(lid, item.accepted[0] if ok else item.planted_error)
+            r = sim.submit(t, lid, item, rule, ok)
     if r.get("why_question"):
         sim.explain(rid, day); t.answer(lid, "క్యోంకి తెలుగులో ఇక్కడ ఇలాగే చెబుతారు")
     out["raju_changed_without_correct"] += 0                                # counted from the ledger below
 
 
 def run_learner(t, lid: str, params: Params, seed: int, rule_ids: list[str], sessions=(0, 1, 2),
-                exposures_per_session: int = 6, delay_days: int = 7) -> dict:
-    rng = random.Random(seed); sim = SimLearner(params, rng); out = {"raju_changed_without_correct": 0}
+                exposures_per_session: int = 6, delay_days: int = 7, writer=None) -> dict:
+    rng = random.Random(seed); sim = SimLearner(params, rng, writer=writer); out = {"raju_changed_without_correct": 0}
     t.assign_conditions(lid, rule_ids)
     l = t.store.load(lid); cond = dict(l.conditions)
 
@@ -96,7 +117,7 @@ def run_learner(t, lid: str, params: Params, seed: int, rule_ids: list[str], ses
             ok = sim.rng.random() < sim.p(rid, day)                         # tests: recall without changing memory
             copied = (not ok) and phase != "pre" and cond[rid] in "AB" and sim.rng.random() < params.copy_p
             t.test_item(lid, phase, rid, item.item_id)
-            t.answer(lid, item.accepted[0] if ok else (item.planted_error if copied else "నాకు తెలియదు"))
+            sim.submit(t, lid, item, rule, ok, "test", copied)
 
     test("pre")
     for c in "ABC":                                                          # meet every rule (same explanation in all conditions)
@@ -107,7 +128,7 @@ def run_learner(t, lid: str, params: Params, seed: int, rule_ids: list[str], ses
                 if t.store.load(lid).pending is None:
                     break
                 ok = sim.retrieve(rid, day, bonus=0.5)
-                t.answer(lid, rule.items[-1].accepted[0] if ok else "నాకు తెలియదు")
+                sim.submit(t, lid, rule.items[-1], rule, ok, "intro")
                 if not ok:
                     sim.restudy(rid, day)
             l = t.store.load(lid); l.pending = None; t.store.save(l)
@@ -128,11 +149,11 @@ def run_learner(t, lid: str, params: Params, seed: int, rule_ids: list[str], ses
             if pr:
                 rid = pr["rule_id"]; day = t.store.load(lid).clock_offset_days
                 item = t.items[t.store.load(lid).pending["item_id"]][1]
-                ok = sim.retrieve(rid, day)
-                res = t.answer(lid, item.accepted[0] if ok else item.planted_error)
+                ok = sim.retrieve(rid, day); prule = t.by_id[rid]
+                res = sim.submit(t, lid, item, prule, ok)
                 if res["verdict"] == "wrong" and t.store.load(lid).pending:     # hint, second try (as in A)
                     ok = sim.retrieve(rid, day, bonus=sim.params.hint_help)
-                    res = t.answer(lid, item.accepted[0] if ok else item.planted_error)
+                    res = sim.submit(t, lid, item, prule, ok)
                 if res["verdict"] != "correct":
                     sim.restudy(rid, day)                                    # the tutor shows the correct form
     test("post"); t.skip_days(lid, delay_days); test("delayed"); test("transfer", transfer=True)
@@ -140,4 +161,6 @@ def run_learner(t, lid: str, params: Params, seed: int, rule_ids: list[str], ses
     out["raju_changed_without_correct"] = sum(1 for e in l.events if e.classmate_state_changed and e.verdict != "correct")
     out["results"] = t.results(lid)
     out["copies"] = sum(1 for x in l.tests if x["phase"] in ("delayed", "transfer") and x["answer"] == t.items[x["item"]][1].planted_error)
+    if writer is not None:
+        out["student_log"] = sim.log        # every LLM-written answer: intended outcome, style, the checker's verdict
     return out
