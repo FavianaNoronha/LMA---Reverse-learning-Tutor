@@ -50,4 +50,5 @@ def main():
     Path(a.out).write_text(json.dumps({"mock": a.mock, "model": a.model, "total": total, "pass": ok, "reasons": reasons, "rows": rows}, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
-main()
+if __name__ == "__main__":
+    main()

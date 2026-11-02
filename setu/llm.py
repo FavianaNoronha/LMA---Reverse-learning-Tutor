@@ -1,7 +1,7 @@
 """Model access. Any OpenAI-compatible server works: Ollama on a Mac (http://localhost:11434/v1),
 vLLM on a GPU box (http://HOST:8000/v1). MockLLM is for tests and offline demos."""
 from __future__ import annotations
-import json, re, urllib.request
+import json, re, urllib.error, urllib.request
 from typing import Callable, Protocol
 
 
@@ -12,17 +12,31 @@ class LLM(Protocol):
 
 
 class OpenAICompatLLM:
-    def __init__(self, base_url: str, model: str, timeout: int = 120):
+    def __init__(self, base_url: str, model: str, timeout: int = 300):
         self.base_url, self.model, self.timeout = base_url.rstrip("/"), model, timeout
+        self.no_schema = False          # set after a server rejects response_format once (older Ollama builds)
+        self.prompt_tokens = self.completion_tokens = 0
 
-    def chat(self, messages, temperature=0.8, max_tokens=120, schema=None) -> str:
-        body = {"model": self.model, "messages": messages, "temperature": temperature, "max_tokens": max_tokens}
-        if schema:  # guided JSON on vLLM / recent Ollama; servers that ignore it still return text we can parse
-            body["response_format"] = {"type": "json_schema", "json_schema": {"name": "out", "schema": schema}}
+    def _post(self, body: dict) -> dict:
         req = urllib.request.Request(self.base_url + "/chat/completions", json.dumps(body).encode(),
                                      {"Content-Type": "application/json"})
         with urllib.request.urlopen(req, timeout=self.timeout) as r:
-            return json.load(r)["choices"][0]["message"]["content"]
+            return json.load(r)
+
+    def chat(self, messages, temperature=0.8, max_tokens=120, schema=None) -> str:
+        body = {"model": self.model, "messages": messages, "temperature": temperature, "max_tokens": max_tokens}
+        if schema and not self.no_schema:  # guided JSON on vLLM / recent Ollama; servers that ignore it still return text we can parse
+            body["response_format"] = {"type": "json_schema", "json_schema": {"name": "out", "schema": schema}}
+        try:
+            data = self._post(body)
+        except urllib.error.HTTPError as e:
+            if e.code != 400 or "response_format" not in body:
+                raise
+            self.no_schema = True        # server does not support guided JSON: retry once as plain text, remember it
+            body.pop("response_format"); data = self._post(body)
+        u = data.get("usage") or {}
+        self.prompt_tokens += int(u.get("prompt_tokens") or 0); self.completion_tokens += int(u.get("completion_tokens") or 0)
+        return data["choices"][0]["message"]["content"]
 
 
 class MockLLM:

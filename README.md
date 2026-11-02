@@ -1,7 +1,7 @@
 # Reverse Learning Tutor (SETU) — starter
 
 **Try it:** https://favianaNoronha.github.io/LMA---Reverse-learning-Tutor/ (no install, no sign-in; works on phones)
-· Paper: `docs/paper/` · Video: `docs/video/` · Study pack (consent form, session script): `docs/study/` · Reviewer pack: `docs/reviewer_pack/` (returned sheets: `docs/reviewer_pack/returned/`, findings: `docs/REVIEW_RETURN_2026-11.md`) · Hand-off to the team repo: `docs/HANDOFF_TO_SETU_TUTOR.md`
+· Paper: `docs/paper/` · Video: `docs/video/` · Study pack (consent form, session script): `docs/study/` · Reviewer pack: `docs/reviewer_pack/` (returned sheets: `docs/reviewer_pack/returned/`, findings: `docs/REVIEW_RETURN_2026-11.md`) · Gemma run (Mac, one command): `docs/GEMMA_RUNBOOK.md` · Hand-off to the team repo: `docs/HANDOFF_TO_SETU_TUTOR.md`
 
 
 Two learner groups, same system: **Hindi speakers learning Telugu** (`data/l1-hi_l2-te/`, built first) and **Telugu speakers learning Hindi** (`data/l1-te_l2-hi/`, rules still to be written). Each group uses its own language as the bridge and has its own rule book, because the mistakes differ.
